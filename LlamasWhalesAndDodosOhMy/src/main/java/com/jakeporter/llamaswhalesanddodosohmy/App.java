@@ -6,7 +6,7 @@ package com.jakeporter.llamaswhalesanddodosohmy;
  */
 public class App {
     public static void main(String[] args){
-        int llamas = 10;
+        int llamas = 20;
         int whales = 15;
         int dodos = 0;
        
