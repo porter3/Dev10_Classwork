@@ -24,8 +24,8 @@ public class QuestForTheUserInput {
         System.out.println("What is the airspeed velocity of an unladen swallow?!?! ");
         velocityOfSwallow = sc.nextDouble();
         
-        System.out.println(velocityOfSwallow);
-        System.out.println(yourName);
-        System.out.println(yourQuest);
+        System.out.println("How do you know " + velocityOfSwallow + " is correct, " + yourName + ",");
+        System.out.println("when you didn't even know if ther swallow was African or European?");
+        System.out.println("Maybe skip answering things about birds and instead go " + yourQuest + ".");
     }
 }
