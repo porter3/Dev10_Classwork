@@ -30,8 +30,8 @@ public class App {
             int ties = 0;
             while (playedRounds < totalRounds){
 
-                // generate computer's RPS choice (0 == rock, 1 == paper, 2 == scissors)
-                int compChoice = rpsGenerator.nextInt(3);
+                // generate computer's RPS choice (0 == rock, 1 == paper, 2 == scissors, 3 == lizard, 4 ==  spock)
+                int compChoice = rpsGenerator.nextInt(5);
 
                 int userChoice;
                 String userChoiceStr;
@@ -39,7 +39,7 @@ public class App {
 
                 // prompt user for RPS choice while 
                 while (true){
-                    System.out.println("Please enter your choice of rock/paper/scissors:");
+                    System.out.println("Please enter your choice of rock/paper/scissors/lizard/spock:");
                     String userChoiceStrTemp = sc.next();
                     if (userChoiceStrTemp.compareToIgnoreCase("rock") == 0){
                         userChoice = 0;
@@ -56,23 +56,41 @@ public class App {
                         userChoiceStr = userChoiceStrTemp;
                         break;
                     }
+                    else if (userChoiceStrTemp.compareToIgnoreCase("lizard") == 0){
+                        userChoice = 3;
+                        userChoiceStr = userChoiceStrTemp;
+                        break;
+                    }
+                    else if (userChoiceStrTemp.compareToIgnoreCase("spock") == 0){
+                        userChoice = 4;
+                        userChoiceStr = userChoiceStrTemp;
+                        break;
+                    }
                     else{
-                        System.out.println("Input not recognized. Please enter 'rock', 'paper', or 'scissors'.");
+                        System.out.println("Input not recognized. Please enter 'rock', 'paper', 'scissors', 'lizard', or 'spock'.");
                     }
                 }
 
                 //convert user's and computer's choices to lowercase strings
                 userChoiceStr = userChoiceStr.toLowerCase();
-                if (compChoice == 0){
-                    compChoiceStr = "rock";
+                switch (compChoice) {
+                    case 0:
+                        compChoiceStr = "rock";
+                        break;
+                    case 1:
+                        compChoiceStr = "paper";
+                        break;
+                    case 2:
+                        compChoiceStr = "scissors";
+                        break;
+                    case 3:
+                        compChoiceStr = "lizard";
+                        break;
+                    default:
+                        compChoiceStr = "spock";
+                        break;
                 }
-                else if (compChoice == 1){
-                    compChoiceStr = "paper";
-                }
-                else{
-                    compChoiceStr = "scissors";
-                }
-
+                
                 //determine outcome of round
                 int result = determineRpsOutcome(userChoice, compChoice);
 
@@ -111,38 +129,46 @@ public class App {
     
     public static int determineRpsOutcome(int userChoice, int compChoice){
             int result = 2; // 2 (default) is code for a tie, 0 is win, 1 is lose.
+            // rock = 0, paper = 1, scissors = 2, lizard = 3, spock = 4
             switch(userChoice){
                 case 0: // rock
-                    if (compChoice == 0){
-                        break;
-                    }
-                    else if (compChoice == 1){
-                        result = 1;
-                    }
-                    else{
+                    if ((compChoice == 2) || (compChoice == 3)){
                         result = 0;
+                    }
+                    else if ((compChoice == 1) || (compChoice == 4)){
+                        result = 1;
                     }
                     break;
                 case 1: // paper
-                    if (compChoice == 0){
+                    if ((compChoice == 0) || (compChoice == 4)){
                         result = 0;
                     }
-                    else if (compChoice == 1){
-                        break;
-                    }
-                    else{
+                    else if ((compChoice == 2) || (compChoice == 3)){
                         result = 1;
                     }
                     break;
                 case 2: // scissors
-                    if (compChoice == 0){
-                        result = 1;
-                    }
-                    else if (compChoice == 1){
+                    if ((compChoice == 1) || (compChoice == 3)){
                         result = 0;
                     }
-                    else{
-                        break;
+                    else if ((compChoice == 0) || (compChoice == 4)){
+                        result = 1;
+                    }
+                    break;
+                case 3: // lizard
+                    if ((compChoice == 1) || (compChoice == 4)){
+                        result = 0;
+                    }
+                    else if ((compChoice == 0) || (compChoice == 2)){
+                        result = 1;
+                    }
+                    break;
+                case 4: // spock
+                    if ((compChoice == 0) || (compChoice == 2)){
+                        result = 0;
+                    }
+                    else if ((compChoice == 3) || (compChoice == 1)){
+                        result = 1;
                     }
                     break;
                 }
