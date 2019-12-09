@@ -9,78 +9,125 @@ import java.util.Random;
  */
 public class RpsRunner {
 
-    private int roundsToPlay = 0;
-    private int playedRounds = 0;
-    private int wins = 0;
-    private int losses = 0;
-    private int ties = 0;
-    private String userChoiceString;
-    private int userChoiceInt;
-    private String compChoiceString;
-    private int compChoice;
-    
-    public void roundsInputValidator(int roundsToPlay){
-        if ((roundsToPlay <= 10) && (roundsToPlay >= 1)){
-            this.roundsToPlay = roundsToPlay;        
+    public void playRPS(){
+        Scanner sc = new Scanner(System.in);
+        Random rpsGenerator = new Random();
+        
+        //repeat game until user chooses not to continue
+        while (true){
+            System.out.println("How many rounds would you like to play?");
+            int totalRounds = sc.nextInt();
+
+            //determine if round input is valid
+            if (!(totalRounds <= 10) || !(totalRounds >= 1)){
+                System.out.println("Round number was not between 1 and 10. Please restart the program and try again.");
+                return;
+            }
+
+            int playedRounds = 0;
+            int wins = 0;
+            int losses = 0;
+            int ties = 0;
+            while (playedRounds < totalRounds){
+
+                // generate computer's RPS choice (0 == rock, 1 == paper, 2 == scissors, 3 == lizard, 4 ==  spock)
+                int compChoice = rpsGenerator.nextInt(5);
+
+                int userChoice;
+                String userChoiceStr;
+                String compChoiceStr;
+
+                // prompt user for RPS choice while 
+                while (true){
+                    System.out.println("Please enter your choice of rock/paper/scissors/lizard/spock:");
+                    String userChoiceStrTemp = sc.next();
+                    if (userChoiceStrTemp.compareToIgnoreCase("rock") == 0){
+                        userChoice = 0;
+                        userChoiceStr = userChoiceStrTemp;
+                        break;
+                    }
+                    else if (userChoiceStrTemp.compareToIgnoreCase("paper") == 0){
+                        userChoice = 1;
+                        userChoiceStr = userChoiceStrTemp;
+                        break;
+                    }
+                    else if (userChoiceStrTemp.compareToIgnoreCase("scissors") == 0){
+                        userChoice = 2;
+                        userChoiceStr = userChoiceStrTemp;
+                        break;
+                    }
+                    else if (userChoiceStrTemp.compareToIgnoreCase("lizard") == 0){
+                        userChoice = 3;
+                        userChoiceStr = userChoiceStrTemp;
+                        break;
+                    }
+                    else if (userChoiceStrTemp.compareToIgnoreCase("spock") == 0){
+                        userChoice = 4;
+                        userChoiceStr = userChoiceStrTemp;
+                        break;
+                    }
+                    else{
+                        System.out.println("Input not recognized. Please enter 'rock', 'paper', 'scissors', 'lizard', or 'spock'.");
+                    }
+                }
+
+                //convert user's and computer's choices to lowercase strings
+                userChoiceStr = userChoiceStr.toLowerCase();
+                switch (compChoice) {
+                    case 0:
+                        compChoiceStr = "rock";
+                        break;
+                    case 1:
+                        compChoiceStr = "paper";
+                        break;
+                    case 2:
+                        compChoiceStr = "scissors";
+                        break;
+                    case 3:
+                        compChoiceStr = "lizard";
+                        break;
+                    default:
+                        compChoiceStr = "spock";
+                        break;
+                }
+                
+                //determine outcome of round
+                int result = determineRpsOutcome(userChoice, compChoice);
+
+                //increment respective counters and print respective messages
+                switch (result) {
+                    case 0:
+                        System.out.printf("The computer chose %s, you chose %s. You win!\n\n", compChoiceStr, userChoiceStr);
+                        wins++;
+                        break;
+                    case 1:
+                        System.out.printf("The computer chose %s, you chose %s. You lose.\n\n", compChoiceStr, userChoiceStr);
+                        losses++;
+                        break;
+                    default:
+                        System.out.printf("The computer chose %s, you chose %s. It's a tie.\n\n", compChoiceStr, userChoiceStr);
+                        ties++;
+                        break;
+                }
+                playedRounds++;
+            }
+            System.out.printf("\nResult of the last %d rounds:\n", totalRounds);
+            System.out.printf("Wins: %d\nLosses: %d\nTies: %d\n\n", wins, losses, ties);
+            
+            System.out.println("Would you like to play again? (y/n)");
+            while (true){
+                String playAgain = sc.next();
+                if (playAgain.equalsIgnoreCase("y")){
+                    break;
+                }
+                else if (playAgain.equalsIgnoreCase("n")){
+                    return;
+                }
+            }
         }
     }
     
-    public void generateComputerChoice(){
-        Random rndm = new Random();
-        this.compChoice =  rndm.nextInt(5);
-        switch (this.compChoice) {
-                case 0:
-                    this.compChoiceString = "rock";
-                    break;
-                case 1:
-                    this.compChoiceString = "paper";
-                    break;
-                case 2:
-                    this.compChoiceString = "scissors";
-                    break;
-                case 3:
-                    this.compChoiceString = "lizard";
-                    break;
-                default:
-                    this.compChoiceString = "spock";
-                    break;
-            }
-    }
-    
-    public void setUserChoices(String userChoiceString){        
-        while (true){
-                if (userChoiceString.compareToIgnoreCase("rock") == 0){
-                    this.userChoiceString = "rock";
-                    this.userChoiceInt = 0;
-                    break;
-                }
-                else if (userChoiceString.compareToIgnoreCase("paper") == 0){
-                    this.userChoiceString = "paper";
-                    this.userChoiceInt = 1;
-                    break;
-                }
-                else if (userChoiceString.compareToIgnoreCase("scissors") == 0){
-                    this.userChoiceString = "scissors";
-                    this.userChoiceInt = 2;
-                    break;
-                }
-                else if (userChoiceString.compareToIgnoreCase("lizard") == 0){
-                    this.userChoiceString = "lizard";
-                    this.userChoiceInt = 3;
-                    break;
-                }
-                else if (userChoiceString.compareToIgnoreCase("spock") == 0){
-                    this.userChoiceString = "spock";
-                    this.userChoiceInt = 4;
-                    break;
-                }
-                else{
-                    System.out.println("Input not recognized. Please enter 'rock', 'paper', 'scissors', 'lizard', or 'spock'.");
-                }
-            }
-    }
-    
-    public int determineOutcome(int userChoice, int compChoice) {
+    public static int determineRpsOutcome(int userChoice, int compChoice) {
         int result = 2; // 2 (default) is code for a tie, 0 is win, 1 is lose.
         // rock = 0, paper = 1, scissors = 2, lizard = 3, spock = 4
         switch (userChoice) {
@@ -127,47 +174,4 @@ public class RpsRunner {
         }
         return result;
     }
-
-    public int getRoundsToPlay() {
-        return roundsToPlay;
-    }
-
-    public void setRoundsToPlay(int roundsToPlay) {
-        this.roundsToPlay = roundsToPlay;
-    }
-
-    public String getUserChoiceString() {
-        return userChoiceString;
-    }
-
-    public void setUserChoiceString(String userChoiceString) {
-        this.userChoiceString = userChoiceString;
-    }
-
-    public int getUserChoiceInt() {
-        return userChoiceInt;
-    }
-
-    public void setUserChoiceInt(int userChoiceInt) {
-        this.userChoiceInt = userChoiceInt;
-    }
-
-    public String getCompChoiceString() {
-        return compChoiceString;
-    }
-
-    public void setCompChoiceString(String compChoiceString) {
-        this.compChoiceString = compChoiceString;
-    }
-
-    public int getCompChoice() {
-        return compChoice;
-    }
-
-    public void setCompChoice(int compChoice) {
-        this.compChoice = compChoice;
-    }
-    
-    
-
 }
