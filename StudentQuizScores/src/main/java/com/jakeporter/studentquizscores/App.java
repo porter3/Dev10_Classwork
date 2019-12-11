@@ -20,9 +20,15 @@ public class App {
             switch(action){
                 case "add":
                     dataset.addStudent();
+                    break;
                 case "remove":
-                /*case "view list":
-                case "view average":*/
+                    dataset.removeStudent();
+                    break;
+                case "view list":
+                    dataset.viewScores();
+                    break;
+                case "view average":
+                    dataset.viewAverageScore();
                 case "exit":
                     return;
                 default:
