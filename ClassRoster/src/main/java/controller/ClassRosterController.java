@@ -1,5 +1,9 @@
 package controller;
 
+import dao.ClassRosterDao;
+import dao.ClassRosterDaoFileImpl;
+import dto.Student;
+import java.util.List;
 import ui.ClassRosterView;
 import ui.UserIO;
 import ui.UserIOConsoleImpl;
@@ -12,9 +16,17 @@ import ui.UserIOConsoleImpl;
 // This orchestrates the application. Will be composed of the view and data access objects
 public class ClassRosterController {
 
-    ClassRosterView view = new ClassRosterView();
-    // creating an instance, but with a reference to its interface (so we can only use the methods defined in the interface?)
-    private UserIO io = new UserIOConsoleImpl();
+    ClassRosterDao dao;
+    ClassRosterView view;
+    
+    // objects being passed are instantiated in main()
+    // View object is being passed in so its dependency (UserIO) is injected into ITS OWN constructor.
+        // Don't want to instantiate that dependecy in the controller, that would not be loose coupling.
+        // Also, want to make "view" modular if I wanted to create different menu options/GUI/something else
+    public ClassRosterController(ClassRosterDao dao, ClassRosterView view){
+        this.dao = dao;
+        this.view = view;
+    }
     
     public void run(){
         boolean keepGoing = true;
@@ -25,33 +37,68 @@ public class ClassRosterController {
         
         switch(menuSelection){
             case 1:
-                io.print("LIST STUDENTS");
-                //TODO
+                listStudents();
                 break;
             case 2:
-                io.print("CREATE NEW STUDENT");
-                //TODO
+                createStudent();
                 break;
             case 3:
-                io.print("VIEW STUDENTS");
-                //TODO
+                viewStudent();
                 break;
             case 4:
-                io.print("REMOVE STUDENTS");
-                //TODO
+                removeStudent();
                 break;
             case 5:
                 keepGoing = false;
                 break;
             default:
-                io.print("UNKNOWN COMMAND");
+                unknownCommand();
         }
         }
-    io.print("GOODBYE");
+    exitMessage();
     
     }
     
     private int getMenuSelection(){
         return view.printMenuAndGetSelection();
+    }
+    
+    private void createStudent(){
+        view.displayCreateStudentbanner();
+        Student newStudent = view.getNewStudentInfo();
+        dao.addStudent(newStudent.getStudentId(), newStudent);
+        view.dislpayCreateSuccessBanner();
+    }
+    
+    private void listStudents(){
+        view.displayDisplayAllBanner();
+        List<Student> studentList = dao.getAllStudents();
+        view.displayStudentList(studentList);
+    }
+    
+    private void viewStudent(){
+        view.displayDisplayStudentBanner();
+        String studentId = view.getStudentIdChoice();
+        Student student = dao.getStudent(studentId);
+        view.displayStudent(student);
+    }
+    
+    private void removeStudent(){
+        // display banner
+        view.displayRemoveStudentBanner();
+        // get key for student to remove
+        String studentId = view.getStudentIdChoice();
+        // use data access object to remove student
+        dao.removeStudent(studentId);
+        // display success banner
+        view.displayRemoveSuccessBanner();
+    }
+    
+    private void unknownCommand(){
+        view.displayUnknownCommandBanner();
+    }
+    
+    private void exitMessage(){
+        view.displayExitBanner();
     }
 }
