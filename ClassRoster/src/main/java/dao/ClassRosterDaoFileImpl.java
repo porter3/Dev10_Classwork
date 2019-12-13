@@ -5,6 +5,9 @@ import dto.Student;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,27 +28,38 @@ public class ClassRosterDaoFileImpl implements ClassRosterDao{
     private Map<String, Student> students = new HashMap<>();
 
     @Override
-    public Student addStudent(String studentId, Student student) {
+    public Student addStudent(String studentId, Student student) throws ClassRosterDaoException {
+        // load students into map
+        loadRoster();
         Student newStudent = students.put(studentId, student);
+        // writes all students to roster.txt
+        writeRoster();
         return newStudent;
     }
 
     @Override
-    public List<Student> getAllStudents() {
+    public List<Student> getAllStudents() throws ClassRosterDaoException {
         // .values() is a map method
         // ArrayList constructor can take collections as parameters
+        // loadRoster() gets all students and loads them into the map
+        loadRoster(); // ASK SHAWN about details of the error I get here if I choose not to throw the exception in the method declaration
         return new ArrayList<Student>(students.values());
     }
 
     @Override
-    public Student getStudent(String studentId) {
+    public Student getStudent(String studentId) throws ClassRosterDaoException {
+        // load all students into the map
+        loadRoster();
         return students.get(studentId);
     }
 
     @Override
-    public Student removeStudent(String studentId) {
+    public Student removeStudent(String studentId) throws ClassRosterDaoException {
+        loadRoster();
         //remove student object from students (map)
         Student removedStudent = students.remove(studentId);
+        // write updated map of students to list and then to file
+        writeRoster();
         return removedStudent;
     }
     
@@ -98,8 +112,44 @@ public class ClassRosterDaoFileImpl implements ClassRosterDao{
         scanner.close();
     }
     
-    //TODO: method to marshall a student into a line of text
+    //method to marshall a student into a line of text
+        // MUST preserve order of information when translating Student into text
+    private String marshallStudent(Student aStudent){
+        // could probably use String.format() but sticking w/ concantenation for now
+        String studentAsText = aStudent.getStudentId() + DELIMITER;
+        studentAsText += aStudent.getFirstName() + DELIMITER;
+        studentAsText += aStudent.getLastName() + DELIMITER;
+        studentAsText += aStudent.getCohort();
+        return studentAsText; 
+   }
     
     //TODO: method to iterate over all the students in the map and write them to a file
-    
+    private void writeRoster() throws ClassRosterDaoException{
+        // We are not handling the IOException - but we are translating it to an
+            // application-specific exception and then reporting it to the code
+            // that called it. It's the calling code's responsibility to handle
+            // potential errors.
+        PrintWriter out;
+        
+        try{
+            out = new PrintWriter(new FileWriter(ROSTER_FILE));
+        }
+        catch (IOException e){
+            throw new ClassRosterDaoException("Could not save student data", e);
+        }
+        
+        // write out the student objects to roster.txt
+        String studentsAsText;
+        List<Student> studentList = this.getAllStudents();
+        for (Student currentStudent : studentList){
+            // turn Student into a string
+            String studentAsText = marshallStudent(currentStudent);
+            // write string to file
+            out.println(studentAsText);
+            // force PrintWriter to write remaining line to file
+            out.flush();
+        }
+        // clean up resources
+        out.close();
+    }
 }

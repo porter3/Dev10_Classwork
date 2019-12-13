@@ -45,7 +45,7 @@ public class ClassRosterView {
             io.print("=== Create Student ===");
         }
         
-        public void dislpayCreateSuccessBanner(){
+        public void displayCreateSuccessBanner(){
             io.readString("Student successfully created. Please hit enter to continue");
         }
         
@@ -85,11 +85,15 @@ public class ClassRosterView {
         }
         
         public void displayRemoveStudentBanner(){
-            io.print("=== Remove Student");
+            io.print("=== Remove Student ===");
         }
         
         public void displayRemoveSuccessBanner(){
             io.readString("Student successfully removed. Please hit enter to continue.");
+        }
+        
+        public void displayRemoveFailureBanner(){
+            io.print("Selected student does not exist");
         }
         
         public void displayExitBanner(){
@@ -99,4 +103,10 @@ public class ClassRosterView {
         public void displayUnknownCommandBanner(){
             io.print("Unknown command.");
         }
+        
+        public void displayErrorMessage(String errorMsg){
+            io.print("--ERROR--");
+            io.print(errorMsg);
+        }
+        
 }
