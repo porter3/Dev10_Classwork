@@ -21,7 +21,7 @@ public interface AddressBookDao{
      * @param person to be added
      * @return person previously associated with lastName, null otherwise
      */
-    Person addPerson(String lastName, Person person);
+    Person addPerson(String lastName, Person person) throws AddressBookDaoException;
     
     
     /**
@@ -30,7 +30,7 @@ public interface AddressBookDao{
      * @param personId
      * @return Person object that was removed, null if nonexistent
      */
-    Person removePerson(String lastName);
+    Person removePerson(String lastName) throws AddressBookDaoException;
     
     /**
      * Returns the Person object associated with the given id
@@ -38,36 +38,38 @@ public interface AddressBookDao{
      * @param lastName
      * @return Person object associated with lastName, null if nonexistent
      */
-    Person findPerson(String lastName);
+    Person findPerson(String lastName) throws AddressBookDaoException;
     
     /**
      * Returns number of addresses in address book
      * 
      * @return number of Person objects in address book
      */
-    int getPersonCount();
+    int getPersonCount() throws AddressBookDaoException;
     
     /**
      * 
      * @return List holding all Person objects in address book
      */
-    List<Person> getAllPersons();
+    List<Person> getAllPersons() throws AddressBookDaoException;
     
     /**
      * 
      * convert Person objects to String values for writing to file
      * 
+     * @param Person object to be marshalled into String
      * @return String value of Person fields separated by delimiter
      */
-    String marshallPerson();
+    String marshallPerson(Person aPerson);
     
-//    /**
-//     * 
-//     * convert String value to Person object for loading into map
-//     * 
-//     * @return Person
-//     */
-//    Person unmarshallPerson();
+    /**
+     * 
+     * convert String value to Person object for loading into map
+     * 
+     * @param Delimited string to unmarshall into a Person object
+     * @return Person
+     */
+    Person unmarshallPerson(String personAsText);
     
     /**
      * 
@@ -75,9 +77,9 @@ public interface AddressBookDao{
      */
     void writeAddressBook() throws AddressBookDaoException;
     
-//    /**
-//     * 
-//     * Reads Person data from address book into map
-//     */
-//    void loadAddressBook();
+    /**
+     * 
+     * Reads Person data from address book into map
+     */
+    void loadAddressBook() throws AddressBookDaoException;
 }

@@ -128,4 +128,9 @@ public class AddressBookView {
     public void displayUnknownCommandBanner(){
         io.print("Command not recognized\n");
     }
+    
+    public void displayErrorMessage(String errorMsg){
+        io.print("ERROR");
+        io.print(errorMsg);
+    }
 }

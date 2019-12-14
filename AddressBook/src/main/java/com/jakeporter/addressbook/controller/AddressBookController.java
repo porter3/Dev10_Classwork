@@ -1,6 +1,7 @@
 package com.jakeporter.addressbook.controller;
 
 import com.jakeporter.addressbook.dao.AddressBookDao;
+import com.jakeporter.addressbook.dao.AddressBookDaoException;
 import com.jakeporter.addressbook.dto.Person;
 import com.jakeporter.addressbook.ui.AddressBookView;
 import java.util.List;
@@ -25,36 +26,41 @@ public class AddressBookController {
         boolean keepRunning = true;
         int menuSelection = 0;
         
-        // add exception handling later
-            while (keepRunning){
-                
-                // viewer prints menu and gets selection
-                menuSelection = getMenuSelection();
-                
-                switch(menuSelection){
-                    case 1:
-                        createAddress();
-                        break;
-                    case 2:
-                        deleteAddress();
-                        break;
-                    case 3:
-                        viewAddress();
-                        break;
-                    case 4:
-                        viewAddressCount();
-                        break;
-                    case 5:
-                        viewAllAddresses();
-                        break;
-                    case 6:
-                        keepRunning = false;
-                        break;
-                    default:
-                        unknownCommand();
+        try{
+            // add exception handling later
+                while (keepRunning){
+
+                    // viewer prints menu and gets selection
+                    menuSelection = getMenuSelection();
+
+                    switch(menuSelection){
+                        case 1:
+                            createAddress();
+                            break;
+                        case 2:
+                            deleteAddress();
+                            break;
+                        case 3:
+                            viewAddress();
+                            break;
+                        case 4:
+                            viewAddressCount();
+                            break;
+                        case 5:
+                            viewAllAddresses();
+                            break;
+                        case 6:
+                            keepRunning = false;
+                            break;
+                        default:
+                            unknownCommand();
+                    }
                 }
+                exitMessage();
             }
-            exitMessage();
+        catch (AddressBookDaoException exception){
+            view.displayErrorMessage(exception.getMessage());
+        }
     }
     
     private int getMenuSelection(){
@@ -63,7 +69,7 @@ public class AddressBookController {
     }
     
     //createAddress()
-    private void createAddress(){
+    private void createAddress() throws AddressBookDaoException{
         // display function banner
         view.displayCreateAddressBanner();
         // get person to add
@@ -74,7 +80,7 @@ public class AddressBookController {
         view.displayCreateSuccessBanner();
     }
     
-    private void deleteAddress(){
+    private void deleteAddress() throws AddressBookDaoException{
         view.displayDeleteAddressBanner();
         // get person to remove
         String lastName = view.getLastNameForRemoval();
@@ -89,7 +95,7 @@ public class AddressBookController {
     }
     
     // view specific address
-    private void viewAddress(){
+    private void viewAddress() throws AddressBookDaoException{
         view.displayViewAddressBanner();
         // get last name choice for person to view
         String lastName = view.getLastNameForViewing();
@@ -99,14 +105,14 @@ public class AddressBookController {
         view.displayAddress(currentPerson);
     }
     
-    private void viewAddressCount(){
+    private void viewAddressCount() throws AddressBookDaoException{
         view.displayViewAddressCountBanner();
         int addressCount = dao.getPersonCount();
         view.viewAddressCount(addressCount);
     }
     
     // view all addresses
-    private void viewAllAddresses(){
+    private void viewAllAddresses() throws AddressBookDaoException{
         view.displayViewAllBanner();
         List<Person> listOfAllPersons = dao.getAllPersons();
         // pass in listOfAllPersons to view method
