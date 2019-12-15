@@ -44,6 +44,10 @@ public class Mp3LibraryView {
         return currentMp3;
     }
     
+    public String getTitleForDeletion(){
+        return io.readString("Please enter the track name to delete it");
+    }
+    
     public Mp3 getMp3Edits(String title){
         // get new info for mp3 track
         String releaseDate = io.readString("Please enter release date");
@@ -72,7 +76,7 @@ public class Mp3LibraryView {
             + mp3Info.getGenre() + "\nNotes: " + mp3Info.getNote() + "\n");
         }
         else{
-            io.print("Mp3 does not exist");
+            io.print("Mp3 does not exist\n");
         }
         io.readString("Hit enter to continue");
     }
@@ -94,7 +98,15 @@ public class Mp3LibraryView {
     }
     
     public void displayCreateSuccessBanner(){
-        io.print("Track successfully created");
+        io.print("Track successfully created\n");
+    }
+    
+    public void displayDeleteMp3Banner(){
+        io.print("DELETE TRACK");
+    }
+    
+    public void displayDeletionSuccessBanner(){
+        io.print("Track successfully deleted\n");
     }
     
     public void displayEditMp3Banner(){
@@ -102,11 +114,11 @@ public class Mp3LibraryView {
     }
     
     public void displayEditSuccessBanner(){
-        io.print("Edit successful");
+        io.print("Edit successful\n");
     }
     
     public void displayNonexistentMp3(){
-        io.print("Track does not exist");
+        io.print("Track does not exist\n");
     }
     
     public void displayViewMp3Banner(){

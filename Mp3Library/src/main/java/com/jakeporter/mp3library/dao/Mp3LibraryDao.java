@@ -22,12 +22,12 @@ public interface Mp3LibraryDao {
      */
     public Mp3 addMp3(Mp3 mp3Info);
     
-//    /**
-//     * Removes mp3 associated with title from map of Mp3 objects
-//     * @param title of mp3
-//     * @return Mp3 that was removed
-//     */
-//    public Mp3 removeMp3(String title);
+    /**
+     * Removes mp3 associated with title from map of Mp3 objects
+     * @param title of mp3
+     * @return Mp3 that was removed
+     */
+    public Mp3 removeMp3(String title);
     
     /**
      * Edits an Mp3 in the data structure and writes map back to persistent file

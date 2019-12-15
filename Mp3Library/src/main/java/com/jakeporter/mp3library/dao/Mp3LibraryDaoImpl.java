@@ -20,6 +20,12 @@ public class Mp3LibraryDaoImpl implements Mp3LibraryDao{
         return mp3Created;
     }
     
+    public Mp3 removeMp3(String title){
+        
+        Mp3 removedMp3 = mp3Library.remove(title);
+        return removedMp3;
+    }
+    
     public Mp3 findMp3ByTitle(String title){
         return mp3Library.get(title);
     }

@@ -34,6 +34,7 @@ public class Mp3LibraryController {
                     createMp3();
                     break;
                 case 2: // deletion
+                    deleteMp3();
                     break;
                 case 3: // editing
                     editMp3();
@@ -100,5 +101,21 @@ public class Mp3LibraryController {
         view.displayViewAllBanner();
         List<Mp3> mp3Collection = dao.getAllMp3s();
         view.displayMp3Collection(mp3Collection);
+    }
+    
+    private void deleteMp3(){
+        // display banner
+        view.displayDeleteMp3Banner();
+        // get title of Mp3 to delete (pass into DAO method)
+        String title = view.getTitleForDeletion();
+        // remove Mp3 from collection / re-write map to persistent storage (return Mp3)
+        Mp3 deletedMp3 = dao.removeMp3(title);
+        // if Mp3 is null, tell user it doesn't exist
+        if (deletedMp3 == null){
+            view.displayNonexistentMp3();
+        }
+        else{
+            view.displayDeletionSuccessBanner();
+        }
     }
 }
