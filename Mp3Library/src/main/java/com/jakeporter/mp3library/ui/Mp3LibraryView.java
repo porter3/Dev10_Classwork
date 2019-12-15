@@ -36,8 +36,8 @@ public class Mp3LibraryView {
                     return true;
                 case "n":
                     return false;
+                // repeat loop if user input is invalid
                 default:
-                    continue;
             }
         }
             

@@ -75,6 +75,7 @@ public class Mp3LibraryDaoImpl implements Mp3LibraryDao{
     
     @Override
     public String marshallMp3(Mp3 mp3ToConvert){
+        // convert mp3 object to string
         return mp3ToConvert.getTitle() + DELIMITER 
                 + mp3ToConvert.getReleaseDate() + DELIMITER 
                 + mp3ToConvert.getAlbum() + DELIMITER 

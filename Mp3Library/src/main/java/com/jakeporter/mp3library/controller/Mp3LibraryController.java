@@ -1,6 +1,7 @@
 package com.jakeporter.mp3library.controller;
 
 import com.jakeporter.mp3library.dao.Mp3LibraryDao;
+import com.jakeporter.mp3library.dao.Mp3LibraryDaoException;
 import com.jakeporter.mp3library.dto.Mp3;
 import com.jakeporter.mp3library.ui.Mp3LibraryView;
 import java.util.List;
@@ -26,41 +27,47 @@ public class Mp3LibraryController {
         int menuSelection = 0;
         boolean programRunning = true;
         
-        while(programRunning){
-            
-            // display menu and allow user to select function to run
-            menuSelection = getMenuSelection();
-            switch(menuSelection){
-                case 1:
-                    createMp3();
-                    break;
-                case 2: // deletion
-                    deleteMp3();
-                    break;
-                case 3: // editing
-                    editMp3();
-                    break;
-                case 4: // view
-                    viewMp3Info();
-                    break;
-                case 5: // view collection
-                    listAllMp3s();
-                    break;
-                case 6: // exit program
-                    programRunning = false;
-                    break;
-                default: // unknown command
-                    unknownCommand();
+        try{
+            while(programRunning){
+
+                // display menu and allow user to select function to run
+                menuSelection = getMenuSelection();
+                switch(menuSelection){
+                    case 1:
+                        createMp3();
+                        break;
+                    case 2: // deletion
+                        deleteMp3();
+                        break;
+                    case 3: // editing
+                        editMp3();
+                        break;
+                    case 4: // view
+                        viewMp3Info();
+                        break;
+                    case 5: // view collection
+                        listAllMp3s();
+                        break;
+                    case 6: // exit program
+                        programRunning = false;
+                        break;
+                    default: // unknown command
+                        unknownCommand();
+                }
             }
+            exitMessage();
         }
-        exitMessage();
+        // if file is not found to write to/read from, print error message
+        catch (Mp3LibraryDaoException e){
+            view.displayErrorMessage(e.getMessage());
+        }
     }
     
     private int getMenuSelection(){
         return view.printMenuAndGetSelection();
     }
     
-    private void createMp3(){
+    private void createMp3() throws Mp3LibraryDaoException{
         view.displayCreateMp3Banner();
         // initiate a "session" that allows user to repeat action if they choose
         boolean ongoingSession = true;
@@ -74,7 +81,7 @@ public class Mp3LibraryController {
         }
     }
     
-    private void editMp3(){
+    private void editMp3() throws Mp3LibraryDaoException{
         // display banner
         view.displayEditMp3Banner();
         // get title of mp3 to edit
@@ -96,7 +103,7 @@ public class Mp3LibraryController {
         }    
     }
     
-    private void viewMp3Info(){
+    private void viewMp3Info() throws Mp3LibraryDaoException{
         view.displayViewMp3Banner();
         // initiate a "session" that allows user to repeat action if they choose
         boolean ongoingSession = true;
@@ -108,13 +115,13 @@ public class Mp3LibraryController {
         }
     }
     
-    private void listAllMp3s(){
+    private void listAllMp3s() throws Mp3LibraryDaoException{
         view.displayViewAllBanner();
         List<Mp3> mp3Collection = dao.getAllMp3s();
         view.displayMp3Collection(mp3Collection);
     }
     
-    private void deleteMp3(){
+    private void deleteMp3() throws Mp3LibraryDaoException{
         // display banner
         view.displayDeleteMp3Banner();
         // initiate a "session" that allows user to repeat action if they choose
