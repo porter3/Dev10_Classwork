@@ -113,7 +113,7 @@ public class Mp3LibraryView {
     }
     
     public void displayCreateSuccessBanner(){
-        io.print("Track successfully created\n");
+        io.print("Track successfully created");
     }
     
     public void displayDeleteMp3Banner(){
@@ -121,7 +121,7 @@ public class Mp3LibraryView {
     }
     
     public void displayDeletionSuccessBanner(){
-        io.print("Track successfully deleted\n");
+        io.print("Track successfully deleted");
     }
     
     public void displayEditMp3Banner(){
@@ -129,11 +129,11 @@ public class Mp3LibraryView {
     }
     
     public void displayEditSuccessBanner(){
-        io.print("Edit successful\n");
+        io.print("Edit successful");
     }
     
     public void displayNonexistentMp3(){
-        io.print("Track does not exist\n");
+        io.print("Track does not exist");
     }
     
     public void displayViewMp3Banner(){
@@ -142,5 +142,17 @@ public class Mp3LibraryView {
     
     public void displayViewAllBanner(){
         io.print("VIEW ALL TRACKS");
+    }
+    
+    public void displayExitBanner(){
+        io.print("Goodbye");
+    }
+    
+    public void unknownCommandBanner(){
+        io.print("Command not recognized");
+    }
+    
+    public void displayErrorMessage(String message){
+        io.print(message);
     }
 }

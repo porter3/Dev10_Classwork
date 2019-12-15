@@ -14,6 +14,7 @@ public class Mp3LibraryController {
     Mp3LibraryView view;
     Mp3LibraryDao dao;
     
+    // allow for selection of various view and DAO objects in main()
     public Mp3LibraryController(Mp3LibraryView view, Mp3LibraryDao dao){
         this.view = view;
         this.dao = dao;
@@ -47,12 +48,12 @@ public class Mp3LibraryController {
                     break;
                 case 6: // exit program
                     programRunning = false;
-                    // print exit statement
                     break;
-                default:
-                    //print 'command not recognized'
+                default: // unknown command
+                    unknownCommand();
             }
         }
+        exitMessage();
     }
     
     private int getMenuSelection(){
@@ -133,5 +134,13 @@ public class Mp3LibraryController {
             // prompt user for their choice to continue performing the same action
             ongoingSession = view.promptToContinue();
         }
+    }
+    
+    private void exitMessage(){
+        view.displayExitBanner();
+    }
+    
+    private void unknownCommand(){
+        view.unknownCommandBanner();
     }
 }
