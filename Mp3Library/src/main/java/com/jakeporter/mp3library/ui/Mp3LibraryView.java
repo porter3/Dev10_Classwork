@@ -17,7 +17,7 @@ public class Mp3LibraryView {
     
     public int printMenuAndGetSelection(){
         // print menu for user
-        io.print("Main Menu");
+        io.print("\nMain Menu");
         io.print("1. Add new Mp3");
         io.print("2. Delete Mp3");
         io.print("3. Edit Mp3 Information");
@@ -26,6 +26,21 @@ public class Mp3LibraryView {
         io.print("6. Exit Program");
         
         return io.readInt("Please select one of the options above.", 1, 6);
+    }
+    
+    public boolean promptToContinue(){
+        String choiceToContinue = io.readString("Would you like to do this again? (y/n)");
+        while (true){
+            switch(choiceToContinue.toLowerCase()){
+                case "y":
+                    return true;
+                case "n":
+                    return false;
+                default:
+                    continue;
+            }
+        }
+            
     }
     
     public Mp3 getNewMp3Info(){

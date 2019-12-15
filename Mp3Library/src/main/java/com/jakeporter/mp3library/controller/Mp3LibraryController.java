@@ -61,11 +61,16 @@ public class Mp3LibraryController {
     
     private void createMp3(){
         view.displayCreateMp3Banner();
-        // get new mp3 info from user
-        Mp3 newMp3 = view.getNewMp3Info();
-        // add mp3 to map and write map to persistent storage
-        dao.addMp3(newMp3);
-        view.displayCreateSuccessBanner();
+        // initiate a "session" that allows user to repeat action if they choose
+        boolean ongoingSession = true;
+        while (ongoingSession){
+            // get new mp3 info from user
+            Mp3 newMp3 = view.getNewMp3Info();
+            // add mp3 to map and write map to persistent storage
+            dao.addMp3(newMp3);
+            view.displayCreateSuccessBanner();
+            ongoingSession = view.promptToContinue();
+        }
     }
     
     private void editMp3(){
@@ -87,14 +92,19 @@ public class Mp3LibraryController {
         else{
         // else display nonexsitent track banner
         view.displayNonexistentMp3();
-        }
+        }    
     }
     
     private void viewMp3Info(){
         view.displayViewMp3Banner();
-        String trackTitle = view.getTitleForViewing();
-        Mp3 mp3Info = dao.findMp3ByTitle(trackTitle);
-        view.displayMp3Info(mp3Info);
+        // initiate a "session" that allows user to repeat action if they choose
+        boolean ongoingSession = true;
+        while (ongoingSession){
+            String trackTitle = view.getTitleForViewing();
+            Mp3 mp3Info = dao.findMp3ByTitle(trackTitle);
+            view.displayMp3Info(mp3Info);
+            ongoingSession = view.promptToContinue();
+        }
     }
     
     private void listAllMp3s(){
@@ -106,16 +116,22 @@ public class Mp3LibraryController {
     private void deleteMp3(){
         // display banner
         view.displayDeleteMp3Banner();
-        // get title of Mp3 to delete (pass into DAO method)
-        String title = view.getTitleForDeletion();
-        // remove Mp3 from collection / re-write map to persistent storage (return Mp3)
-        Mp3 deletedMp3 = dao.removeMp3(title);
-        // if Mp3 is null, tell user it doesn't exist
-        if (deletedMp3 == null){
-            view.displayNonexistentMp3();
-        }
-        else{
-            view.displayDeletionSuccessBanner();
+        // initiate a "session" that allows user to repeat action if they choose
+        boolean ongoingSession = true;
+        while (ongoingSession){
+            // get title of Mp3 to delete (pass into DAO method)
+            String title = view.getTitleForDeletion();
+            // remove Mp3 from collection / re-write map to persistent storage (return Mp3)
+            Mp3 deletedMp3 = dao.removeMp3(title);
+            // if Mp3 is null, tell user it doesn't exist
+            if (deletedMp3 == null){
+                view.displayNonexistentMp3();
+            }
+            else{
+                view.displayDeletionSuccessBanner();
+            }
+            // prompt user for their choice to continue performing the same action
+            ongoingSession = view.promptToContinue();
         }
     }
 }
