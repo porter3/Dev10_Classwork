@@ -27,6 +27,7 @@ public class Mp3LibraryAuditDaoFileImpl implements Mp3LibraryAuditDao{
         LocalDateTime timestamp = LocalDateTime.now();
         out.println(timestamp + ": " + entry);
         out.flush();
+        out.close();
     }
 
 }
