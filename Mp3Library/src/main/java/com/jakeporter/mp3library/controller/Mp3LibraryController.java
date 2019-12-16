@@ -1,8 +1,9 @@
 package com.jakeporter.mp3library.controller;
 
-import com.jakeporter.mp3library.dao.Mp3LibraryDao;
-import com.jakeporter.mp3library.dao.Mp3LibraryDaoException;
+import com.jakeporter.mp3library.dao.Mp3LibraryPersistenceException;
 import com.jakeporter.mp3library.dto.Mp3;
+import com.jakeporter.mp3library.service.Mp3LibraryDataValidationException;
+import com.jakeporter.mp3library.service.Mp3LibraryServiceLayer;
 import com.jakeporter.mp3library.ui.Mp3LibraryView;
 import java.util.List;
 
@@ -13,12 +14,12 @@ import java.util.List;
 public class Mp3LibraryController {
     
     Mp3LibraryView view;
-    Mp3LibraryDao dao;
+    Mp3LibraryServiceLayer service;
     
     // allow for selection of various view and DAO objects in main()
-    public Mp3LibraryController(Mp3LibraryView view, Mp3LibraryDao dao){
+    public Mp3LibraryController(Mp3LibraryView view, Mp3LibraryServiceLayer service){
         this.view = view;
-        this.dao = dao;
+        this.service = service;
     }
     
 
@@ -58,7 +59,7 @@ public class Mp3LibraryController {
             exitMessage();
         }
         // if file is not found to write to/read from, print error message
-        catch (Mp3LibraryDaoException e){
+        catch (Mp3LibraryPersistenceException | Mp3LibraryDataValidationException e){
             view.displayErrorMessage(e.getMessage());
         }
     }
@@ -67,7 +68,7 @@ public class Mp3LibraryController {
         return view.printMenuAndGetSelection();
     }
     
-    private void createMp3() throws Mp3LibraryDaoException{
+    private void createMp3() throws Mp3LibraryDataValidationException, Mp3LibraryPersistenceException{
         view.displayCreateMp3Banner();
         // initiate a "session" that allows user to repeat action if they choose
         boolean ongoingSession = true;
@@ -75,25 +76,25 @@ public class Mp3LibraryController {
             // get new mp3 info from user
             Mp3 newMp3 = view.getNewMp3Info();
             // add mp3 to map and write map to persistent storage
-            dao.addMp3(newMp3);
+            service.createMp3(newMp3);
             view.displayCreateSuccessBanner();
             ongoingSession = view.promptToContinue();
         }
     }
     
-    private void editMp3() throws Mp3LibraryDaoException{
+    private void editMp3() throws Mp3LibraryPersistenceException{
         // display banner
         view.displayEditMp3Banner();
         // get title of mp3 to edit
         String title = view.getTitleForEditing();
         // get mp3 for editing
-        Mp3 mp3ToEdit = dao.findMp3ByTitle(title);
+        Mp3 mp3ToEdit = service.getMp3(title);
         //if track exists:
         if (mp3ToEdit != null){
             // prompt user to edit mp3 by requesting new information
             Mp3 newMp3Info = view.getMp3Edits(title);
             // write new information to map
-            dao.editMp3Info(newMp3Info);
+            service.editMp3(newMp3Info);
             // display success banner
             view.displayEditSuccessBanner();
         }
@@ -103,25 +104,25 @@ public class Mp3LibraryController {
         }    
     }
     
-    private void viewMp3Info() throws Mp3LibraryDaoException{
+    private void viewMp3Info() throws Mp3LibraryPersistenceException{
         view.displayViewMp3Banner();
         // initiate a "session" that allows user to repeat action if they choose
         boolean ongoingSession = true;
         while (ongoingSession){
             String trackTitle = view.getTitleForViewing();
-            Mp3 mp3Info = dao.findMp3ByTitle(trackTitle);
+            Mp3 mp3Info = service.getMp3(trackTitle);
             view.displayMp3Info(mp3Info);
             ongoingSession = view.promptToContinue();
         }
     }
     
-    private void listAllMp3s() throws Mp3LibraryDaoException{
+    private void listAllMp3s() throws Mp3LibraryPersistenceException{
         view.displayViewAllBanner();
-        List<Mp3> mp3Collection = dao.getAllMp3s();
+        List<Mp3> mp3Collection = service.getAllMp3s();
         view.displayMp3Collection(mp3Collection);
     }
     
-    private void deleteMp3() throws Mp3LibraryDaoException{
+    private void deleteMp3() throws Mp3LibraryPersistenceException{
         // display banner
         view.displayDeleteMp3Banner();
         // initiate a "session" that allows user to repeat action if they choose
@@ -130,7 +131,7 @@ public class Mp3LibraryController {
             // get title of Mp3 to delete (pass into DAO method)
             String title = view.getTitleForDeletion();
             // remove Mp3 from collection / re-write map to persistent storage (return Mp3)
-            Mp3 deletedMp3 = dao.removeMp3(title);
+            Mp3 deletedMp3 = service.removeMp3(title);
             // if Mp3 is null, tell user it doesn't exist
             if (deletedMp3 == null){
                 view.displayNonexistentMp3();

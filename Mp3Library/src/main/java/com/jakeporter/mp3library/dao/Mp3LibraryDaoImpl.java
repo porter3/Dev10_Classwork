@@ -23,7 +23,7 @@ public class Mp3LibraryDaoImpl implements Mp3LibraryDao{
     public static final String DELIMITER = "::";
 
     @Override
-    public Mp3 addMp3(Mp3 mp3Info) throws Mp3LibraryDaoException{
+    public Mp3 addMp3(Mp3 mp3Info) throws Mp3LibraryPersistenceException{
         // load mp3 library into memory
         loadMp3Library();
         // add mp3 to map, assign it to this method's return value
@@ -34,7 +34,7 @@ public class Mp3LibraryDaoImpl implements Mp3LibraryDao{
     }
     
     @Override
-    public Mp3 removeMp3(String title) throws Mp3LibraryDaoException{
+    public Mp3 removeMp3(String title) throws Mp3LibraryPersistenceException{
         // load mp3 library into memory
         loadMp3Library();
         // remove mp3 from library, assign it to this method's return value
@@ -45,21 +45,21 @@ public class Mp3LibraryDaoImpl implements Mp3LibraryDao{
     }
     
     @Override
-    public Mp3 findMp3ByTitle(String title) throws Mp3LibraryDaoException{
+    public Mp3 findMp3ByTitle(String title) throws Mp3LibraryPersistenceException{
         // load mp3 library into memory
         loadMp3Library();
         return mp3Library.get(title);
     }
     
     @Override
-    public List<Mp3> getAllMp3s() throws Mp3LibraryDaoException{
+    public List<Mp3> getAllMp3s() throws Mp3LibraryPersistenceException{
         // load mp3 library into memory
         loadMp3Library();
         return new ArrayList<>(mp3Library.values());
     }
     
     @Override
-    public void editMp3Info(Mp3 mp3Info) throws Mp3LibraryDaoException{
+    public void editMp3Info(Mp3 mp3Info) throws Mp3LibraryPersistenceException{
         // load mp3 library into memory
         loadMp3Library();
         String trackTitle = mp3Info.getTitle();
@@ -98,7 +98,7 @@ public class Mp3LibraryDaoImpl implements Mp3LibraryDao{
         return newMp3;
     }
     
-    public void loadMp3Library() throws Mp3LibraryDaoException{
+    public void loadMp3Library() throws Mp3LibraryPersistenceException{
         Scanner scanner;
         
         // create scanner to write to file if it exists
@@ -108,7 +108,7 @@ public class Mp3LibraryDaoImpl implements Mp3LibraryDao{
         }
         // throw application-specfic exception if file not found
         catch (FileNotFoundException e){
-            throw new Mp3LibraryDaoException("Could not load address book into memory", e);
+            throw new Mp3LibraryPersistenceException("Could not load address book into memory", e);
         }
         // currentLine holds the most recent line read from the file
         String currentLine;
@@ -128,7 +128,7 @@ public class Mp3LibraryDaoImpl implements Mp3LibraryDao{
     }
     
     @Override
-    public void writeMp3Library() throws Mp3LibraryDaoException{
+    public void writeMp3Library() throws Mp3LibraryPersistenceException{
         // create PrintWriter reference to write to text file
         PrintWriter out;
         
@@ -137,7 +137,7 @@ public class Mp3LibraryDaoImpl implements Mp3LibraryDao{
             out = new PrintWriter(new FileWriter(MP3_COLLECTION_FILE));
         }
         catch(IOException e){
-            throw new Mp3LibraryDaoException("Could not save library data", e);
+            throw new Mp3LibraryPersistenceException("Could not save library data", e);
         }
         // create String reference for assigning marshalled Mp3 data to
         String mp3AsText;
