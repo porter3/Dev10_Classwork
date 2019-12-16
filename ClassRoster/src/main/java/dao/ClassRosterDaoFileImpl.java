@@ -28,7 +28,7 @@ public class ClassRosterDaoFileImpl implements ClassRosterDao{
     private Map<String, Student> students = new HashMap<>();
 
     @Override
-    public Student addStudent(String studentId, Student student) throws ClassRosterDaoException {
+    public Student addStudent(String studentId, Student student) throws ClassRosterPersistenceException {
         // load students into map
         loadRoster();
         Student newStudent = students.put(studentId, student);
@@ -38,7 +38,7 @@ public class ClassRosterDaoFileImpl implements ClassRosterDao{
     }
 
     @Override
-    public List<Student> getAllStudents() throws ClassRosterDaoException {
+    public List<Student> getAllStudents() throws ClassRosterPersistenceException {
         // .values() is a map method
         // ArrayList constructor can take collections as parameters
         // loadRoster() gets all students and loads them into the map
@@ -47,14 +47,14 @@ public class ClassRosterDaoFileImpl implements ClassRosterDao{
     }
 
     @Override
-    public Student getStudent(String studentId) throws ClassRosterDaoException {
+    public Student getStudent(String studentId) throws ClassRosterPersistenceException {
         // load all students into the map
         loadRoster();
         return students.get(studentId);
     }
 
     @Override
-    public Student removeStudent(String studentId) throws ClassRosterDaoException {
+    public Student removeStudent(String studentId) throws ClassRosterPersistenceException {
         loadRoster();
         //remove student object from students (map)
         Student removedStudent = students.remove(studentId);
@@ -81,7 +81,7 @@ public class ClassRosterDaoFileImpl implements ClassRosterDao{
     
     //method to iterate over a file line by line and load students into the map
             // leaves the actual reading method up to unmarshallStudent()
-    private void loadRoster() throws ClassRosterDaoException{
+    private void loadRoster() throws ClassRosterPersistenceException{
         Scanner scanner;
         
         try{
@@ -90,7 +90,7 @@ public class ClassRosterDaoFileImpl implements ClassRosterDao{
         }
         // if file does not exist:
         catch (FileNotFoundException e){
-            throw new ClassRosterDaoException("-_- Could not load roster into memory.", e);
+            throw new ClassRosterPersistenceException("-_- Could not load roster into memory.", e);
         }
         // currentLine holds the most recent line read from the file
         String currentLine;
@@ -124,7 +124,7 @@ public class ClassRosterDaoFileImpl implements ClassRosterDao{
    }
     
     //TODO: method to iterate over all the students in the map and write them to a file
-    private void writeRoster() throws ClassRosterDaoException{
+    private void writeRoster() throws ClassRosterPersistenceException{
         // We are not handling the IOException - but we are translating it to an
             // application-specific exception and then reporting it to the code
             // that called it. It's the calling code's responsibility to handle
@@ -135,7 +135,7 @@ public class ClassRosterDaoFileImpl implements ClassRosterDao{
             out = new PrintWriter(new FileWriter(ROSTER_FILE));
         }
         catch (IOException e){
-            throw new ClassRosterDaoException("Could not save student data", e);
+            throw new ClassRosterPersistenceException("Could not save student data", e);
         }
         
         // write out the student objects to roster.txt

@@ -24,14 +24,14 @@ public interface ClassRosterDao {
      * @param student to be added to roster
      * @return the Student object previously associated with the ID, null otherwise
      */
-    Student addStudent(String studentId, Student student) throws ClassRosterDaoException;
+    Student addStudent(String studentId, Student student) throws ClassRosterPersistenceException;
     
     /**
      * Return a String array containing all studentIds in the roster
      * 
      * @return String array with all studentIds
      */
-    List<Student> getAllStudents() throws ClassRosterDaoException;
+    List<Student> getAllStudents() throws ClassRosterPersistenceException;
     
     /**
      * Return the student object associated w/ the given student id.
@@ -40,7 +40,7 @@ public interface ClassRosterDao {
      * @param studentId ID of student to retrieve
      * @return the Student object associated with the id, null if nonexistent
      */
-    Student getStudent(String studentId) throws ClassRosterDaoException;
+    Student getStudent(String studentId) throws ClassRosterPersistenceException;
     
     /**
      * Removes from the roster the student associated with the given id
@@ -49,5 +49,5 @@ public interface ClassRosterDao {
      * @param studentId if of student to be removed
      * @return Student object that was removed, null if nonexistent
      */
-    Student removeStudent(String studentId) throws ClassRosterDaoException;
+    Student removeStudent(String studentId) throws ClassRosterPersistenceException;
 }
