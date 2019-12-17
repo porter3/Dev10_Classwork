@@ -26,8 +26,9 @@ public class Mp3LibraryDaoImpl implements Mp3LibraryDao{
     public Mp3 addMp3(Mp3 mp3Info) throws Mp3LibraryPersistenceException{
         // load mp3 library into memory
         loadMp3Library();
+        Mp3 editedMp3 = assignToBlankFields(mp3Info);
         // add mp3 to map, assign it to this method's return value
-        Mp3 mp3Created = mp3Library.put(mp3Info.getTitle(), mp3Info);
+        Mp3 mp3Created = mp3Library.put(editedMp3.getTitle(), editedMp3);
         // write updated library to persistent storage
         writeMp3Library();
         return mp3Created;
@@ -63,6 +64,8 @@ public class Mp3LibraryDaoImpl implements Mp3LibraryDao{
         // load mp3 library into memory
         loadMp3Library();
         String trackTitle = mp3Info.getTitle();
+        // assign strings to any blank fields
+        mp3Info = assignToBlankFields(mp3Info);
         // accessing the map, reset each field with new track data
         mp3Library.get(trackTitle).setReleaseDate(mp3Info.getReleaseDate());
         mp3Library.get(trackTitle).setAlbum(mp3Info.getAlbum());
@@ -153,5 +156,24 @@ public class Mp3LibraryDaoImpl implements Mp3LibraryDao{
         }
         // close PrintWriter to avoid memory leak
         out.close();
+    }
+    
+    private Mp3 assignToBlankFields(Mp3 mp3){
+        if (mp3.getReleaseDate().isBlank() | mp3.getReleaseDate().isEmpty() | mp3.getReleaseDate() == null){
+            mp3.setReleaseDate("No release date");
+        }
+        if (mp3.getAlbum().isBlank() || mp3.getAlbum().isEmpty()){
+            mp3.setAlbum("No album");
+        }
+        if (mp3.getArtist().isBlank() || mp3.getArtist().isEmpty()){
+            mp3.setArtist("No artist");
+        }
+        if (mp3.getGenre().isBlank() || mp3.getGenre().isEmpty()){
+            mp3.setGenre("No genre");
+        }
+        if (mp3.getNote().isBlank() || mp3.getNote().isEmpty()){
+            mp3.setNote("No notes");
+        }
+        return mp3;
     }
 }

@@ -1,5 +1,6 @@
 package com.jakeporter.mp3library.ui;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -61,13 +62,23 @@ public class UserIOConsoleImpl implements UserIO{
     @Override
     public int readInt(String prompt, int min, int max){
         Scanner sc = new Scanner(System.in);
+        int input = 0;
         while (true){
             System.out.println(prompt);
-            int input = sc.nextInt();
+            try{
+                input = sc.nextInt();
+            }
+            catch (InputMismatchException e){
+                break;
+            }
             if ((input <= max) && (input >= min)){
-                return input;
+                break;
+            }
+            else{
+                continue;
             }
         }
+        return input;
     }
     
     @Override
