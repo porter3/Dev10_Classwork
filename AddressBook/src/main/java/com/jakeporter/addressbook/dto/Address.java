@@ -1,5 +1,7 @@
 package com.jakeporter.addressbook.dto;
 
+import java.util.Objects;
+
 /**
  *
  * @author jake
@@ -70,6 +72,5 @@ public class Address {
         }
         return field;
     }
-    
-    
+
 }

@@ -54,6 +54,7 @@ public class AddressBookDaoImpl implements AddressBookDao {
     
     @Override
     public List<Person> getAllPersons() throws AddressBookDaoException{
+        loadAddressBook();
         // ArrayList constructor can take collections as parameters
         return new ArrayList<Person>(people.values());
     }
