@@ -10,6 +10,9 @@ import java.util.List;
 /**
  *
  * @author jake
+ * 
+ * 
+ * TODO: fix unit tests for DAO - implement tests for service layer, add exception handling for users entering wrong dateTime format
  */
 public class Mp3LibraryController {
     
@@ -49,7 +52,31 @@ public class Mp3LibraryController {
                     case 5: // view collection
                         listAllMp3s();
                         break;
-                    case 6: // exit program
+                    case 6:
+                        viewAllMp3sInPastNYears();
+                        break;
+                    case 7:
+                        // find all mp3s in a given genre
+                        break;
+                    case 8:
+                        // find all mp3s by given artist
+                        break;
+                    case 9:
+                        // find all mp3s by album
+                        break;
+                    case 10:
+                        // get average age of all mp3s
+                        break;
+                    case 11:
+                        // find newest mp3 in collection
+                        break;
+                    case 12:
+                        // find oldest mp3 in collection
+                        break;
+                    case 13:
+                        //find average number of notes in mp3 collection
+                        break;
+                    case 14: // exit program
                         programRunning = false;
                         break;
                     default: // unknown command
@@ -142,6 +169,16 @@ public class Mp3LibraryController {
             // prompt user for their choice to continue performing the same action
             ongoingSession = view.promptToContinue();
         }
+    }
+    
+    private void viewAllMp3sInPastNYears() throws Mp3LibraryPersistenceException{
+        // display banner
+        view.displayViewAllMp3sReleasedPastNYears();
+        // get user input for yearsPast
+        long yearSince = view.getYearToViewMp3sSince();
+        List<Mp3> mp3List = service.getAllMp3sReleasedInLastNYears(yearSince);
+        // display list
+        view.displayMp3sReleasedPastNYears(mp3List);
     }
     
     private void exitMessage(){

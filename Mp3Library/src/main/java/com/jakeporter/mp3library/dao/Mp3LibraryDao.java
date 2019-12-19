@@ -72,4 +72,9 @@ public interface Mp3LibraryDao {
      * @throws com.jakeporter.mp3library.dao.Mp3LibraryPersistenceException
      */
     public void loadMp3Library() throws Mp3LibraryPersistenceException;
+    
+    
+    //NEW METHODS
+    
+    public List<Mp3> getAllMp3sReleasedInLastNYears(long yearsPast) throws Mp3LibraryPersistenceException;
 }

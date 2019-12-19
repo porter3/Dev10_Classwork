@@ -19,4 +19,7 @@ public interface Mp3LibraryServiceLayer {
     public Mp3 removeMp3(String title) throws Mp3LibraryPersistenceException;
     
     public void editMp3(Mp3 mp3ToEdit) throws Mp3LibraryPersistenceException;
+    
+    public List<Mp3> getAllMp3sReleasedInLastNYears(long pastYears) throws Mp3LibraryPersistenceException;
+
 }

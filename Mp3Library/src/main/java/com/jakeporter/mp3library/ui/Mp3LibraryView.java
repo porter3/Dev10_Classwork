@@ -23,9 +23,17 @@ public class Mp3LibraryView {
         io.print("3. Edit Mp3 Information");
         io.print("4. View Mp3");
         io.print("5. View Collection");
-        io.print("6. Exit Program");
+        io.print("6. View All Mp3s Released After Specific Date");
+        io.print("7. View All Mp3s for Specific Genre");
+        io.print("8. View All Mp3s for Specific Artist");
+        io.print("9. View all Mp3s for Specific Album");
+        io.print("10. View Average Age for All Mp3s");
+        io.print("11. View Newest Mp3 in Library");
+        io.print("12. View Oldest Mp3 in Library");
+        io.print("13. View Average Number of Notes in Mp3 Collection");
+        io.print("14. Exit Program");
         
-        return io.readInt("Please select one of the options above.", 1, 6);
+        return io.readInt("Please select one of the options above.", 1, 14);
     }
     
     public boolean promptToContinue(){
@@ -45,13 +53,14 @@ public class Mp3LibraryView {
     
     public Mp3 getNewMp3Info(){
         String title = io.readString("Please enter title");
-        String releaseDate = io.readString("Please enter release date");
+        String releaseDate = io.readString("Please enter release date(mm/dd/yyyy)");
+        // convert releaseDate string to LocalDate
         String album = io.readString("Please enter album title");
         String artist = io.readString("Please enter track artist");
         String genre = io.readString("Please enter genre");
         String note = io.readString("Please enter any notes you would like to record about the track");
         Mp3 currentMp3 = new Mp3(title);
-        currentMp3.setReleaseDate(releaseDate);
+        currentMp3.setReleaseDateLd(releaseDate);
         currentMp3.setAlbum(album);
         currentMp3.setArtist(artist);
         currentMp3.setGenre(genre);
@@ -72,7 +81,7 @@ public class Mp3LibraryView {
         String note = io.readString("Please enter any notes you would like to record about the track");
         Mp3 currentMp3 = new Mp3(title);
         // intialize all uninitialized fields of new mp3 object
-        currentMp3.setReleaseDate(releaseDate);
+        currentMp3.setReleaseDateLd(releaseDate);
         currentMp3.setAlbum(album);
         currentMp3.setArtist(artist);
         currentMp3.setGenre(genre);
@@ -86,7 +95,8 @@ public class Mp3LibraryView {
     
     public void displayMp3Info(Mp3 mp3Info){
         if (mp3Info != null){
-            io.print("Title: " + mp3Info.getTitle() + "\nRelease date: " + mp3Info.getReleaseDate()
+            io.print("Title: " + mp3Info.getTitle()
+                    + "\nRelease Date (LD): " + mp3Info.getReleaseDateStr()
             + "\nAlbum: " + mp3Info.getAlbum() + "\nArtist: " + mp3Info.getArtist() + "\nGenre: " 
             + mp3Info.getGenre() + "\nNotes: " + mp3Info.getNote() + "\n");
         }
@@ -99,10 +109,11 @@ public class Mp3LibraryView {
     public String getTitleForViewing(){
         return io.readString("Please enter track name to view information");
     }
-    
+        
     public void displayMp3Collection(List<Mp3> mp3Library){
         for (Mp3 mp3 : mp3Library){
-            io.print("Title: " + mp3.getTitle() + "\nRelease date: " + mp3.getReleaseDate()
+            io.print("Title: " + mp3.getTitle()
+                    + "\nRelease Date LD: " + mp3.getReleaseDateStr()
             + "\nAlbum: " + mp3.getAlbum() + "\nArtist: " + mp3.getArtist() + "\nGenre: " 
             + mp3.getGenre() + "\nNotes: " + mp3.getNote() + "\n");
         }
@@ -154,5 +165,20 @@ public class Mp3LibraryView {
     
     public void displayErrorMessage(String message){
         io.print(message);
+    }
+    
+    public void displayViewAllMp3sReleasedPastNYears(){
+        io.print("VIEW ALL MP3s RELEASED SINCE A SPECIFIC DATE");
+    }
+    
+    public long getYearToViewMp3sSince(){
+        return io.readLong("Please enter how many years back for which you would like to view tracks released since:", 0, 2000);
+    }
+    
+    public void displayMp3sReleasedPastNYears(List<Mp3> mp3List){
+        mp3List.stream()
+                .forEach(mp3 -> {System.out.println("===================");
+                                System.out.println(mp3.getTitle());       
+                });
     }
 }

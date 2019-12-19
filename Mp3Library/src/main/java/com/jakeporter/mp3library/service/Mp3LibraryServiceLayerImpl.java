@@ -64,4 +64,12 @@ public class Mp3LibraryServiceLayerImpl implements Mp3LibraryServiceLayer{
             throw new Mp3LibraryDataValidationException("ERROR: Track must have a title");
         }
     }
+    
+    
+    // NEW METHODS
+    
+    public List<Mp3> getAllMp3sReleasedInLastNYears(long pastYears) throws Mp3LibraryPersistenceException{
+        return crudDao.getAllMp3sReleasedInLastNYears(pastYears);
+    }
+
 }

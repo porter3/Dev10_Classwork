@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -67,7 +69,7 @@ public class Mp3LibraryDaoImpl implements Mp3LibraryDao{
         // assign strings to any blank fields
         mp3Info = assignToBlankFields(mp3Info);
         // accessing the map, reset each field with new track data
-        mp3Library.get(trackTitle).setReleaseDate(mp3Info.getReleaseDate());
+        mp3Library.get(trackTitle).setReleaseDateLd(mp3Info.getReleaseDateStr());
         mp3Library.get(trackTitle).setAlbum(mp3Info.getAlbum());
         mp3Library.get(trackTitle).setArtist(mp3Info.getArtist());
         mp3Library.get(trackTitle).setGenre(mp3Info.getGenre());
@@ -80,7 +82,7 @@ public class Mp3LibraryDaoImpl implements Mp3LibraryDao{
     public String marshallMp3(Mp3 mp3ToConvert){
         // convert mp3 object to string
         return mp3ToConvert.getTitle() + DELIMITER 
-                + mp3ToConvert.getReleaseDate() + DELIMITER 
+                + mp3ToConvert.getReleaseDateStr() + DELIMITER
                 + mp3ToConvert.getAlbum() + DELIMITER 
                 + mp3ToConvert.getArtist() + DELIMITER 
                 + mp3ToConvert.getGenre() + DELIMITER 
@@ -93,7 +95,7 @@ public class Mp3LibraryDaoImpl implements Mp3LibraryDao{
         String[] mp3InfoFields = mp3AsText.split(DELIMITER);
         // create new Mp3 object and set fields
         Mp3 newMp3 = new Mp3(mp3InfoFields[0]);
-        newMp3.setReleaseDate(mp3InfoFields[1]);
+        newMp3.setReleaseDateLd(mp3InfoFields[1]);
         newMp3.setAlbum(mp3InfoFields[2]);
         newMp3.setArtist(mp3InfoFields[3]);
         newMp3.setGenre(mp3InfoFields[4]);
@@ -101,6 +103,7 @@ public class Mp3LibraryDaoImpl implements Mp3LibraryDao{
         return newMp3;
     }
     
+    @Override
     public void loadMp3Library() throws Mp3LibraryPersistenceException{
         Scanner scanner;
         
@@ -159,8 +162,10 @@ public class Mp3LibraryDaoImpl implements Mp3LibraryDao{
     }
     
     private Mp3 assignToBlankFields(Mp3 mp3){
-        if (mp3.getReleaseDate().isBlank() | mp3.getReleaseDate().isEmpty() | mp3.getReleaseDate() == null){
-            mp3.setReleaseDate("No release date");
+        if (mp3.getReleaseDateStr() == null){
+            LocalDate now = LocalDate.now();
+            String nowStr = now.toString();
+            mp3.setReleaseDateLd(nowStr);
         }
         if (mp3.getAlbum().isBlank() || mp3.getAlbum().isEmpty()){
             mp3.setAlbum("No album");
@@ -175,5 +180,16 @@ public class Mp3LibraryDaoImpl implements Mp3LibraryDao{
             mp3.setNote("No notes");
         }
         return mp3;
+    }
+    
+    public List<Mp3> getAllMp3sReleasedInLastNYears(long yearsPast) throws Mp3LibraryPersistenceException{
+        // get stream of Mp3s
+        loadMp3Library();
+        //mp3.getReleaseDateLd().minusYears(yearsPast)
+        return mp3Library.values()
+                .stream()
+                // logic: if it's true that the mp3 was released after the year specified...
+                .filter(mp3 -> mp3.getReleaseDateLd().isAfter(LocalDate.now().minusYears(yearsPast)) == true)
+                .collect(Collectors.toList());
     }
 }

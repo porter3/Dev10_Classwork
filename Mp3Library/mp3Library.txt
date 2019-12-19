@@ -1,4 +1,3 @@
-asd::null::asd::af::af::qwe
-title10::No release date::No album::No artist::No genre::No notes
-oidf::null::sdf::sdf::sdf:: 
-title1::1999::No album::No artist::No genre::No notes
+TEST::2000-05-05::TESTALBUM::TESTARTIST::TESTGENRE::TESTNOTE
+LDtrack::1995-10-03::1995-03-10::1995-03-10::album1::artist1
+mp3TEST::2019-09-03::test::test::test::test
