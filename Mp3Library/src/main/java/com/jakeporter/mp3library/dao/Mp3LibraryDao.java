@@ -77,4 +77,5 @@ public interface Mp3LibraryDao {
     //NEW METHODS
     
     public List<Mp3> getAllMp3sReleasedInLastNYears(long yearsPast) throws Mp3LibraryPersistenceException;
+    public List<Mp3> getAllMp3sInGivenGenre(String genre) throws Mp3LibraryPersistenceException;
 }

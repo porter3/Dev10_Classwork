@@ -56,7 +56,7 @@ public class Mp3LibraryDaoTest {
     public void testAddGetMp3() throws Exception {
         // create bogus mp3 info
         Mp3 mp31 = new Mp3("Title1");
-        mp31.setReleaseDateLd("2019");
+        mp31.setReleaseDateLd("2019-05-05");
         mp31.setAlbum("Album1");
         mp31.setGenre("rap");
         mp31.setArtist("Artist1");
@@ -75,7 +75,7 @@ public class Mp3LibraryDaoTest {
     public void testRemoveMp3() throws Exception {
         
         Mp3 mp32 = new Mp3("Title2");
-        mp32.setReleaseDate("2019");
+        mp32.setReleaseDateLd("2019-03-10");
         mp32.setAlbum("Album2");
         mp32.setGenre("rap");
         mp32.setArtist("Artist2");
@@ -83,7 +83,7 @@ public class Mp3LibraryDaoTest {
         dao.addMp3(mp32);
                 
         Mp3 mp31 = new Mp3("Title1");
-        mp31.setReleaseDate("2019");
+        mp31.setReleaseDateLd("2019-05-05");
         mp31.setAlbum("Album1");
         mp31.setGenre("rap");
         mp31.setArtist("Artist1");
@@ -103,7 +103,7 @@ public class Mp3LibraryDaoTest {
     @Test
     public void testEditGetMp3Info() throws Exception {
         Mp3 mp31 = new Mp3("Title1");
-        mp31.setReleaseDate("2019");
+        mp31.setReleaseDateLd("2019-01-01");
         mp31.setAlbum("Album1");
         mp31.setGenre("rap");
         mp31.setArtist("Artist1");
@@ -111,7 +111,7 @@ public class Mp3LibraryDaoTest {
         dao.addMp3(mp31);
                 
         Mp3 mp32 = new Mp3("Title1");
-        mp32.setReleaseDate("1999");
+        mp32.setReleaseDateLd("1999-01-01");
         mp32.setAlbum("ALBUM2");
         mp32.setGenre("ROCK");
         mp32.setArtist("ARTIST2");
@@ -131,7 +131,7 @@ public class Mp3LibraryDaoTest {
         assertEquals(0, dao.getAllMp3s().size());
         
         Mp3 mp32 = new Mp3("Title2");
-        mp32.setReleaseDate("2019");
+        mp32.setReleaseDateLd("2019-01-01");
         mp32.setAlbum("Album2");
         mp32.setGenre("rap");
         mp32.setArtist("Artist2");
@@ -139,7 +139,7 @@ public class Mp3LibraryDaoTest {
         dao.addMp3(mp32);
         
         Mp3 mp31 = new Mp3("Title1");
-        mp31.setReleaseDate("2019");
+        mp31.setReleaseDateLd("2019-01-01");
         mp31.setAlbum("Album1");
         mp31.setGenre("rap");
         mp31.setArtist("Artist1");
@@ -149,4 +149,15 @@ public class Mp3LibraryDaoTest {
         assertEquals(2, dao.getAllMp3s().size());
     }
     
+    @Test
+    public void testGetAllMp3sInPastNYears() throws Exception{
+        // add two DAOs to map, different release date years
+        
+        // call dao to put them into a List
+        
+        // assert that the list contains one element
+        
+        // assert that the list contains the proper element
+        // assert that the list contains one element
+    }
 }

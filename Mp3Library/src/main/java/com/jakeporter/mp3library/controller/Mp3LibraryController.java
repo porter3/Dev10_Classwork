@@ -5,6 +5,7 @@ import com.jakeporter.mp3library.dto.Mp3;
 import com.jakeporter.mp3library.service.Mp3LibraryDataValidationException;
 import com.jakeporter.mp3library.service.Mp3LibraryServiceLayer;
 import com.jakeporter.mp3library.ui.Mp3LibraryView;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -56,25 +57,25 @@ public class Mp3LibraryController {
                         viewAllMp3sInPastNYears();
                         break;
                     case 7:
-                        // find all mp3s in a given genre
+                        viewMp3sByGenre();
                         break;
                     case 8:
-                        // find all mp3s by given artist
+                        viewMp3sByArtist();
                         break;
                     case 9:
-                        // find all mp3s by album
+                        viewMp3sByAlbum();
                         break;
                     case 10:
-                        // get average age of all mp3s
+                        viewAverageMp3Age();
                         break;
                     case 11:
-                        // find newest mp3 in collection
+                        viewNewestMp3();
                         break;
                     case 12:
-                        // find oldest mp3 in collection
+                        viewOldestMp3();
                         break;
                     case 13:
-                        //find average number of notes in mp3 collection
+                        viewAverageOfNoteCount();
                         break;
                     case 14: // exit program
                         programRunning = false;
@@ -178,7 +179,76 @@ public class Mp3LibraryController {
         long yearSince = view.getYearToViewMp3sSince();
         List<Mp3> mp3List = service.getAllMp3sReleasedInLastNYears(yearSince);
         // display list
-        view.displayMp3sReleasedPastNYears(mp3List);
+        view.displayMp3sFromList(mp3List);
+    }
+    
+    private void viewMp3sByGenre() throws Mp3LibraryPersistenceException{
+        // display banner
+        view.displayViewAllMp3sOfGivenGenre();
+        // get user input for genre
+        String genreToView = view.getGenreForListViewing();
+        // get list of all mp3s in that genre
+        List<Mp3> mp3List = service.getAllMp3sInGivenGenre(genreToView);
+        // display list
+        view.displayMp3sFromList(mp3List);
+    }
+    
+    private void viewMp3sByArtist() throws Mp3LibraryPersistenceException{
+        // display banner
+        view.displayViewAllMp3sOfGivenArtist();
+        // get input for artist
+        String artistToView = view.getArtistForListViewing();
+        // get list of mp3s by artist
+        List<Mp3> mp3List = service.getAllMp3sByGivenArtist(artistToView);
+        // display list
+        view.displayMp3sFromList(mp3List);
+    }
+    
+    private void viewMp3sByAlbum() throws Mp3LibraryPersistenceException{
+        // display banner
+        view.displayViewByAlbumBanner();
+        // get input for album
+        String albumToView = view.getAlbumForListViewing();
+        // get list of mp3s by album
+        List<Mp3> mp3List = service.getAllMp3sInGivenAlbum(albumToView);
+        // display list
+        view.displayMp3sFromList(mp3List);
+    }
+    
+    private void viewAverageMp3Age() throws Mp3LibraryPersistenceException{
+        // display banner
+        view.displayViewAverageAgeBanner();
+        // get average age of mp3s in library, return as int
+        BigDecimal averageAge = service.getAverageAgeOfMp3s();
+        // display age
+        view.displayAverageAge(averageAge);
+    }
+    
+    private void viewNewestMp3() throws Mp3LibraryPersistenceException{
+        // display banner
+        view.displayNewestMp3Banner();
+        // get newest mp3
+        Mp3 newestMp3 = service.getNewestMp3();
+        // display newest mp3
+        view.displayNewestMp3(newestMp3);
+    }
+    
+    private void viewOldestMp3() throws Mp3LibraryPersistenceException{
+        // display banner
+        view.displayOldestMp3Banner();
+        // get oldest mp3
+        Mp3 oldestMp3 = service.getOldestMp3();
+        // display oldest mp3
+        view.displayOldestMp3(oldestMp3);
+    }
+    
+    private void viewAverageOfNoteCount() throws Mp3LibraryPersistenceException{
+        // display banner
+        view.displayViewAverageNotesBanner();
+        // get average number of notes in library
+        BigDecimal averageNotes = service.getAverageNumberOfNotes();
+        // display average number of notes
+        view.displayAverageNumberOfNotes(averageNotes);
     }
     
     private void exitMessage(){

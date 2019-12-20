@@ -2,6 +2,7 @@ package com.jakeporter.mp3library.ui;
 
 import com.jakeporter.mp3library.dto.Mp3;
 import java.util.List;
+import java.math.BigDecimal;
 
 /**
  *
@@ -53,7 +54,7 @@ public class Mp3LibraryView {
     
     public Mp3 getNewMp3Info(){
         String title = io.readString("Please enter title");
-        String releaseDate = io.readString("Please enter release date(mm/dd/yyyy)");
+        String releaseDate = io.readString("Please enter release date(yyyy-dd-MM)");
         // convert releaseDate string to LocalDate
         String album = io.readString("Please enter album title");
         String artist = io.readString("Please enter track artist");
@@ -175,10 +176,66 @@ public class Mp3LibraryView {
         return io.readLong("Please enter how many years back for which you would like to view tracks released since:", 0, 2000);
     }
     
-    public void displayMp3sReleasedPastNYears(List<Mp3> mp3List){
+    public void displayMp3sFromList(List<Mp3> mp3List){
         mp3List.stream()
                 .forEach(mp3 -> {System.out.println("===================");
                                 System.out.println(mp3.getTitle());       
                 });
+    }
+   
+    public void displayViewAllMp3sOfGivenGenre(){
+        io.print("VIEW MP3S OF GIVEN GENRE");
+    }
+    
+    public String getGenreForListViewing(){
+        return io.readString("Please enter the genre you wish to view all tracks for:");
+    }
+    
+    public void displayViewAllMp3sOfGivenArtist(){
+        io.print("VIEW MP3S OF GIVEN ARTIST");
+    }
+    
+    public String getArtistForListViewing(){
+        return io.readString("Please enter the artist you wish to view all tracks for:");
+    }
+    
+    public void displayViewByAlbumBanner(){
+        io.print("VIEW MP3S OF GIVEN ALBUM");   
+    }
+    
+    public String getAlbumForListViewing(){
+        return io.readString("Please enter the album you wish to view all tracks for:");
+    }
+    
+    public void displayViewAverageAgeBanner(){
+        io.print("VIEW AVERAGE AGE OF TRACKS IN LIBRARY");
+    }
+    
+    public void displayAverageAge(BigDecimal averageAge){
+        io.print("The average age of your tracks is: " + averageAge + " years");
+    }
+    
+    public void displayNewestMp3Banner(){
+        io.print("VIEW MOST RECENTLY RELEASED TRACK");
+    }
+    
+    public void displayNewestMp3(Mp3 newestMp3){
+        io.print("The most recently released track you have is " + newestMp3.getTitle());
+    }
+    
+    public void displayOldestMp3Banner(){
+        io.print("VIEW OLDEST TRACK");
+    }
+    
+    public void displayOldestMp3(Mp3 oldestMp3){
+        io.print("The oldest track you have is " + oldestMp3.getTitle());
+    }
+    
+    public void displayViewAverageNotesBanner(){
+        io.print("VIEW AVERAGE NUMBER OF NOTES FOR TRACKS IN LIBRARY");
+    }
+    
+    public void displayAverageNumberOfNotes(BigDecimal averageNotes){
+        io.print(averageNotes + "% of your tracks contain notes");
     }
 }

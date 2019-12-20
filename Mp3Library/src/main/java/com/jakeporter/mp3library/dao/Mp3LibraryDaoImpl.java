@@ -182,14 +182,23 @@ public class Mp3LibraryDaoImpl implements Mp3LibraryDao{
         return mp3;
     }
     
+    @Override
     public List<Mp3> getAllMp3sReleasedInLastNYears(long yearsPast) throws Mp3LibraryPersistenceException{
         // get stream of Mp3s
         loadMp3Library();
-        //mp3.getReleaseDateLd().minusYears(yearsPast)
         return mp3Library.values()
                 .stream()
                 // logic: if it's true that the mp3 was released after the year specified...
-                .filter(mp3 -> mp3.getReleaseDateLd().isAfter(LocalDate.now().minusYears(yearsPast)) == true)
+                .filter(mp3 -> mp3.getReleaseDateLd().isAfter(LocalDate.now().minusYears(yearsPast)))
+                .collect(Collectors.toList());
+    }
+    
+    @Override
+    public List<Mp3> getAllMp3sInGivenGenre(String genre) throws Mp3LibraryPersistenceException{
+        loadMp3Library();
+        return mp3Library.values()
+                .stream()
+                .filter(mp3 -> mp3.getGenre().equalsIgnoreCase(genre))
                 .collect(Collectors.toList());
     }
 }

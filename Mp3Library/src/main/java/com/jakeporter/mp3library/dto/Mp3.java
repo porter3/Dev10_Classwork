@@ -2,6 +2,7 @@ package com.jakeporter.mp3library.dto;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -9,7 +10,7 @@ import java.util.regex.Pattern;
  *
  * @author jake
  */
-public class Mp3 {
+public class Mp3{
 
     private String title; // read-only
     private LocalDate releaseDateLd;
@@ -118,7 +119,5 @@ public class Mp3 {
         return true;
     }
 
-    
-    
     
 }
