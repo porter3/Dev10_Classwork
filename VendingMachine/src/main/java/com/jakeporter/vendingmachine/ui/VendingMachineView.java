@@ -21,13 +21,26 @@ public class VendingMachineView {
         this.io = io;
     }
     
-    public void displayMenu(List<Item> inventoryItems){
-        // display menu to user
-        io.print("\n-----MENU-----");
-        inventoryItems.stream()
-                .forEach((item) -> {io.print(item.getName() + ": " 
-                        + item.getCost().divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP) 
-                        + ", " + item.getInventoryCount() + " in stock.");});
+    public boolean displayMenu(List<Item> inventoryItems){
+        // ensure at least 1 item is in stock
+        long itemsInStock = inventoryItems.stream()
+                .filter(item -> item.getInventoryCount() > 0)
+                .count();
+        // if there are items in stock, print them
+        if (itemsInStock > 0){
+            // display menu to user
+            io.print("\n-----MENU-----");
+            inventoryItems.stream()
+                    .filter(item -> item.getInventoryCount() > 0)
+                    .forEach(item -> {io.print(item.getName() + ": " 
+                            + item.getCost().divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP) 
+                            + ", " + item.getInventoryCount() + " in stock.");});
+            return true;
+        }
+        else{
+            io.print("Vending machine is out of items. Exiting program now.");
+            return false;
+        }
     }
     public BigDecimal getMoney(){
         while(true){

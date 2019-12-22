@@ -1,2 +1,6 @@
-Sun Chips::149::-16
-Clif Bar::249::-23
+Sun Chips::149::5
+Clif Bar::249::4
+Chips Ahoy::299::2
+Water::125::1
+Pretzels::150::0
+Sprite::175::3

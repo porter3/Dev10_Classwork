@@ -19,4 +19,8 @@ public interface VendingMachineServiceLayer {
     public void vendItem(Item item) throws InventoryPersistenceException;
     
     public Change calculateUserChange(BigDecimal userMoney, Item itemVended);
+    
+    public void validateFunds(BigDecimal userMoney, Item selectedItem) throws InsufficientFundsException;
+    
+    public void validateInventory(Item selectedItem) throws NoItemInventoryException;
 }
