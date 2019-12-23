@@ -108,4 +108,61 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao{
         sc.close();
     }
 
+    
+    // TEST-ONLY METHODS
+    
+    @Override
+    public void clearInventory() throws InventoryPersistenceException{
+        ArrayList<Item> items = new ArrayList(inventory.values());
+        for (Item item : items){
+            inventory.remove(item.getName());
+        }
+        writeInventory();
+    }
+
+    @Override
+    public void addToInventory(Item item) {
+        inventory.put(item.getName(), item);
+    }
+
+    @Override
+    public void loadNewItemsIntoInventory() throws InventoryPersistenceException {
+        Item popcorn = new Item();
+        popcorn.setName("Popcorn");
+        popcorn.setCost(new BigDecimal("225"));
+        popcorn.setInventoryCount(3);
+        inventory.put(popcorn.getName(), popcorn);
+        
+        Item cookies = new Item();
+        cookies.setName("Cookies");
+        cookies.setCost(new BigDecimal("200"));
+        cookies.setInventoryCount(3);
+        inventory.put(cookies.getName(), cookies);
+        
+        Item water = new Item();
+        water.setName("Water");
+        water.setCost(new BigDecimal("150"));
+        water.setInventoryCount(3);
+        inventory.put(water.getName(), water);
+        
+        Item proteinBar = new Item();
+        proteinBar.setName("Protein Bar");
+        proteinBar.setCost(new BigDecimal("275"));
+        proteinBar.setInventoryCount(3);
+        inventory.put(proteinBar.getName(), proteinBar);
+        
+        Item chips = new Item();
+        chips.setName("Chips");
+        chips.setCost(new BigDecimal("250"));
+        chips.setInventoryCount(3);
+        inventory.put(chips.getName(), chips);
+        
+        Item gatorade = new Item();
+        gatorade.setName("Gatorade");
+        gatorade.setCost(new BigDecimal("200"));
+        gatorade.setInventoryCount(3);
+        inventory.put(gatorade.getName(), gatorade);
+        
+        writeInventory();
+    }
 }

@@ -23,4 +23,6 @@ public interface VendingMachineServiceLayer {
     public void validateFunds(BigDecimal userMoney, Item selectedItem) throws InsufficientFundsException;
     
     public void validateInventory(Item selectedItem) throws NoItemInventoryException;
+
+    public void loadNewInventory() throws InventoryPersistenceException;
 }

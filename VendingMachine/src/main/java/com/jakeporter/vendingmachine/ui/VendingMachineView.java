@@ -38,7 +38,7 @@ public class VendingMachineView {
             return true;
         }
         else{
-            io.print("Vending machine is out of items. Exiting program now.");
+            io.print("Vending machine has run out of items. Restocking now.");
             return false;
         }
     }

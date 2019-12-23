@@ -34,7 +34,8 @@ public class VendingMachineController {
             try{
                 hasInventory = displayMenu();
                 if (hasInventory == false){
-                    return;
+                    loadNewInventory();
+                    displayMenu();
                 }
             }
             catch(InventoryPersistenceException e){
@@ -96,6 +97,10 @@ public class VendingMachineController {
         // displays information that service.vendItem() returns plus the total of the change
         view.displaySuccessAndChangeReturned(changeReturned);
         return changeReturned.getTotalChangeInDollars();
+    }
+    
+    private void loadNewInventory() throws InventoryPersistenceException{
+        service.loadNewInventory();
     }
     
     public boolean promptToSelectAgain(){

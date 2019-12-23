@@ -2,7 +2,6 @@ package com.jakeporter.vendingmachine.dao;
 
 import com.jakeporter.vendingmachine.dto.Item;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -23,5 +22,18 @@ public interface VendingMachineDao {
     public void writeInventory() throws InventoryPersistenceException;
     
     public void loadInventory() throws InventoryPersistenceException;
+    
+    public void loadNewItemsIntoInventory() throws InventoryPersistenceException;
+    
+    /**
+     * Method for testing only
+     * @throws com.jakeporter.vendingmachine.dao.InventoryPersistenceException
+     */
+    public void clearInventory() throws InventoryPersistenceException;
+    
+    /**
+     * Method for testing only
+     */
+    public void addToInventory(Item item);
     
 }

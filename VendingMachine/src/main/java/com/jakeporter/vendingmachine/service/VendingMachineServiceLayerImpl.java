@@ -8,7 +8,6 @@ import com.jakeporter.vendingmachine.dto.Item;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -35,10 +34,10 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
 
     @Override
     public void vendItem(Item item) throws InventoryPersistenceException{
-        // validate user has enough money
         crudDao.loadInventory();
         crudDao.updateInventory(item);
         crudDao.writeInventory();
+        auditDao.writeAuditEntry(item.getName() + " vended, " + item.getInventoryCount() + " remaining");
     }
 
     // REFACTOR
@@ -68,5 +67,11 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
         catch(NullPointerException e){
             throw new NoItemInventoryException("That item does not exist");
         }
+    }
+
+    @Override
+    public void loadNewInventory() throws InventoryPersistenceException {
+        crudDao.loadNewItemsIntoInventory();
+        auditDao.writeAuditEntry("Restocked inventory");
     }
 }
