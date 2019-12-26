@@ -4,10 +4,8 @@ import com.jakeporter.vendingmachine.dto.Change;
 import com.jakeporter.vendingmachine.dto.Item;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
+
 
 /**
  *
@@ -44,17 +42,23 @@ public class VendingMachineView {
     }
     public BigDecimal getMoney(){
         while(true){
-            String moneyString = io.readString("\nPlease enter your money(FORMAT: 0.00): ");
+            String moneyString = io.readString("\nPlease enter your money in the format 00.00: ");
+            double moneyAsDouble;
             // verify proper format
             try{
                 // parse string to ensure it's actually in a number format
-                Double.parseDouble(moneyString);
+                moneyAsDouble = Double.parseDouble(moneyString);
             }
             catch(NumberFormatException e){
-                io.print("Please ensure you entered your money in the format 0.00");
+                io.print("Please ensure you entered your money in the format 00.00");
                 continue;
             }
-            return new BigDecimal(moneyString);
+            if (moneyAsDouble > 0.00){
+                return new BigDecimal(moneyString);
+            }
+            else{
+                io.print("Please make sure you entered a positive value for your money.");
+            }
         }
     }
     
@@ -70,6 +74,7 @@ public class VendingMachineView {
             capitalizedSelection += selectionWords[i];
             capitalizedSelection += " ";
         }
+        // return a new String with words capitalized and leading/trailing whitespace removed
         return capitalizedSelection.strip();
     }
     
@@ -85,6 +90,7 @@ public class VendingMachineView {
     public boolean promptToSelectAgain(){
         while(true){
             String choiceStr = io.readString("Would you like to select another item? (y/n)");
+            // accept input if user enters "yes" or "no" in addition to 'y' or 'n'
             if (choiceStr.charAt(0) == 'y'){
                 return true;
             }
@@ -100,12 +106,14 @@ public class VendingMachineView {
             String choiceString = io.readString("Would you put in more money or exit the program?\n"
                     + "1. Add more money\n" + "2. Exit");
             int choiceInt = 0;
+            // check if user entered a number for their selection
             try{
                 choiceInt = Integer.parseInt(choiceString);
             }
             catch(NumberFormatException e){
                 
             }
+            // check what words choiceString contains/what int it is to determine action
             if ((choiceString.strip().contains("exit")) || choiceInt == 2){
                 return false;
             }

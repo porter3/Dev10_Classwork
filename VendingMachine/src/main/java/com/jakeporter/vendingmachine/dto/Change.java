@@ -14,8 +14,9 @@ public class Change {
     private final Map<Coins, BigDecimal> coins;
     private BigDecimal totalChangeInDollars;
     
+    // if change is $5.00, argument should be "500"
     public Change(String pennies){
-        coins = new HashMap(); // could refactor and instantiate inside calculateChange()
+        coins = new HashMap();
         calculateChange(pennies);
     }
     

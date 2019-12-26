@@ -35,6 +35,7 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
     @Override
     public void vendItem(Item item) throws InventoryPersistenceException{
         crudDao.loadInventory();
+        // decrements the selected in the data structure by 1
         crudDao.updateInventory(item);
         crudDao.writeInventory();
         auditDao.writeAuditEntry(item.getName() + " vended, " + item.getInventoryCount() + " remaining");
@@ -45,7 +46,9 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
     // method takens an argument of the user's money with scale of 2, converts to whole number
     // i.e. 2.50 -> 250
     public Change calculateUserChange(BigDecimal userMoney, Item itemVended) {
+        // convert user's money to a whole number (i.e. 5.75 -> 575). Change DTO stores money in whole numbers
         BigDecimal moneyWholeNumber = userMoney.multiply(new BigDecimal("100"));
+        // determine change by subtracting cost of item
         BigDecimal userChange = moneyWholeNumber.subtract(itemVended.getCost());
         return new Change(userChange.toString());
     }
@@ -71,6 +74,7 @@ public class VendingMachineServiceLayerImpl implements VendingMachineServiceLaye
 
     @Override
     public void loadNewInventory() throws InventoryPersistenceException {
+        // loads the same items into inventory with inventoryCounts of 3
         crudDao.loadNewItemsIntoInventory();
         auditDao.writeAuditEntry("Restocked inventory");
     }

@@ -32,7 +32,9 @@ public class VendingMachineController {
         while(programRuns){
             
             try{
+                // displayMenu returns a boolean that is false if all items in inventory have an inventoryCount of 0
                 hasInventory = displayMenu();
+                // load items with the same name (but different inventoryCounts) into DAO, display menu again
                 if (hasInventory == false){
                     loadNewInventory();
                     displayMenu();
@@ -41,21 +43,26 @@ public class VendingMachineController {
             catch(InventoryPersistenceException e){
                 view.displayErrorMessage(e.getMessage());
             }
+                // prompt user/get money input
                 BigDecimal userMoney = getMoney();
                 BigDecimal remainder;
                 try{
+                    // assign the total of the leftover change to remainder
                     remainder = vend(userMoney);
                 }
                 catch(InventoryPersistenceException | NoItemInventoryException | InsufficientFundsException e){
                     view.displayErrorMessage(e.getMessage());
                     continue;
                 }
+                // prompt user to repeat process without putting in more money
                 vendAgainWithChange = promptToSelectAgain();
                 while (vendAgainWithChange){
                     try{
+                        // check if inventory is empty again, restock if so
                         hasInventory = displayMenu();
                         if (hasInventory == false){
-                            return;
+                            loadNewInventory();
+                            displayMenu();
                         }
                     }
                     catch(InventoryPersistenceException e){
@@ -67,6 +74,7 @@ public class VendingMachineController {
                     catch(InventoryPersistenceException | NoItemInventoryException | InsufficientFundsException e){
                         view.displayErrorMessage(e.getMessage());
                     }
+                    // prompt to vend again with leftover change
                     vendAgainWithChange = promptToSelectAgain();
                 }
                 programRuns = promptToExit();
@@ -74,16 +82,20 @@ public class VendingMachineController {
         }
     }
     
-    
+    // display menu and return false if all items in inventoryCount are 0
     public boolean displayMenu() throws InventoryPersistenceException{
         List<Item> inventory = service.getInventory();
         return view.displayMenu(inventory);
     }
     
+    // prompt user for money and return it as a BigDecimal value of 00.00 (not a whole number)
     public BigDecimal getMoney(){
         return view.getMoney();
     }
   
+    /* gets selection from user, validates that item has inventoryCount of >0, validates user has enough money to purchase it,
+        updates persisted inventory after taking user's selection, displays success and how much change returned, returns total change in BigDecimal form
+    */
     public BigDecimal vend(BigDecimal userMoney)
             throws InventoryPersistenceException, InsufficientFundsException, NoItemInventoryException{
         String selection = view.getSelection();
@@ -99,6 +111,7 @@ public class VendingMachineController {
         return changeReturned.getTotalChangeInDollars();
     }
     
+    // used for loading new items into inventory when all items have inventoryCount of 0
     private void loadNewInventory() throws InventoryPersistenceException{
         service.loadNewInventory();
     }

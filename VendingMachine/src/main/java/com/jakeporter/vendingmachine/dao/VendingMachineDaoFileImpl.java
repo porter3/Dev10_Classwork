@@ -24,6 +24,7 @@ public class VendingMachineDaoFileImpl implements VendingMachineDao{
     public static final String INVENTORY_FILE = "inventory.txt";
     public static final String DELIMITER = "::";
     
+    
     @Override
     public List<Item> getInventory() throws InventoryPersistenceException{
         loadInventory();
