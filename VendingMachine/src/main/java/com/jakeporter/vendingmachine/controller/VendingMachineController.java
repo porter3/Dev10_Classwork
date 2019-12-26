@@ -29,6 +29,8 @@ public class VendingMachineController {
         boolean programRuns = true;
         boolean vendAgainWithChange = true;
         boolean hasInventory = true;
+        BigDecimal remainder = new BigDecimal("0");
+        BigDecimal userMoney;
         while(programRuns){
             
             try{
@@ -44,8 +46,7 @@ public class VendingMachineController {
                 view.displayErrorMessage(e.getMessage());
             }
                 // prompt user/get money input
-                BigDecimal userMoney = getMoney();
-                BigDecimal remainder;
+                userMoney = getMoney(remainder);
                 try{
                     // assign the total of the leftover change to remainder
                     remainder = vend(userMoney);
@@ -89,8 +90,9 @@ public class VendingMachineController {
     }
     
     // prompt user for money and return it as a BigDecimal value of 00.00 (not a whole number)
-    public BigDecimal getMoney(){
-        return view.getMoney();
+    public BigDecimal getMoney(BigDecimal userMoney){
+        BigDecimal newMoney = view.getMoney();
+        return newMoney.add(userMoney);
     }
   
     /* gets selection from user, validates that item has inventoryCount of >0, validates user has enough money to purchase it,
