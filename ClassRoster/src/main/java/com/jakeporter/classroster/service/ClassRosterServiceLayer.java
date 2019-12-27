@@ -1,7 +1,7 @@
 package com.jakeporter.classroster.service;
 
-import dao.ClassRosterPersistenceException;
-import dto.Student;
+import com.jakeporter.classroster.dao.ClassRosterPersistenceException;
+import com.jakeporter.classroster.dto.Student;
 import java.util.List;
 
 /**

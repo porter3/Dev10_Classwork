@@ -1,12 +1,12 @@
-package controller;
+package com.jakeporter.classroster.controller;
 
 import com.jakeporter.classroster.service.ClassRosterDataValidationException;
 import com.jakeporter.classroster.service.ClassRosterDuplicateIdException;
 import com.jakeporter.classroster.service.ClassRosterServiceLayer;
-import dao.ClassRosterPersistenceException;
-import dto.Student;
+import com.jakeporter.classroster.dao.ClassRosterPersistenceException;
+import com.jakeporter.classroster.dto.Student;
 import java.util.List;
-import ui.ClassRosterView;
+import com.jakeporter.classroster.ui.ClassRosterView;
 
 
 /**

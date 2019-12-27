@@ -1,6 +1,6 @@
-package ui;
+package com.jakeporter.classroster.ui;
 
-import dto.Student;
+import com.jakeporter.classroster.dto.Student;
 import java.util.List;
 
 /**

@@ -1,7 +1,7 @@
-package dao;
+package com.jakeporter.classroster.dao;
 
-import dao.ClassRosterDao;
-import dto.Student;
+import com.jakeporter.classroster.dao.ClassRosterDao;
+import com.jakeporter.classroster.dto.Student;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao;
+package com.jakeporter.classroster.dao;
 
-import dto.Student;
+import com.jakeporter.classroster.dto.Student;
 import java.util.List;
 
 /**

@@ -1,4 +1,4 @@
-package ui;
+package com.jakeporter.classroster.ui;
 
 import java.util.Scanner;
 
@@ -97,5 +97,5 @@ public class UserIOConsoleImpl implements UserIO{
         Scanner sc = new Scanner(System.in);
         System.out.println(prompt);
         return sc.nextLine();
-}
+    }
 }

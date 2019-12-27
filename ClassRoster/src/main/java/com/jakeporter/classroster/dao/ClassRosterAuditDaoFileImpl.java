@@ -1,4 +1,4 @@
-package dao;
+package com.jakeporter.classroster.dao;
 
 import java.io.FileWriter;
 import java.io.IOException;
