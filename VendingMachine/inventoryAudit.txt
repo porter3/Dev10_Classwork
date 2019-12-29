@@ -58,3 +58,5 @@
 2019-12-26T13:08:59.375511300: Cookies vended, 0 remaining
 2019-12-26T13:09:43.322518300: Water vended, 1 remaining
 2019-12-26T13:09:59.548811400: Gatorade vended, 0 remaining
+2019-12-29T11:47:05.084211100: Restocked inventory
+2019-12-29T11:47:25.760009700: Water vended, 2 remaining

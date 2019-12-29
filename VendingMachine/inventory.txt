@@ -1,6 +1,0 @@
-Water::150::1
-Cookies::200::0
-Protein Bar::275::3
-Chips::250::3
-Gatorade::200::0
-Popcorn::225::3

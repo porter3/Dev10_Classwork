@@ -18,6 +18,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  *
@@ -28,10 +30,12 @@ public class VendingMachineServiceLayerTest {
     private VendingMachineServiceLayer service;
     
     public VendingMachineServiceLayerTest(){
-        VendingMachineDao crudDao = new VendingMachineDaoStubImpl();
-        VendingMachineAuditDao auditDao = new VendingMachineAuditDaoStubImpl();
-        
-        service = new VendingMachineServiceLayerImpl(crudDao, auditDao);
+//        VendingMachineDao crudDao = new VendingMachineDaoStubImpl();
+//        VendingMachineAuditDao auditDao = new VendingMachineAuditDaoStubImpl();
+//        
+//        service = new VendingMachineServiceLayerImpl(crudDao, auditDao);
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        service = ctx.getBean("serviceLayer", VendingMachineServiceLayer.class);
     }
     
     @BeforeAll
