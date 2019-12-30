@@ -4,6 +4,6 @@ package com.jakeporter.flooringmastery.dao;
  *
  * @author jake
  */
-public class FlooringAuditDaoStubImpl {
+public class FlooringAuditDaoStubImpl implements FlooringAuditDao{
 
 }

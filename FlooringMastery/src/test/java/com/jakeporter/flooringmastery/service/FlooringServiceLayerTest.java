@@ -48,6 +48,8 @@ public class FlooringServiceLayerTest {
      */
     @Test
     public void testGetHighestOrderNumber() {
+        // make a bunch of order objects in DAO
+        
     }
 
     /**

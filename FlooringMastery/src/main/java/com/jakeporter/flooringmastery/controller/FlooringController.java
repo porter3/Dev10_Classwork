@@ -27,7 +27,7 @@ public class FlooringController {
             int menuChoice = printMenuAndGetInput();
             switch(menuChoice){
                 case 1:
-                    // display orders by date
+                    // display all orders or display by date
                     break;
                 case 2:
                     // add order
@@ -41,6 +41,7 @@ public class FlooringController {
                 case 5:
                     // save current work
                     break;
+                // STRETCH GOAL: print an invoice showing calculations
                 case 6:
                     displayExitMessage();
                     return;

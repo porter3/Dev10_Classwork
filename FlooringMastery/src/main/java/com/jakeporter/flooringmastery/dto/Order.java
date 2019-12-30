@@ -27,6 +27,10 @@ public class Order {
         taxInfo.setState(state);
     }
     
+    public String getState(){
+        return taxInfo.getState();
+    }
+    
     public void setTaxRate(BigDecimal taxRate){
         taxInfo.setTaxRate(taxRate);
     }
