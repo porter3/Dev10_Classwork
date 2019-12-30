@@ -11,7 +11,7 @@ public class Order {
     private Taxes taxInfo;
     private Product productInfo;
     
-    private int orderNumber;
+    private String orderNumber;
     private String customerName;
     private BigDecimal area;
     private BigDecimal materialCost;
@@ -22,24 +22,24 @@ public class Order {
     public Taxes getTaxInfo() {
         return taxInfo;
     }
-
-    public void setTaxInfo(Taxes taxInfo) {
-        this.taxInfo = taxInfo;
+    
+    public void setState(String state){
+        taxInfo.setState(state);
+    }
+    
+    public void setTaxRate(BigDecimal taxRate){
+        taxInfo.setTaxRate(taxRate);
     }
 
     public Product getProductInfo() {
         return productInfo;
     }
 
-    public void setProductInfo(Product productInfo) {
-        this.productInfo = productInfo;
-    }
-
-    public int getOrderNumber() {
+    public String getOrderNumber() {
         return orderNumber;
     }
 
-    public void setOrderNumber(int orderNumber) {
+    public void setOrderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
     }
 

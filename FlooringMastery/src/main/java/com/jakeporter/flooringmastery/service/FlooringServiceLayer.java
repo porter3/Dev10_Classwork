@@ -6,4 +6,6 @@ package com.jakeporter.flooringmastery.service;
  */
 public interface FlooringServiceLayer {
 
+    public int getHighestOrderNumber();
+    public int generateOrderNumber(int highestOrderNumber);
 }

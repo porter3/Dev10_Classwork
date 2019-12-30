@@ -15,18 +15,10 @@
           http://www.springframework.org/schema/aop  
           http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
     
-    <bean id="userIO" class="com.jakeporter.flooringmastery.ui.UserIOConsoleImpl"/>
-    <bean id="view" class="com.jakeporter.flooringmastery.ui.FlooringView">
-        <constructor-arg ref="userIO"/>
-    </bean>
-    <bean id="crudDao" class="com.jakeporter.flooringmastery.dao.FlooringDaoFileImpl"/>
-    <bean id="auditDao" class="com.jakeporter.flooringmastery.dao.FlooringAuditDaoFileImpl"/>
-    <bean id ="serviceLayer" class="com.jakeporter.flooringmastery.service.FlooringServiceLayerImpl">
+    <bean id="crudDao" class="com.jakeporter.flooringmastery.dao.FlooringDaoStubImpl"/>
+    <bean id="auditDao" class="com.jakeporter.flooringmastery.auditdao.FlooringAuditDaoStubImpl"/>
+    <bean id="serviceLayer" class="com.jakeporter.flooringmastery.service.FlooringServiceLayer">
         <constructor-arg ref="crudDao"/>
-        <constructor-arg ref="auditDao"/>
-    </bean>
-    <bean id="controller" class="com.jakeporter.flooringmastery.controller.FlooringController">
-        <constructor-arg ref="view"/>
-        <constructor-arg ref="serviceLayer"/>
+        <constructor-arg red="auditDao"/>
     </bean>
 </beans>
