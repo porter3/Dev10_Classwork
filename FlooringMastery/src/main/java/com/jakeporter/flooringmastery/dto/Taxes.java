@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  *
  * @author jake
  */
-class Taxes {
+public class Taxes {
 
     private String state;
     private BigDecimal taxRate;

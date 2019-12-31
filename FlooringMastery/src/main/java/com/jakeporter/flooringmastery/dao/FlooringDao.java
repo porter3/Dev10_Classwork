@@ -1,8 +1,10 @@
 package com.jakeporter.flooringmastery.dao;
 
 import com.jakeporter.flooringmastery.dto.Order;
+import com.jakeporter.flooringmastery.dto.Product;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -12,5 +14,8 @@ public interface FlooringDao {
 
     public List<Order> getAllOrders();
     public BigDecimal getTaxRate(String state);
+    public void loadProductInfo() throws TaxPersistenceException;
     public void loadTaxRates() throws TaxPersistenceException;
+    public Map<String, Product> getAllProducts();
+    public Order addOrder(Order order);
 }

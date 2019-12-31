@@ -6,7 +6,7 @@ import java.math.BigDecimal;
  *
  * @author jake
  */
-class Product {
+public class Product {
 
     private String productType;
     private BigDecimal costPerSquareFoot;

@@ -1,6 +1,7 @@
 package com.jakeporter.flooringmastery.dto;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 
 /**
  *
@@ -8,8 +9,8 @@ import java.math.BigDecimal;
  */
 public class Order {
 
-    private Taxes taxInfo;
-    private Product productInfo;
+    public Taxes taxInfo = new Taxes();
+    private Product productInfo = new Product();
     
     private String orderNumber;
     private String customerName;
@@ -35,8 +36,12 @@ public class Order {
         taxInfo.setTaxRate(taxRate);
     }
 
-    public Product getProductInfo() {
-        return productInfo;
+    public String getProductType() {
+        return productInfo.getProductType();
+    }
+    
+    public void setProductType(String productType) {
+        productInfo.setProductType(productType);
     }
 
     public String getOrderNumber() {
@@ -67,33 +72,31 @@ public class Order {
         return materialCost;
     }
 
-    public void calculateMaterialCost(BigDecimal materialCost) {
-        this.materialCost = materialCost;
-    }
-
     public BigDecimal getLaborCost() {
         return laborCost;
-    }
-
-    public void calulateLaborCost(BigDecimal laborCost) {
-        this.laborCost = laborCost;
     }
 
     public BigDecimal getTotalTax() {
         return totalTax;
     }
 
-    public void calculateTotalTax(BigDecimal totalTax) {
-        this.totalTax = totalTax;
-    }
-
     public BigDecimal getOrderTotal() {
         return orderTotal;
     }
 
-    public void calulateOrderTotal(BigDecimal orderTotal) {
-        this.orderTotal = orderTotal;
+    public void calculateCosts() {
+        this.materialCost = productInfo.getCostPerSquareFoot().multiply(area);
+        this.laborCost = productInfo.getLaborCostPerSquareFoot().multiply(area);
+        BigDecimal laborAndMaterialCosts = materialCost.add(laborCost);
+        this.totalTax = laborAndMaterialCosts.multiply(taxInfo.getTaxRate());
+        this.orderTotal = laborAndMaterialCosts.add(totalTax);
     }
     
+    public void setCostPerSquareFoot(BigDecimal costPerSqFoot){
+        productInfo.setCostPerSquareFoot(costPerSqFoot);
+    }
     
+    public void setLaborCostPerSquareFoot(BigDecimal laborCostPerSqFoot){
+        productInfo.setLaborCostPerSquareFoot(laborCostPerSqFoot);
+    }
 }
