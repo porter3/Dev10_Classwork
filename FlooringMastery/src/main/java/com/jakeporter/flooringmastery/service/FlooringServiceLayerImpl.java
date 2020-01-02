@@ -128,4 +128,9 @@ public class FlooringServiceLayerImpl implements FlooringServiceLayer{
         }
         return orderToEdit;
     }
+
+    @Override
+    public Order deleteOrder(Order orderForDeletion) {
+        return crudDao.deleteOrder(orderForDeletion);
+    }
 }

@@ -44,7 +44,7 @@ public class FlooringController {
                         editOrder();
                         break;
                     case 4:
-                        // deleteOrder();
+                        deleteOrder();
                         break;
                     case 5:
                         // save current work
@@ -101,30 +101,62 @@ public class FlooringController {
     
     private void editOrder() throws TaxPersistenceException, NonexistentOrderException, NonexistentDateException{
         // display editing banner
-            view.displayEditBanner();
+        view.displayEditBanner();
         // prompt user for date
-            LocalDate orderDate = view.getDateForEditing();
+        LocalDate orderDate = view.getDateForEditing();
+        // get orders from date
+        List<Order> ordersFromDate = service.getOrdersFromDate(orderDate);
+        if (ordersFromDate.isEmpty()){
+            throw new NonexistentDateException("The specified date does not have any orders associated with it.\n");
+        }
+        // prompt user for order number
+        String orderNumber = view.getOrderNumber(orderDate);
+        // check if order for date exists
+        Order orderToEdit = service.checkOrderOnDate(ordersFromDate, orderNumber);
+        if (orderToEdit == null){
+            throw new NonexistentOrderException("The specified order for that date does not exist.\n");
+        }
+        // load product list and tax rates
+        service.loadProductsAndTaxRates();
+        List<Product> productList = service.getProductsAsList();
+        // create new order and get editing information
+        Order editedOrder = view.getEditedOrder(orderToEdit, productList);
+        // populate new order
+        editedOrder = service.populateOrderFields(editedOrder);
+        // put that order object back in the DAO
+        service.addOrder(editedOrder);            
+    }
+    
+    private void deleteOrder() throws NonexistentDateException, NonexistentOrderException{
+        // display order deletion banner
+        view.displayDeleteBanner();
+        Order orderToDelete;
+        while(true){
+        // prompt user for date
+            LocalDate orderDate = view.getDateForDeletion();
         // get orders from date
             List<Order> ordersFromDate = service.getOrdersFromDate(orderDate);
             if (ordersFromDate.isEmpty()){
-                throw new NonexistentDateException("The specified date does not have any orders associated with it");
+                view.displayErrorMessage("The specified date does not have any orders associated with it");
+                continue;
             }
         // prompt user for order number
             String orderNumber = view.getOrderNumber(orderDate);
         // check if order for date exists
-            Order orderToEdit = service.checkOrderOnDate(ordersFromDate, orderNumber);
-            if (orderToEdit == null){
-                throw new NonexistentOrderException("The specified order for that date does not exist");
+            orderToDelete = service.checkOrderOnDate(ordersFromDate, orderNumber);
+            if (orderToDelete == null){
+                view.displayErrorMessage("The specified order for that date does not exist");
+                continue;
             }
-        // load product list and tax rates
-            service.loadProductsAndTaxRates();
-            List<Product> productList = service.getProductsAsList();
-        // create new order and get editing information
-            Order editedOrder = view.getEditedOrder(orderToEdit, productList);
-        // populate new order
-            editedOrder = service.populateOrderFields(editedOrder);
-        // put that order object back in the DAO
-            service.addOrder(editedOrder);            
+            break;
+        }
+        // if user decides to not confirm deletion, return them to main menu
+        if (!view.promptDeletionConfirmation(orderToDelete)){
+            return;
+        }
+        // remove order from DAO
+        service.deleteOrder(orderToDelete);
+        view.displayDeletionSuccess(orderToDelete);
     }
     
     private void displayExitMessage(){

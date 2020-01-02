@@ -90,4 +90,9 @@ public class FlooringDaoFileImpl implements FlooringDao{
     public Order addOrder(Order order){
         return orders.put(order.getOrderNumber(), order);
     }
+    
+    @Override
+    public Order deleteOrder(Order order){
+        return orders.remove(order.getOrderNumber());
+    }
 }

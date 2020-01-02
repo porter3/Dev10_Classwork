@@ -40,7 +40,7 @@ public class FlooringView {
         // convert dateString to LocalDate, check for proper formatting.
         while(true){
             try{
-                dateString = io.readString("Date of order (mm/dd/yyyy):").strip();
+                dateString = io.readString("\nDate of order (mm/dd/yyyy):").strip();
                 //STRECH: figure out how to make user input more flexible with regex
                 orderDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
                 break;
@@ -77,16 +77,16 @@ public class FlooringView {
     
     public void displayOrder(Order order){
         io.print("Order #" + order.getOrderNumber() + ":\n"
+                + "Date: " + order.getDateCreated().toString() + "\n"
                 + "Customer Name: " + order.getCustomerName() + "\n"
                 + "State: " + order.getState() + "\n"
                 + "Area(sq. ft.): " + order.getArea() + "\n"
-                + "Flooring type: " + order.getProductType() + "\n"
-                + "Created on " + order.getDateCreated().toString());
+                + "Flooring type: " + order.getProductType() + "\n");
     }
     
     public boolean promptToCommitOrder(){
         while(true){
-            char choice = io.readString("Confirm order? (y/n)").toLowerCase().strip().charAt(0);
+            char choice = io.readString("\nConfirm order? (y/n)").toLowerCase().strip().charAt(0);
             if (choice == 'y'){
                 io.print("Order confirmed.");
                 return true;
@@ -102,7 +102,7 @@ public class FlooringView {
     }
     
     public int printDisplayMenuAndGetInput(){
-        return io.readInt("DISPLAY MENU\n------------\n"
+        return io.readInt("\nDISPLAY MENU\n------------\n"
         + "1. View all orders\n"
         + "2. View all orders of a specific date", 1, 2);
     }
@@ -125,7 +125,7 @@ public class FlooringView {
         String dateString;
         while(true){
             try{
-                dateString = io.readString("Enter the date you would like to view orders for (mm/dd/yyyy):");
+                dateString = io.readString("\nEnter the date you would like to view orders for (mm/dd/yyyy):");
                 return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
             }
             catch(DateTimeException e){
@@ -135,7 +135,7 @@ public class FlooringView {
     }
     
     public void displayOrdersOfDate(LocalDate date, List<Order> allOrders){
-        io.print("Orders For " + date.toString());
+        io.print("\nOrders For " + date.toString());
         allOrders.stream()
                 .filter(order -> (order.getDateCreated().compareTo(date) == 0))
                 .forEach(order -> io.print("\nOrder #" + order.getOrderNumber()
@@ -150,14 +150,14 @@ public class FlooringView {
     }
     
     public void displayEditBanner(){
-        io.print("Edit an Order");
+        io.print("\nEdit an Order");
     }
     
     public LocalDate getDateForEditing(){
         String dateString;
         while(true){
             try{
-                dateString = io.readString("Please enter the date of the order you want to edit(mm/dd/yyyy):");
+                dateString = io.readString("\nPlease enter the date of the order you want to edit(mm/dd/yyyy):");
                 return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
             }
             catch(DateTimeException e){
@@ -167,11 +167,11 @@ public class FlooringView {
     }
     
     public String getOrderNumber(LocalDate orderDate){
-        return io.readString("Please enter order number for " + orderDate.toString());
+        return io.readString("\nPlease enter order number for " + orderDate.toString());
     }
     
     public Order getEditedOrder(Order orderToEdit, List<Product> productList){
-        io.print("Edit order fields (hit 'return' to keep field the same):");
+        io.print("\nEdit order fields (hit 'return' to keep field the same):");
         String newDateStr;
         LocalDate newDate;
         while(true){
@@ -263,15 +263,56 @@ public class FlooringView {
         return editedOrder;
     }
     
+    public void displayDeleteBanner(){
+        io.print("\nDelete an Order");
+    }
+    
+    public LocalDate getDateForDeletion() {
+        String dateString;
+        while(true){
+            try{
+                dateString = io.readString("Please enter the date of the order you want to delete(mm/dd/yyyy):");
+                return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+            }
+            catch(DateTimeException e){
+                io.print("Date must be a proper date in the format 'mm/dd/yyyy'");
+            }
+        }
+    }
+    
+    public boolean promptDeletionConfirmation(Order order){
+        io.print("Order for deletion: ");
+        displayOrder(order);
+        while(true){
+            char choice = io.readString("Delete order? (y/n)").toLowerCase().strip().charAt(0);
+            if (choice == 'y'){
+                io.print("Order confirmed.");
+                return true;
+            }
+            else if (choice == 'n'){
+                io.print("Order discarded.");
+                return false;
+            }
+            else{
+                io.print("Command not recognized.");
+            }
+        }
+    }
+    
+    public void displayDeletionSuccess(Order deletedOrder){
+        io.print("Order #" + deletedOrder.getOrderNumber() + " successfully deleted");
+    }
+    
     public void displayExitMessage(){
-        io.print("Goodbye");
+        io.print("\nGoodbye");
     }
     
     public void displayUnknownCommand(){
-        io.print("Unknown command, please select from the menu again");
+        io.print("\nUnknown command, please select from the menu again");
     }
     
     public void displayErrorMessage(String message){
         io.print(message);
     }
-}
+
+ }

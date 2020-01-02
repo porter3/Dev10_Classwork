@@ -24,4 +24,5 @@ public interface FlooringServiceLayer {
     public List<Order> getAllOrders();
     public List<Order> getOrdersFromDate(LocalDate orderDate);
     public Order checkOrderOnDate(List<Order> orderListOfDate, String orderNumber);
+    public Order deleteOrder(Order orderForDeletion);
 }

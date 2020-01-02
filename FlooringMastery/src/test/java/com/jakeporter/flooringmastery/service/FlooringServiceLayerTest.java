@@ -112,6 +112,7 @@ public class FlooringServiceLayerTest {
 
     /**
      * Test of populateOrderFields method, of class FlooringServiceLayer.
+     * @throws java.lang.Exception
      */
     @Test
     public void testPopulateOrderFields() throws Exception {

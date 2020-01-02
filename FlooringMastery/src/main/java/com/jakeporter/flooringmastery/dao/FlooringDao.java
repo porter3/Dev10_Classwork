@@ -18,4 +18,5 @@ public interface FlooringDao {
     public void loadTaxRates() throws TaxPersistenceException;
     public Map<String, Product> getAllProducts();
     public Order addOrder(Order order);
+    public Order deleteOrder(Order order);
 }
