@@ -5,6 +5,7 @@ import com.jakeporter.flooringmastery.dto.Order;
 import com.jakeporter.flooringmastery.dto.Product;
 import com.jakeporter.flooringmastery.service.FlooringServiceLayer;
 import com.jakeporter.flooringmastery.ui.FlooringView;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class FlooringController {
                         break;
                     case 3:
                         // edit order, date can be modifiable
+                        // editOrder();
                         break;
                     case 4:
                         // delete order
@@ -48,7 +50,8 @@ public class FlooringController {
                     case 5:
                         // save current work
                         break;
-                    // STRETCH GOAL: print an invoice showing calculations
+                    // STRETCH GOALS: print an invoice showing calculations
+                            // use regex for date submission flexibility
                     case 6:
                         displayExitMessage();
                         return;
@@ -67,12 +70,15 @@ public class FlooringController {
     }
     
     private void displayOrders(){
-        //view.printDisplayMenuAndGetInput();
+        int choice = view.printDisplayMenuAndGetInput();
         List<Order> allOrders = service.getAllOrders();
-        //IF VIEWING ALL ORDERS
+        if (choice == 1){
             view.displayAllOrders(allOrders);
-        //IF VIEWING BY DATE
-            //view.displayOrdersOfDate
+        }
+        else{
+            LocalDate date = view.promptForDate();
+            view.displayOrdersOfDate(date, allOrders);
+        }
     }
     
     private void addNewOrder() throws TaxPersistenceException{
@@ -91,6 +97,26 @@ public class FlooringController {
         if (commitOrder == true){
             service.addOrder(newOrder);
         }
+    }
+    
+    private void editOrder(){
+        // display editing banner
+            // view.displayEditBanner();
+        // prompt user for date
+            // LocalDate orderDate = view.getOrderDate();
+        // check if date exists
+            // boolean dateExists = service.checkIfDateHasOrders(orderDate);
+        // prompt user for order number
+            // String orderNumber = view.getOrderNumber();
+        // check if order for date exists
+            // boolean orderForDateExists = service.checkOrderOnDate(orderDate, orderNumber);
+        // create new order and get editing information
+            // Order editedOrder = view.getEditedOrder(orderNumber);
+            // 
+        // put that order object back in the DAO
+            // service.addOrder(editedOrder);
+        // IF IT DOESN' EXIST, create exception and go back to main menu
+            
     }
     
     private void displayExitMessage(){

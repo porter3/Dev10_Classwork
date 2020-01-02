@@ -1,7 +1,8 @@
 package com.jakeporter.flooringmastery.dto;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
+import java.math.RoundingMode;
+import java.time.LocalDate;
 
 /**
  *
@@ -19,6 +20,8 @@ public class Order {
     private BigDecimal laborCost;
     private BigDecimal totalTax;
     private BigDecimal orderTotal;
+    
+    private LocalDate dateCreated;
 
     public Taxes getTaxInfo() {
         return taxInfo;
@@ -77,11 +80,11 @@ public class Order {
     }
 
     public BigDecimal getTotalTax() {
-        return totalTax;
+        return totalTax.setScale(2, RoundingMode.HALF_UP);
     }
 
     public BigDecimal getOrderTotal() {
-        return orderTotal;
+        return orderTotal.setScale(2, RoundingMode.HALF_UP);
     }
 
     public void calculateCosts() {
@@ -98,5 +101,13 @@ public class Order {
     
     public void setLaborCostPerSquareFoot(BigDecimal laborCostPerSqFoot){
         productInfo.setLaborCostPerSquareFoot(laborCostPerSqFoot);
+    }
+
+    public LocalDate getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(LocalDate dateCreated) {
+        this.dateCreated = dateCreated;
     }
 }

@@ -3,6 +3,9 @@ package com.jakeporter.flooringmastery.ui;
 import com.jakeporter.flooringmastery.dto.Order;
 import com.jakeporter.flooringmastery.dto.Product;
 import java.math.BigDecimal;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +35,20 @@ public class FlooringView {
     
     public Order getNewOrder(List<Product> productList){
         // set all
+        String dateString;
+        LocalDate orderDate;
+        // convert dateString to LocalDate, check for proper formatting.
+        while(true){
+            try{
+                dateString = io.readString("Date of order (mm/dd/yyyy):");
+                //STRECH: figure out how to make user input more flexible with regex
+                orderDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+                break;
+            }
+            catch(DateTimeException e){
+                io.print("Date must be a proper date in the format 'mm/dd/yy'");
+            }
+        }
         String customerName = io.readString("Customer name:");
         // handle exception here (InvalidStateException)
         String state = io.readString("State of installation (i.e. NC, WY, TX):").strip().toUpperCase();
@@ -52,6 +69,7 @@ public class FlooringView {
         newOrder.setCustomerName(customerName);
         newOrder.setArea(area);
         newOrder.setState(state);
+        newOrder.setDateCreated(orderDate);
         // set productType to the material chosen
         newOrder.setProductType(materials.get(materialSelection));
         return newOrder;
@@ -62,7 +80,8 @@ public class FlooringView {
                 + "Customer Name: " + order.getCustomerName() + "\n"
                 + "State: " + order.getState() + "\n"
                 + "Area(sq. ft.): " + order.getArea() + "\n"
-                + "Flooring type: " + order.getProductType() + "\n");
+                + "Flooring type: " + order.getProductType() + "\n"
+                + "Created on " + order.getDateCreated().toString());
     }
     
     public boolean promptToCommitOrder(){
@@ -82,9 +101,43 @@ public class FlooringView {
         }
     }
     
+    public int printDisplayMenuAndGetInput(){
+        return io.readInt("DISPLAY MENU\n------------\n"
+        + "1. View all orders\n"
+        + "2. View all orders of a specific date", 1, 2);
+    }
+    
     public void displayAllOrders(List<Order> orderList){
         orderList.stream()
-                .forEach(order -> io.print("Order #" + order.getOrderNumber()
+                .forEach(order -> io.print("\nOrder #" + order.getOrderNumber()
+                + ", created " + order.getDateCreated().toString()
+                + "\nCustomer: " + order.getCustomerName()
+                + "\nFlooring type: " + order.getProductType()
+                + "\nArea(sq. ft.): " + order.getArea()
+                + "\nFlooring cost: $" + order.getMaterialCost()
+                + "\nLabor cost: $" + order.getLaborCost()
+                + "\nTax: $" + order.getTotalTax()
+                + "\nOrder total: $" + order.getOrderTotal()));
+    }
+    
+    public LocalDate promptForDate(){
+        String dateString;
+        while(true){
+            try{
+                dateString = io.readString("Enter the date you would like to view orders for (mm/dd/yyyy):");
+                return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+            }
+            catch(DateTimeException e){
+                io.print("Date must be a proper date in the format 'mm/dd/yy'");
+            }
+        }
+    }
+    
+    public void displayOrdersOfDate(LocalDate date, List<Order> allOrders){
+        io.print("Orders For " + date.toString());
+        allOrders.stream()
+                .filter(order -> (order.getDateCreated().compareTo(date) == 0))
+                .forEach(order -> io.print("\nOrder #" + order.getOrderNumber()
                 + "\nCustomer: " + order.getCustomerName()
                 + "\nFlooring type: " + order.getProductType()
                 + "\nArea(sq. ft.): " + order.getArea()
