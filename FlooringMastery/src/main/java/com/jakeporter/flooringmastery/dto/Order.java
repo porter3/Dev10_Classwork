@@ -3,6 +3,7 @@ package com.jakeporter.flooringmastery.dto;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  *
@@ -109,5 +110,70 @@ public class Order {
 
     public void setDateCreated(LocalDate dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    public Product getProductInfo() {
+        return productInfo;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.taxInfo);
+        hash = 97 * hash + Objects.hashCode(this.productInfo);
+        hash = 97 * hash + Objects.hashCode(this.orderNumber);
+        hash = 97 * hash + Objects.hashCode(this.customerName);
+        hash = 97 * hash + Objects.hashCode(this.area);
+        hash = 97 * hash + Objects.hashCode(this.materialCost);
+        hash = 97 * hash + Objects.hashCode(this.laborCost);
+        hash = 97 * hash + Objects.hashCode(this.totalTax);
+        hash = 97 * hash + Objects.hashCode(this.orderTotal);
+        hash = 97 * hash + Objects.hashCode(this.dateCreated);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Order other = (Order) obj;
+        if (!Objects.equals(this.orderNumber, other.orderNumber)) {
+            return false;
+        }
+        if (!Objects.equals(this.customerName, other.customerName)) {
+            return false;
+        }
+        if (!Objects.equals(this.taxInfo, other.taxInfo)) {
+            return false;
+        }
+        if (!Objects.equals(this.productInfo, other.productInfo)) {
+            return false;
+        }
+        if (!Objects.equals(this.area, other.area)) {
+            return false;
+        }
+        if (!Objects.equals(this.materialCost, other.materialCost)) {
+            return false;
+        }
+        if (!Objects.equals(this.laborCost, other.laborCost)) {
+            return false;
+        }
+        if (!Objects.equals(this.totalTax, other.totalTax)) {
+            return false;
+        }
+        if (!Objects.equals(this.orderTotal, other.orderTotal)) {
+            return false;
+        }
+        if (!Objects.equals(this.dateCreated, other.dateCreated)) {
+            return false;
+        }
+        return true;
     }
 }

@@ -40,13 +40,13 @@ public class FlooringView {
         // convert dateString to LocalDate, check for proper formatting.
         while(true){
             try{
-                dateString = io.readString("Date of order (mm/dd/yyyy):");
+                dateString = io.readString("Date of order (mm/dd/yyyy):").strip();
                 //STRECH: figure out how to make user input more flexible with regex
                 orderDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
                 break;
             }
             catch(DateTimeException e){
-                io.print("Date must be a proper date in the format 'mm/dd/yy'");
+                io.print("Date must be a proper date in the format 'mm/dd/yyyy'");
             }
         }
         String customerName = io.readString("Customer name:");
@@ -64,7 +64,7 @@ public class FlooringView {
             // assign productType and listing number to hashmap
             materials.put(i+1, productList.get(i).getProductType());
         }
-        int materialSelection = io.readInt("Material number:", 1, productList.size());
+        int materialSelection = io.readInt("Select a choice:", 1, productList.size());
         Order newOrder = new Order();
         newOrder.setCustomerName(customerName);
         newOrder.setArea(area);
@@ -110,8 +110,9 @@ public class FlooringView {
     public void displayAllOrders(List<Order> orderList){
         orderList.stream()
                 .forEach(order -> io.print("\nOrder #" + order.getOrderNumber()
-                + ", created " + order.getDateCreated().toString()
+                + "\nDate: " + order.getDateCreated().toString()
                 + "\nCustomer: " + order.getCustomerName()
+                + "\nState: " + order.getState()
                 + "\nFlooring type: " + order.getProductType()
                 + "\nArea(sq. ft.): " + order.getArea()
                 + "\nFlooring cost: $" + order.getMaterialCost()
@@ -120,7 +121,7 @@ public class FlooringView {
                 + "\nOrder total: $" + order.getOrderTotal()));
     }
     
-    public LocalDate promptForDate(){
+    public LocalDate getDateForDisplaying(){
         String dateString;
         while(true){
             try{
@@ -128,7 +129,7 @@ public class FlooringView {
                 return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
             }
             catch(DateTimeException e){
-                io.print("Date must be a proper date in the format 'mm/dd/yy'");
+                io.print("Date must be a proper date in the format 'mm/dd/yyyy'");
             }
         }
     }
@@ -139,12 +140,127 @@ public class FlooringView {
                 .filter(order -> (order.getDateCreated().compareTo(date) == 0))
                 .forEach(order -> io.print("\nOrder #" + order.getOrderNumber()
                 + "\nCustomer: " + order.getCustomerName()
+                + "\nState: " + order.getState()
                 + "\nFlooring type: " + order.getProductType()
                 + "\nArea(sq. ft.): " + order.getArea()
                 + "\nFlooring cost: $" + order.getMaterialCost()
                 + "\nLabor cost: $" + order.getLaborCost()
                 + "\nTax: $" + order.getTotalTax()
                 + "\nOrder total: $" + order.getOrderTotal() + "\n"));
+    }
+    
+    public void displayEditBanner(){
+        io.print("Edit an Order");
+    }
+    
+    public LocalDate getDateForEditing(){
+        String dateString;
+        while(true){
+            try{
+                dateString = io.readString("Please enter the date of the order you want to edit(mm/dd/yyyy):");
+                return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+            }
+            catch(DateTimeException e){
+                io.print("Date must be a proper date in the format 'mm/dd/yyyy'");
+            }
+        }
+    }
+    
+    public String getOrderNumber(LocalDate orderDate){
+        return io.readString("Please enter order number for " + orderDate.toString());
+    }
+    
+    public Order getEditedOrder(Order orderToEdit, List<Product> productList){
+        io.print("Edit order fields (hit 'return' to keep field the same):");
+        String newDateStr;
+        LocalDate newDate;
+        while(true){
+            newDateStr = io.readString("Current Order Date: " + orderToEdit.getDateCreated() + " (new dates should be entered as mm/dd/yyyy)").strip();
+            // if user leaves a field blank by hitting 'return', just assign it to the old field
+            if (newDateStr.isBlank()){
+                newDate = orderToEdit.getDateCreated();
+            }
+            else{
+                try{
+                    newDate = LocalDate.parse(newDateStr, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+                    break;
+                }
+                catch(NumberFormatException e){
+                    io.print("Date must be a proper date in the format of 'mm/dd/yyyy'");
+                }
+            }
+        }
+        String newCustomerName = io.readString("Current customer info: " + orderToEdit.getCustomerName()).strip();
+        if (newCustomerName.isBlank()){
+            newCustomerName = orderToEdit.getCustomerName();
+        }
+        // state
+        String newState = io.readString("Current state: " + orderToEdit.getState()).strip().toUpperCase();
+        if (newState.isBlank()){
+            newState = orderToEdit.getState();
+        }
+        // area
+        String newAreaStr;
+        BigDecimal newArea;
+        while (true){
+            newAreaStr = io.readString("Current area(sq. ft.): " + orderToEdit.getArea()).strip();
+            // if user hits 'return', assign old area value to the new area field
+            if (newAreaStr.isBlank()){
+                newArea = orderToEdit.getArea();
+                break;
+            }
+            // if user enters something:
+            else{
+                try{
+                    // area is set to what the user entered
+                    newArea = new BigDecimal(newAreaStr);
+                    // if area is <= 0, prompt user to enter positive value and go back to top of loop
+                    if (newArea.compareTo(new BigDecimal("0")) == 0 || newArea.compareTo(new BigDecimal("0")) == -1){
+                        io.print("Please enter a positive number for the area.");
+                        continue;
+                    }
+                    break;
+                }
+                // if user didn't enter a number
+                catch(NumberFormatException e){
+                    io.print("Please enter a valid number or hit return to keep this field the same.");
+                }
+            }
+        }
+        // material
+        // allow user to select material
+        Map<Integer, String> materials = new HashMap();
+        io.print("Material ordered:");
+        // iterate through productList
+        for (int i = 0; i < productList.size(); i++){
+            // print product and listing number
+            io.print(Integer.toString(i+1) + ". " + productList.get(i).getProductType());
+            // assign productType and listing number to hashmap
+            materials.put(i+1, productList.get(i).getProductType());
+        }
+        // allow user to keep previous material selection
+        int sameMaterialOption = productList.size() + 1;
+        io.print(sameMaterialOption + ". Keep previous material");
+        int materialSelection = io.readInt("Select a choice:", 1, sameMaterialOption);
+        
+        // create new 'edited' order, assign values
+        Order editedOrder = new Order();
+        // keep the edited order's order number the same
+        editedOrder.setOrderNumber(orderToEdit.getOrderNumber());
+        // set all other values
+        editedOrder.setDateCreated(newDate);
+        editedOrder.setCustomerName(newCustomerName);
+        editedOrder.setState(newState);
+        editedOrder.setArea(newArea);
+        /* if user selected the same material option earlier, 
+        assign the old material value to the edited order's field */
+        if (materialSelection == sameMaterialOption){
+            editedOrder.setProductType(orderToEdit.getProductType());
+        }
+        else{
+            editedOrder.setProductType(materials.get(materialSelection));
+        }
+        return editedOrder;
     }
     
     public void displayExitMessage(){

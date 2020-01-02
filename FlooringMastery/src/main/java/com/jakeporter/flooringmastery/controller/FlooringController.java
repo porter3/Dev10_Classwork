@@ -41,17 +41,17 @@ public class FlooringController {
                         addNewOrder();
                         break;
                     case 3:
-                        // edit order, date can be modifiable
-                        // editOrder();
+                        editOrder();
                         break;
                     case 4:
-                        // delete order
+                        // deleteOrder();
                         break;
                     case 5:
                         // save current work
                         break;
                     // STRETCH GOALS: print an invoice showing calculations
                             // use regex for date submission flexibility
+                            // add leading zeroes to order numbers
                     case 6:
                         displayExitMessage();
                         return;
@@ -59,7 +59,7 @@ public class FlooringController {
                         displayUnknownCommand();
                 }
             }
-            catch(TaxPersistenceException e){
+            catch(TaxPersistenceException | NonexistentOrderException | NonexistentDateException e){
                 view.displayErrorMessage(e.getMessage());
             }
         }
@@ -76,7 +76,7 @@ public class FlooringController {
             view.displayAllOrders(allOrders);
         }
         else{
-            LocalDate date = view.promptForDate();
+            LocalDate date = view.getDateForDisplaying();
             view.displayOrdersOfDate(date, allOrders);
         }
     }
@@ -99,24 +99,32 @@ public class FlooringController {
         }
     }
     
-    private void editOrder(){
+    private void editOrder() throws TaxPersistenceException, NonexistentOrderException, NonexistentDateException{
         // display editing banner
-            // view.displayEditBanner();
+            view.displayEditBanner();
         // prompt user for date
-            // LocalDate orderDate = view.getOrderDate();
-        // check if date exists
-            // boolean dateExists = service.checkIfDateHasOrders(orderDate);
+            LocalDate orderDate = view.getDateForEditing();
+        // get orders from date
+            List<Order> ordersFromDate = service.getOrdersFromDate(orderDate);
+            if (ordersFromDate.isEmpty()){
+                throw new NonexistentDateException("The specified date does not have any orders associated with it");
+            }
         // prompt user for order number
-            // String orderNumber = view.getOrderNumber();
+            String orderNumber = view.getOrderNumber(orderDate);
         // check if order for date exists
-            // boolean orderForDateExists = service.checkOrderOnDate(orderDate, orderNumber);
+            Order orderToEdit = service.checkOrderOnDate(ordersFromDate, orderNumber);
+            if (orderToEdit == null){
+                throw new NonexistentOrderException("The specified order for that date does not exist");
+            }
+        // load product list and tax rates
+            service.loadProductsAndTaxRates();
+            List<Product> productList = service.getProductsAsList();
         // create new order and get editing information
-            // Order editedOrder = view.getEditedOrder(orderNumber);
-            // 
+            Order editedOrder = view.getEditedOrder(orderToEdit, productList);
+        // populate new order
+            editedOrder = service.populateOrderFields(editedOrder);
         // put that order object back in the DAO
-            // service.addOrder(editedOrder);
-        // IF IT DOESN' EXIST, create exception and go back to main menu
-            
+            service.addOrder(editedOrder);            
     }
     
     private void displayExitMessage(){

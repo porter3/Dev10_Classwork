@@ -4,6 +4,7 @@ import com.jakeporter.flooringmastery.dao.TaxPersistenceException;
 import com.jakeporter.flooringmastery.dto.Order;
 import com.jakeporter.flooringmastery.dto.Product;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -21,4 +22,6 @@ public interface FlooringServiceLayer {
     public Order populateOrderFields(Order order) throws TaxPersistenceException;
     public Order addOrder(Order order);
     public List<Order> getAllOrders();
+    public List<Order> getOrdersFromDate(LocalDate orderDate);
+    public Order checkOrderOnDate(List<Order> orderListOfDate, String orderNumber);
 }

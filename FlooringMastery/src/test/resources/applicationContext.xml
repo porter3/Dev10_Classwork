@@ -16,9 +16,9 @@
           http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
     
     <bean id="crudDao" class="com.jakeporter.flooringmastery.dao.FlooringDaoStubImpl"/>
-    <bean id="auditDao" class="com.jakeporter.flooringmastery.auditdao.FlooringAuditDaoStubImpl"/>
-    <bean id="serviceLayer" class="com.jakeporter.flooringmastery.service.FlooringServiceLayer">
+    <bean id="auditDao" class="com.jakeporter.flooringmastery.dao.FlooringAuditDaoStubImpl"/>
+    <bean id="serviceLayer" class="com.jakeporter.flooringmastery.service.FlooringServiceLayerImpl">
         <constructor-arg ref="crudDao"/>
-        <constructor-arg red="auditDao"/>
+        <constructor-arg ref="auditDao"/>
     </bean>
 </beans>
