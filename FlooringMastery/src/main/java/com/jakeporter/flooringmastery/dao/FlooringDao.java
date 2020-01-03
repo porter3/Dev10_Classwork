@@ -16,6 +16,7 @@ public interface FlooringDao {
     public BigDecimal getTaxRate(String state);
     public void loadProductInfo() throws TaxPersistenceException;
     public void loadTaxRates() throws TaxPersistenceException;
+    public Map<String, String> getStateTaxRates();
     public Map<String, Product> getAllProducts();
     public Order addOrder(Order order);
     public Order deleteOrder(Order order);

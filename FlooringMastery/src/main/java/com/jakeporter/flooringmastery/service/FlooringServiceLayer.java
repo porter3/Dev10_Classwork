@@ -6,10 +6,10 @@ import com.jakeporter.flooringmastery.dao.TaxPersistenceException;
 import com.jakeporter.flooringmastery.dao.UnknownConfigurationException;
 import com.jakeporter.flooringmastery.dto.Order;
 import com.jakeporter.flooringmastery.dto.Product;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -20,6 +20,7 @@ public interface FlooringServiceLayer {
     public int getHighestOrderNumber();
     public String generateOrderNumber(int highestOrderNumber);
     public void loadProductsAndTaxRates() throws TaxPersistenceException;
+    public Set<String> getStateList();
     public List<Product> getProductsAsList();
     public Map<String, Product> getProductsAsMap();
     public Order populateOrderFields(Order order) throws TaxPersistenceException;

@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -38,7 +39,7 @@ public class FlooringView {
                 + "6. Quit", 1, 6);
     }
     
-    public Order getNewOrder(List<Product> productList){
+    public Order getNewOrder(List<Product> productList, Set<String> stateList){
         // set all
         String dateString;
         LocalDate orderDate;
@@ -59,10 +60,24 @@ public class FlooringView {
             }
         }
         String customerName = io.readString("Customer name:");
-        // handle exception here (InvalidStateException)
-        String state = io.readString("State of installation (i.e. NC, WY, TX):").strip().toUpperCase();
-        // handle exception here (NumberFormatException???)
-        BigDecimal area = new BigDecimal (io.readString("Area in square feet:").strip());
+        String state;
+        while(true){
+            state = io.readString("State of installation (i.e. NC, WY, TX):").strip().toUpperCase();
+            if(stateList.contains(state)){
+                break;
+            }
+            io.print("State does not exist.\n");
+        }
+        BigDecimal area;
+        while(true){
+            try{
+                area = new BigDecimal (io.readString("Area in square feet:").strip());
+                break;
+            }
+            catch(NumberFormatException e){
+                io.print("Area must be a number.");
+            }
+        }
         // allow user to select material
         Map<Integer, String> materials = new HashMap();
         io.print("Material ordered:");
@@ -119,7 +134,7 @@ public class FlooringView {
     public void displayAllOrders(List<Order> orderList){
         orderList.stream()
                 .forEach(order -> io.print("\nOrder #" + order.getOrderNumber()
-                + "\nDate: " + order.getDateCreated().toString()
+                + "\nDate: " + order.getDateCreated().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"))
                 + "\nCustomer: " + order.getCustomerName()
                 + "\nState: " + order.getState()
                 + "\nFlooring type: " + order.getProductType()
@@ -144,7 +159,7 @@ public class FlooringView {
     }
     
     public void displayOrdersOfDate(LocalDate date, List<Order> allOrders){
-        io.print("\nOrders For " + date.toString());
+        io.print("\nOrders For " + date.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
         allOrders.stream()
                 .filter(order -> (order.getDateCreated().compareTo(date) == 0))
                 .forEach(order -> io.print("\nOrder #" + order.getOrderNumber()
@@ -176,18 +191,21 @@ public class FlooringView {
     }
     
     public String getOrderNumber(LocalDate orderDate){
-        return io.readString("\nPlease enter order number for " + orderDate.toString());
+        int orderNumber = io.readInt("\nPlease enter order number for " + orderDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+        return String.format("%04d", orderNumber);
     }
     
-    public Order getEditedOrder(Order orderToEdit, List<Product> productList){
+    public Order getEditedOrder(Order orderToEdit, List<Product> productList, Set<String> states){
         io.print("\nEdit order fields (hit 'return' to keep field the same):");
         String newDateStr;
         LocalDate newDate;
         while(true){
-            newDateStr = io.readString("Current Order Date: " + orderToEdit.getDateCreated() + " (new dates should be entered as mm/dd/yyyy)").strip();
+            newDateStr = io.readString("Current Order Date: " + orderToEdit.getDateCreated().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"))
+                    + " (new dates should be entered as mm/dd/yyyy)").strip();
             // if user leaves a field blank by hitting 'return', just assign it to the old field
             if (newDateStr.isBlank()){
                 newDate = orderToEdit.getDateCreated();
+                break;
             }
             else{
                 try{
@@ -204,9 +222,17 @@ public class FlooringView {
             newCustomerName = orderToEdit.getCustomerName();
         }
         // state
-        String newState = io.readString("Current state: " + orderToEdit.getState()).strip().toUpperCase();
-        if (newState.isBlank()){
-            newState = orderToEdit.getState();
+        String newState;
+        while(true){
+            newState = io.readString("Current state: " + orderToEdit.getState()).strip().toUpperCase();
+            if (newState.isBlank()){
+                newState = orderToEdit.getState();
+                break;
+            }
+            if (states.contains(newState)){
+                break;
+            }
+            io.print("State does not exist.\n");
         }
         // area
         String newAreaStr;

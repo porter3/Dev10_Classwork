@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -34,7 +35,7 @@ public class FlooringServiceLayerImpl implements FlooringServiceLayer{
     @Override
     public int getHighestOrderNumber() {
         List<Order> orderList = crudDao.getAllOrders();
-        if (orderList.size() == 0){
+        if (orderList.isEmpty()){
             return 0;
         }
         else{
@@ -49,7 +50,7 @@ public class FlooringServiceLayerImpl implements FlooringServiceLayer{
     public String generateOrderNumber(int highestOrderNumber) {
         // take the highest existing order number as a parameter,
             // add one to it, convert to String
-        return Integer.toString(highestOrderNumber + 1);
+        return String.format("%05d", highestOrderNumber + 1);
     }
     
     @Override
@@ -59,6 +60,10 @@ public class FlooringServiceLayerImpl implements FlooringServiceLayer{
     }
     
     @Override
+    public Set<String> getStateList(){
+        return crudDao.getStateTaxRates().keySet();
+    }
+            
     public List<Product> getProductsAsList(){
         return new ArrayList(crudDao.getAllProducts().values());
     }

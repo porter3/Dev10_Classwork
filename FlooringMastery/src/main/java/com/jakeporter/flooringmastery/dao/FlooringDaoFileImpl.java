@@ -4,7 +4,6 @@ import com.jakeporter.flooringmastery.dto.Order;
 import com.jakeporter.flooringmastery.dto.Product;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -12,7 +11,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -88,6 +86,11 @@ public class FlooringDaoFileImpl implements FlooringDao{
             stateTaxRates.put(infoArray[0], infoArray[1]);
         }
         sc.close();
+    }
+    
+    @Override
+    public Map<String, String> getStateTaxRates(){
+        return stateTaxRates;
     }
     
     @Override
