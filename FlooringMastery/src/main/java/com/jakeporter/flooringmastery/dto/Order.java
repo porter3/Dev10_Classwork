@@ -14,6 +14,7 @@ public class Order {
     private Taxes taxInfo = new Taxes();
     private Product productInfo = new Product();
     
+    private LocalDate dateCreated;
     private String orderNumber;
     private String customerName;
     private BigDecimal area;
@@ -21,8 +22,15 @@ public class Order {
     private BigDecimal laborCost;
     private BigDecimal totalTax;
     private BigDecimal orderTotal;
+        
     
-    private LocalDate dateCreated;
+    public void calculateCosts() {
+    this.materialCost = productInfo.getCostPerSquareFoot().multiply(area);
+    this.laborCost = productInfo.getLaborCostPerSquareFoot().multiply(area);
+    BigDecimal laborAndMaterialCosts = materialCost.add(laborCost);
+    this.totalTax = laborAndMaterialCosts.multiply(taxInfo.getTaxRate()).setScale(2, RoundingMode.HALF_UP);
+    this.orderTotal = laborAndMaterialCosts.add(totalTax);
+    }
 
     public Taxes getTaxInfo() {
         return taxInfo;
@@ -87,14 +95,6 @@ public class Order {
     public BigDecimal getOrderTotal() {
         return orderTotal.setScale(2, RoundingMode.HALF_UP);
     }
-
-    public void calculateCosts() {
-        this.materialCost = productInfo.getCostPerSquareFoot().multiply(area);
-        this.laborCost = productInfo.getLaborCostPerSquareFoot().multiply(area);
-        BigDecimal laborAndMaterialCosts = materialCost.add(laborCost);
-        this.totalTax = laborAndMaterialCosts.multiply(taxInfo.getTaxRate());
-        this.orderTotal = laborAndMaterialCosts.add(totalTax);
-    }
     
     public void setCostPerSquareFoot(BigDecimal costPerSqFoot){
         productInfo.setCostPerSquareFoot(costPerSqFoot);
@@ -114,6 +114,30 @@ public class Order {
 
     public Product getProductInfo() {
         return productInfo;
+    }
+    
+    public void setTaxInfo(Taxes taxInfo) {
+        this.taxInfo = taxInfo;
+    }
+
+    public void setProductInfo(Product productInfo) {
+        this.productInfo = productInfo;
+    }
+
+    public void setMaterialCost(BigDecimal materialCost) {
+        this.materialCost = materialCost;
+    }
+
+    public void setLaborCost(BigDecimal laborCost) {
+        this.laborCost = laborCost;
+    }
+
+    public void setTotalTax(BigDecimal totalTax) {
+        this.totalTax = totalTax;
+    }
+
+    public void setOrderTotal(BigDecimal orderTotal) {
+        this.orderTotal = orderTotal;
     }
 
     @Override
@@ -175,29 +199,5 @@ public class Order {
             return false;
         }
         return true;
-    }
-
-    public void setTaxInfo(Taxes taxInfo) {
-        this.taxInfo = taxInfo;
-    }
-
-    public void setProductInfo(Product productInfo) {
-        this.productInfo = productInfo;
-    }
-
-    public void setMaterialCost(BigDecimal materialCost) {
-        this.materialCost = materialCost;
-    }
-
-    public void setLaborCost(BigDecimal laborCost) {
-        this.laborCost = laborCost;
-    }
-
-    public void setTotalTax(BigDecimal totalTax) {
-        this.totalTax = totalTax;
-    }
-
-    public void setOrderTotal(BigDecimal orderTotal) {
-        this.orderTotal = orderTotal;
     }
 }

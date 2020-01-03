@@ -48,6 +48,10 @@ public class FlooringView {
                 dateString = io.readString("\nDate of order (mm/dd/yyyy):").strip();
                 //STRECH: figure out how to make user input more flexible with regex
                 orderDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+                if (orderDate.compareTo(LocalDate.now()) < 0){
+                    io.print("Date of order cannot be earlier than today.");
+                    continue;
+                }
                 break;
             }
             catch(DateTimeException e){

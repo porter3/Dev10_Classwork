@@ -1,13 +1,9 @@
 package com.jakeporter.flooringmastery.service;
 
-import com.jakeporter.flooringmastery.dao.TaxPersistenceException;
 import com.jakeporter.flooringmastery.dto.Order;
-import com.jakeporter.flooringmastery.dto.Product;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
