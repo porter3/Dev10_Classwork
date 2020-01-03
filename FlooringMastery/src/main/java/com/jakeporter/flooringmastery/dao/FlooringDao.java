@@ -21,8 +21,6 @@ public interface FlooringDao {
     public Order deleteOrder(Order order);
     public boolean checkIfTrainingMode() throws ConfigurationPersistenceException, UnknownConfigurationException;
     public void setConfig(int configValue) throws ConfigurationPersistenceException;
-    public String marshallOrder(Order unmarshalledOrder);
-    public Order unmarshallOrder(String marshalledOrder);
     public void writeOrders() throws OrderPersistenceException;
     public void loadOrders() throws OrderPersistenceException;
 }

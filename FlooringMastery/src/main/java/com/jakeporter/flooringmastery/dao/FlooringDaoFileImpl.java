@@ -14,13 +14,10 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -35,7 +32,7 @@ public class FlooringDaoFileImpl implements FlooringDao{
     private final String TAX_RATE_FILE = "stateTaxes.txt";
     private final String PRODUCT_FILE = "productInfo.txt";
     private final String CONFIG_FILE = "config.txt";
-    private final String ORDER_FILE = "orders.txt";
+    static String ORDER_FILE = "orders.txt";
 
     @Override
     public List<Order> getAllOrders() {
@@ -155,8 +152,7 @@ public class FlooringDaoFileImpl implements FlooringDao{
         }
     }
     
-    @Override
-    public String marshallOrder(Order unmarshalledOrder){
+    private String marshallOrder(Order unmarshalledOrder){
         return unmarshalledOrder.getOrderNumber() + DELIMITER
                 + unmarshalledOrder.getDateCreated() + DELIMITER
                 + unmarshalledOrder.getCustomerName() + DELIMITER
@@ -172,8 +168,7 @@ public class FlooringDaoFileImpl implements FlooringDao{
                 + unmarshalledOrder.getOrderTotal() + DELIMITER;
     }
     
-    @Override
-    public Order unmarshallOrder(String marshalledOrder){
+    private Order unmarshallOrder(String marshalledOrder){
         String[] orderInfoFields = marshalledOrder.split(DELIMITER);
         Order unmarshalledOrder = new Order();
         unmarshalledOrder.setOrderNumber(orderInfoFields[0]);
