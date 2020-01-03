@@ -75,6 +75,21 @@ public class FlooringDaoStubImpl implements FlooringDao{
 
     @Override
     public Order addOrder(Order order) {
+        return orderMap.put(order.getOrderNumber(), order);
+    }
+
+    @Override
+    public Order deleteOrder(Order order) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean checkIfTrainingMode() throws ConfigurationPersistenceException, UnknownConfigurationException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setConfig(int configValue) throws ConfigurationPersistenceException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

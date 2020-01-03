@@ -1,12 +1,14 @@
 package com.jakeporter.flooringmastery.controller;
 
+import com.jakeporter.flooringmastery.dao.ConfigurationPersistenceException;
+import com.jakeporter.flooringmastery.dao.OrderPersistenceException;
 import com.jakeporter.flooringmastery.dao.TaxPersistenceException;
+import com.jakeporter.flooringmastery.dao.UnknownConfigurationException;
 import com.jakeporter.flooringmastery.dto.Order;
 import com.jakeporter.flooringmastery.dto.Product;
 import com.jakeporter.flooringmastery.service.FlooringServiceLayer;
 import com.jakeporter.flooringmastery.ui.FlooringView;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,17 +26,23 @@ public class FlooringController {
     }
     
     public void run(){
-        while(true){
-            // prompt user for mode
-            // set config file to mode
-            // load order data
+        // prompt user for mode
+        int configValue = promptMode();
+        // set config file to mode
+        try{
+            setMode(configValue);
+        }
+        catch(ConfigurationPersistenceException e){
+            displayErrorMessage("Could not write to config file");
+            return;
+        }
 
+        while(true){
             int menuChoice = printMenuAndGetInput();
-            
             try{
+                loadOrders();
                 switch(menuChoice){
                     case 1:
-                        // display all orders or display by date (provide options)
                         displayOrders();
                         break;
                     case 2:
@@ -47,10 +55,11 @@ public class FlooringController {
                         deleteOrder();
                         break;
                     case 5:
-                        // save current work
+                        saveCurrentWork();
                         break;
+                    // NEW REQUIREMENT: don't be able to make orders with past dates
                     // STRETCH GOALS: print an invoice showing calculations
-                            // use regex for date submission flexibility
+                            // use regex for date submission flexibility, reading config file
                             // add leading zeroes to order numbers
                     case 6:
                         displayExitMessage();
@@ -59,10 +68,23 @@ public class FlooringController {
                         displayUnknownCommand();
                 }
             }
-            catch(TaxPersistenceException | NonexistentOrderException | NonexistentDateException e){
+            catch(TaxPersistenceException | ConfigurationPersistenceException 
+                    | UnknownConfigurationException | OrderPersistenceException e){
                 view.displayErrorMessage(e.getMessage());
             }
         }
+    }
+    
+    private int promptMode(){
+        return view.promptMode();
+    }
+    
+    private void setMode(int configValue) throws ConfigurationPersistenceException{
+        service.setConfig(configValue);
+    }
+    
+    private void loadOrders() throws OrderPersistenceException{
+        service.loadOrders();
     }
     
     private int printMenuAndGetInput(){
@@ -99,7 +121,7 @@ public class FlooringController {
         }
     }
     
-    private void editOrder() throws TaxPersistenceException, NonexistentOrderException, NonexistentDateException{
+    private void editOrder() throws TaxPersistenceException{
         // display editing banner
         view.displayEditBanner();
         // prompt user for date
@@ -107,14 +129,14 @@ public class FlooringController {
         // get orders from date
         List<Order> ordersFromDate = service.getOrdersFromDate(orderDate);
         if (ordersFromDate.isEmpty()){
-            throw new NonexistentDateException("The specified date does not have any orders associated with it.\n");
+            view.displayErrorMessage("The specified date does not have any orders associated with it.\n");
         }
         // prompt user for order number
         String orderNumber = view.getOrderNumber(orderDate);
         // check if order for date exists
         Order orderToEdit = service.checkOrderOnDate(ordersFromDate, orderNumber);
         if (orderToEdit == null){
-            throw new NonexistentOrderException("The specified order for that date does not exist.\n");
+            view.displayErrorMessage("The specified order for that date does not exist.\n");
         }
         // load product list and tax rates
         service.loadProductsAndTaxRates();
@@ -127,7 +149,7 @@ public class FlooringController {
         service.addOrder(editedOrder);            
     }
     
-    private void deleteOrder() throws NonexistentDateException, NonexistentOrderException{
+    private void deleteOrder(){
         // display order deletion banner
         view.displayDeleteBanner();
         Order orderToDelete;
@@ -159,11 +181,26 @@ public class FlooringController {
         view.displayDeletionSuccess(orderToDelete);
     }
     
+    private void saveCurrentWork() throws ConfigurationPersistenceException, UnknownConfigurationException, OrderPersistenceException{
+        boolean inTrainingMode = service.checkIfTrainingMode();
+        if (!inTrainingMode){
+            service.saveOrders();
+            view.displaySaveSuccess();
+        }
+        else{
+            view.displayFakeSaveSuccess();
+        }
+    }
+        
     private void displayExitMessage(){
         view.displayExitMessage();
     }
     
     private void displayUnknownCommand(){
         view.displayUnknownCommand();
+    }
+    
+    private void displayErrorMessage(String message){
+        view.displayErrorMessage(message);
     }
 }

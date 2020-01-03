@@ -21,6 +21,11 @@ public class FlooringView {
     FlooringView(UserIO io){
         this.io = io;
     }
+    
+    public int promptMode(){
+        return io.readInt("CHOOSE MODE\n"
+        + "1. Production\n2. Training (save function will be disabled)", 1, 2);
+    }
 
     public int printMenuAndGetInput() {
         return io.readInt("\nMENU\n----\n"
@@ -301,6 +306,14 @@ public class FlooringView {
     
     public void displayDeletionSuccess(Order deletedOrder){
         io.print("Order #" + deletedOrder.getOrderNumber() + " successfully deleted");
+    }
+    
+    public void displaySaveSuccess(){
+        io.print("Orders saved successfully.");
+    }
+    
+    public void displayFakeSaveSuccess(){
+        io.print("(TRAINING MODE) Orders not saved.");
     }
     
     public void displayExitMessage(){

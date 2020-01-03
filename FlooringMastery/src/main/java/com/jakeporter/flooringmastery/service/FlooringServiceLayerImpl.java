@@ -1,8 +1,11 @@
 package com.jakeporter.flooringmastery.service;
 
+import com.jakeporter.flooringmastery.dao.ConfigurationPersistenceException;
 import com.jakeporter.flooringmastery.dao.FlooringAuditDao;
 import com.jakeporter.flooringmastery.dao.FlooringDao;
+import com.jakeporter.flooringmastery.dao.OrderPersistenceException;
 import com.jakeporter.flooringmastery.dao.TaxPersistenceException;
+import com.jakeporter.flooringmastery.dao.UnknownConfigurationException;
 import com.jakeporter.flooringmastery.dto.Order;
 import com.jakeporter.flooringmastery.dto.OrderComparator;
 import com.jakeporter.flooringmastery.dto.Product;
@@ -132,5 +135,24 @@ public class FlooringServiceLayerImpl implements FlooringServiceLayer{
     @Override
     public Order deleteOrder(Order orderForDeletion) {
         return crudDao.deleteOrder(orderForDeletion);
+    }
+    
+    public void setConfig(int configValue) throws ConfigurationPersistenceException{
+        crudDao.setConfig(configValue);
+    }
+
+    @Override
+    public boolean checkIfTrainingMode() throws ConfigurationPersistenceException, UnknownConfigurationException {
+        return crudDao.checkIfTrainingMode();
+    }
+
+    @Override
+    public void saveOrders() throws OrderPersistenceException {
+        crudDao.writeOrders();
+    }
+
+    @Override
+    public void loadOrders() throws OrderPersistenceException {
+        crudDao.loadOrders();
     }
 }

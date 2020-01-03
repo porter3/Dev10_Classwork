@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 public class Order {
 
-    public Taxes taxInfo = new Taxes();
+    private Taxes taxInfo = new Taxes();
     private Product productInfo = new Product();
     
     private String orderNumber;
@@ -175,5 +175,29 @@ public class Order {
             return false;
         }
         return true;
+    }
+
+    public void setTaxInfo(Taxes taxInfo) {
+        this.taxInfo = taxInfo;
+    }
+
+    public void setProductInfo(Product productInfo) {
+        this.productInfo = productInfo;
+    }
+
+    public void setMaterialCost(BigDecimal materialCost) {
+        this.materialCost = materialCost;
+    }
+
+    public void setLaborCost(BigDecimal laborCost) {
+        this.laborCost = laborCost;
+    }
+
+    public void setTotalTax(BigDecimal totalTax) {
+        this.totalTax = totalTax;
+    }
+
+    public void setOrderTotal(BigDecimal orderTotal) {
+        this.orderTotal = orderTotal;
     }
 }

@@ -1,6 +1,9 @@
 package com.jakeporter.flooringmastery.service;
 
+import com.jakeporter.flooringmastery.dao.ConfigurationPersistenceException;
+import com.jakeporter.flooringmastery.dao.OrderPersistenceException;
 import com.jakeporter.flooringmastery.dao.TaxPersistenceException;
+import com.jakeporter.flooringmastery.dao.UnknownConfigurationException;
 import com.jakeporter.flooringmastery.dto.Order;
 import com.jakeporter.flooringmastery.dto.Product;
 import java.math.BigDecimal;
@@ -25,4 +28,8 @@ public interface FlooringServiceLayer {
     public List<Order> getOrdersFromDate(LocalDate orderDate);
     public Order checkOrderOnDate(List<Order> orderListOfDate, String orderNumber);
     public Order deleteOrder(Order orderForDeletion);
+    public void setConfig(int configValue) throws ConfigurationPersistenceException;
+    public boolean checkIfTrainingMode() throws ConfigurationPersistenceException, UnknownConfigurationException;
+    public void saveOrders() throws OrderPersistenceException;
+    public void loadOrders() throws OrderPersistenceException;
 }
