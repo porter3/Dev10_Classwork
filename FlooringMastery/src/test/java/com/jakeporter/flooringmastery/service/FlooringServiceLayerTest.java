@@ -4,6 +4,8 @@ import com.jakeporter.flooringmastery.dto.Order;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -154,7 +156,7 @@ public class FlooringServiceLayerTest {
         order1.calculateCosts();
         
         service.addOrder(order1);
-        assertEquals(3, service.getAllOrders());
+        assertEquals(3, service.getAllOrders().size());
     }
 
     /**
@@ -162,6 +164,7 @@ public class FlooringServiceLayerTest {
      */
     @Test
     public void testGetAllOrders() {
+        assertEquals(2, service.getAllOrders().size());
     }
 
     /**
@@ -169,6 +172,15 @@ public class FlooringServiceLayerTest {
      */
     @Test
     public void testGetOrdersFromDate() {
+        LocalDate march10 = LocalDate.parse("03/10/1995", DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        List<Order> orderList = service.getAllOrders();
+        List<Order> orderListOfDate = new ArrayList();
+        for (Order order : orderList){
+            if(order.getDateCreated().compareTo(march10) == 0){
+                orderListOfDate.add(order);
+            }
+        }
+        assertEquals(1, orderListOfDate.size());
     }
 
     /**
@@ -176,6 +188,23 @@ public class FlooringServiceLayerTest {
      */
     @Test
     public void testCheckOrderOnDate() {
+        Order order1 = new Order();
+        order1.setOrderNumber("3");
+        order1.setCustomerName("Jake");
+        order1.setState("NJ");
+        order1.setTaxRate(new BigDecimal(".05").setScale(4));
+        order1.setArea(new BigDecimal("100"));
+        order1.setDateCreated(LocalDate.parse("03/10/1995", DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+        order1.setProductType("Wood");
+        order1.setCostPerSquareFoot(new BigDecimal("5.15"));
+        order1.setLaborCostPerSquareFoot(new BigDecimal("4.75"));
+        order1.calculateCosts();
+        
+        service.addOrder(order1);
+        
+        List<Order> orderList = service.getAllOrders();
+        Order orderBeingVerified = service.checkOrderOnDate(orderList, order1.getOrderNumber());
+        assertNotNull(orderBeingVerified);
     }
     
 }

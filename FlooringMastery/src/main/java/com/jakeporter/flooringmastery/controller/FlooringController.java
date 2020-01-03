@@ -57,7 +57,6 @@ public class FlooringController {
                     case 5:
                         saveCurrentWork();
                         break;
-                    // NEW REQUIREMENT: don't be able to make orders with past dates
                     // STRETCH GOALS: print an invoice showing calculations
                             // use regex for date submission flexibility, reading config file
                             // add leading zeroes to order numbers
