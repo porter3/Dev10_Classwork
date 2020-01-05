@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -43,12 +44,22 @@ public class FlooringView {
         // set all
         String dateString;
         LocalDate orderDate;
-        // convert dateString to LocalDate, check for proper formatting.
+        // convert dateString to LocalDate, check for proper formatting
         while(true){
+            /* although regex is used to get a date, I'm keeping the try-catch block in case the regexes in convertToLocalDatePattern
+            don't catch whatver the user input is*/
             try{
+                // get user input for date, allow for any symbol between month/day/year, or no symbol at all
                 dateString = io.readString("\nDate of order (mm/dd/yyyy):").strip();
-                //STRECH: figure out how to make user input more flexible with regex
-                orderDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+                // check if user's input looks like a legit date, prompt again for input if it doesn't
+                if(!Pattern.matches("\\d\\d\\W?\\d\\d\\W?\\d\\d\\d\\d", dateString)){
+                    io.print("Date must be in the format mm/dd/yyyy (or something very similar).");
+                    continue;
+                }
+                // method implementation below, converts user's input to 'MM/dd/yyyy' pattern
+                dateString = convertToLocalDatePattern(dateString);
+                // convert user's input to a LocalDate
+                orderDate = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM-dd-yyyy"));
                 if (orderDate.compareTo(LocalDate.now()) < 0){
                     io.print("Date of order cannot be earlier than today.");
                     continue;
@@ -56,7 +67,7 @@ public class FlooringView {
                 break;
             }
             catch(DateTimeException e){
-                io.print("Date must be a proper date in the format 'mm/dd/yyyy'");
+                io.print("Date is not a proper date.");
             }
         }
         String customerName = io.readString("Customer name:");
@@ -97,6 +108,19 @@ public class FlooringView {
         // set productType to the material chosen
         newOrder.setProductType(materials.get(materialSelection));
         return newOrder;
+    }
+    
+    private String convertToLocalDatePattern(String dateString){
+        // if dateString matches \d\d\D\d\d\D\d\d\d\d
+        if (Pattern.matches("\\d\\d\\W\\d\\d\\W\\d\\d\\d\\d", dateString)){
+            return dateString.replaceAll("\\W", "-");
+        }
+        if (Pattern.matches("\\d\\d\\d\\d\\d\\d\\d\\d", dateString)){
+            return dateString.substring(0, 2) + "-" + dateString.substring(2, 4) + "-" + dateString.substring(4, 8);
+        }
+        else{
+            throw new DateTimeException("Date input could not be parsed.");
+        }
     }
     
     public void displayOrder(Order order){
@@ -182,17 +206,22 @@ public class FlooringView {
         while(true){
             try{
                 dateString = io.readString("\nPlease enter the date of the order you want to edit(mm/dd/yyyy):");
-                return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+                if (!Pattern.matches("\\d\\d\\W?\\d\\d\\W?\\d\\d\\d\\d", dateString)){
+                    io.print("Date must be in the format mm/dd/yyyy (or something very similar).");
+                    continue;
+                }
+                dateString = convertToLocalDatePattern(dateString);
+                return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM-dd-yyyy"));
             }
             catch(DateTimeException e){
-                io.print("Date must be a proper date in the format 'mm/dd/yyyy'");
+                io.print("Date is not a proper date.");
             }
         }
     }
     
     public String getOrderNumber(LocalDate orderDate){
         int orderNumber = io.readInt("\nPlease enter order number for " + orderDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
-        return String.format("%04d", orderNumber);
+        return String.format("%05d", orderNumber);
     }
     
     public Order getEditedOrder(Order orderToEdit, List<Product> productList, Set<String> states){
@@ -209,11 +238,16 @@ public class FlooringView {
             }
             else{
                 try{
-                    newDate = LocalDate.parse(newDateStr, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+                    if(!Pattern.matches("\\d\\d\\W?\\d\\d\\W?\\d\\d\\d\\d", newDateStr)){
+                        io.print("Date must be in the format mm/dd/yyyy (or something very similar).");
+                        continue;
+                    }
+                    newDateStr = convertToLocalDatePattern(newDateStr);
+                    newDate = LocalDate.parse(newDateStr, DateTimeFormatter.ofPattern("MM-dd-yyyy"));
                     break;
                 }
                 catch(NumberFormatException e){
-                    io.print("Date must be a proper date in the format of 'mm/dd/yyyy'");
+                    io.print("Date is not a proper date.");
                 }
             }
         }
