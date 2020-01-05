@@ -37,11 +37,17 @@ public class FlooringController {
             displayErrorMessage("Could not write to config file");
             return;
         }
+        
+        try{
+            loadOrders();
+        }
+        catch(OrderPersistenceException e){
+            displayErrorMessage("Orders could not be loaded from file.");
+        }
 
         while(true){
             int menuChoice = printMenuAndGetInput();
             try{
-                loadOrders();
                 switch(menuChoice){
                     case 1:
                         displayOrders();

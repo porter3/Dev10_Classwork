@@ -174,10 +174,15 @@ public class FlooringView {
         while(true){
             try{
                 dateString = io.readString("\nEnter the date you would like to view orders for (mm/dd/yyyy):");
-                return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+                if (!Pattern.matches("\\d\\d\\W?\\d\\d\\W?\\d\\d\\d\\d", dateString)){
+                    io.print("Date must be in the format mm/dd/yyyy (or something very similar).");
+                    continue;
+                }
+                dateString = convertToLocalDatePattern(dateString);
+                return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM-dd-yyyy"));
             }
             catch(DateTimeException e){
-                io.print("Date must be a proper date in the format 'mm/dd/yyyy'");
+                io.print("Date is not a proper date.");
             }
         }
     }
@@ -341,7 +346,12 @@ public class FlooringView {
         while(true){
             try{
                 dateString = io.readString("Please enter the date of the order you want to delete(mm/dd/yyyy):");
-                return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+                if (!Pattern.matches("\\d\\d\\W?\\d\\d\\W?\\d\\d\\d\\d", dateString)){
+                    io.print("Date must be in the format mm/dd/yyyy (or something very similar).");
+                    continue;
+                }
+                dateString = convertToLocalDatePattern(dateString);
+                return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM-dd-yyyy"));
             }
             catch(DateTimeException e){
                 io.print("Date must be a proper date in the format 'mm/dd/yyyy'");

@@ -1,1 +1,1 @@
-Mode::PRODUCTION
+Mode::TRAINING
