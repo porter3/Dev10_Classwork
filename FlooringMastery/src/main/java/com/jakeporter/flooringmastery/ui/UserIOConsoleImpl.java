@@ -92,8 +92,17 @@ public class UserIOConsoleImpl implements UserIO{
     
     @Override
     public String readString(String prompt){
+        String stringRead;
         Scanner sc = new Scanner(System.in);
-        System.out.println(prompt);
-        return sc.nextLine();
+        while(true){
+            System.out.println(prompt);
+            stringRead = sc.nextLine();
+            if (stringRead.contains("::")){
+                System.out.println("Cannot enter a double colon.");
+                continue;
+            }
+            break;
+        }
+        return stringRead;
     }    
 }

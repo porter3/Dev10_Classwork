@@ -58,7 +58,7 @@ public class FlooringServiceLayerTest {
     @Test
     public void testGenerateOrderNumber() {
         int highest = service.getHighestOrderNumber();
-        assertEquals("3", service.generateOrderNumber(highest));
+        assertEquals("00003", service.generateOrderNumber(highest));
     }
 
     /**
@@ -115,7 +115,7 @@ public class FlooringServiceLayerTest {
     @Test
     public void testPopulateOrderFields() throws Exception {
         Order order1 = new Order();
-        order1.setOrderNumber("3");
+        order1.setOrderNumber("00003");
         order1.setCustomerName("Jake");
         order1.setState("NJ");
         order1.setTaxRate(new BigDecimal(".05").setScale(4));
@@ -134,7 +134,7 @@ public class FlooringServiceLayerTest {
         order2.setProductType("Wood");
         order2 = service.populateOrderFields(order2);
         
-        assertEquals(order1, order2);
+        assertTrue(order1.equals(order2));
     }
 
     /**
