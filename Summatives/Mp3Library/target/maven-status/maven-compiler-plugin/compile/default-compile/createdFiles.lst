@@ -1,0 +1,8 @@
+com\jakeporter\mp3library\ui\UserIOConsoleImpl.class
+com\jakeporter\mp3library\App.class
+com\jakeporter\mp3library\dao\Mp3LibraryDaoImpl.class
+com\jakeporter\mp3library\dto\Mp3.class
+com\jakeporter\mp3library\dao\Mp3LibraryDao.class
+com\jakeporter\mp3library\controller\Mp3LibraryController.class
+com\jakeporter\mp3library\ui\Mp3LibraryView.class
+com\jakeporter\mp3library\ui\UserIO.class

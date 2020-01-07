@@ -1,0 +1,4 @@
+com\jakeporter\studentquizscores\IOInterface.class
+com\jakeporter\studentquizscores\Reader.class
+com\jakeporter\studentquizscores\App.class
+com\jakeporter\studentquizscores\StudentDataSet.class

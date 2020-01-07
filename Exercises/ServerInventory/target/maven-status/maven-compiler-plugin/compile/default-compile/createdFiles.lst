@@ -1,0 +1,4 @@
+com\jakeporter\serverinventory\dao\App.class
+com\jakeporter\serverinventory\dto\Server.class
+com\jakeporter\serverinventory\dao\ServerDaoInMemImpl.class
+com\jakeporter\serverinventory\dao\ServerDao.class
