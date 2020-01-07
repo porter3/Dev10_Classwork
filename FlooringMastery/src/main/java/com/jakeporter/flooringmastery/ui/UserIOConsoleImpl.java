@@ -103,6 +103,6 @@ public class UserIOConsoleImpl implements UserIO{
             }
             break;
         }
-        return stringRead;
-    }    
+        return stringRead.replace(':', ' ').strip();
+    }
 }

@@ -7,6 +7,7 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -50,7 +51,7 @@ public class FlooringView {
             don't catch whatver the user input is*/
             try{
                 // get user input for date, allow for any symbol between month/day/year, or no symbol at all
-                dateString = io.readString("\nDate of order (mm/dd/yyyy):").strip();
+                dateString = io.readString("\nDate of order (mm/dd/yyyy):");
                 // check if user's input looks like a legit date, prompt again for input if it doesn't
                 if(!Pattern.matches("\\d\\d\\W?\\d\\d\\W?\\d\\d\\d\\d", dateString)){
                     io.print("Date must be in the format mm/dd/yyyy (or something very similar).");
@@ -73,7 +74,7 @@ public class FlooringView {
         String customerName = io.readString("Customer name:");
         String state;
         while(true){
-            state = io.readString("State of installation (i.e. NC, WY, TX):").strip().toUpperCase();
+            state = io.readString("State of installation (i.e. NC, WY, TX):").toUpperCase();
             if(stateList.contains(state)){
                 break;
             }
@@ -82,7 +83,11 @@ public class FlooringView {
         BigDecimal area;
         while(true){
             try{
-                area = new BigDecimal (io.readString("Area in square feet:").strip());
+                area = new BigDecimal (io.readString("Area in square feet:"));
+                if ((area.compareTo(new BigDecimal("0")) == -1) || (area.compareTo(new BigDecimal("0")) == 0)){
+                    io.print("Area must be a positive number.");
+                    continue;
+                }
                 break;
             }
             catch(NumberFormatException e){
@@ -99,7 +104,16 @@ public class FlooringView {
             // assign productType and listing number to hashmap
             materials.put(i+1, productList.get(i).getProductType());
         }
-        int materialSelection = io.readInt("Select a choice:", 1, productList.size());
+        int materialSelection;
+        while (true){
+            try{
+                materialSelection = io.readInt("Select a choice:", 1, productList.size());
+                break;
+            }
+            catch(InputMismatchException e){
+                io.print("Please enter a number to select one of the flooring options.");
+            }
+        }
         Order newOrder = new Order();
         newOrder.setCustomerName(customerName);
         newOrder.setArea(area);
@@ -134,7 +148,7 @@ public class FlooringView {
     
     public boolean promptToCommitOrder(){
         while(true){
-            char choice = io.readString("\nConfirm order? (y/n)").toLowerCase().strip().charAt(0);
+            char choice = io.readString("\nConfirm order? (y/n)").toLowerCase().charAt(0);
             if (choice == 'y'){
                 io.print("Order confirmed.");
                 return true;
@@ -235,7 +249,7 @@ public class FlooringView {
         LocalDate newDate;
         while(true){
             newDateStr = io.readString("Current Order Date: " + orderToEdit.getDateCreated().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"))
-                    + " (new dates should be entered as mm/dd/yyyy)").strip();
+                    + " (new dates should be entered as mm/dd/yyyy)");
             // if user leaves a field blank by hitting 'return', just assign it to the old field
             if (newDateStr.isBlank()){
                 newDate = orderToEdit.getDateCreated();
@@ -256,14 +270,14 @@ public class FlooringView {
                 }
             }
         }
-        String newCustomerName = io.readString("Current customer info: " + orderToEdit.getCustomerName()).strip();
+        String newCustomerName = io.readString("Current customer info: " + orderToEdit.getCustomerName());
         if (newCustomerName.isBlank()){
             newCustomerName = orderToEdit.getCustomerName();
         }
         // state
         String newState;
         while(true){
-            newState = io.readString("Current state: " + orderToEdit.getState()).strip().toUpperCase();
+            newState = io.readString("Current state: " + orderToEdit.getState()).toUpperCase();
             if (newState.isBlank()){
                 newState = orderToEdit.getState();
                 break;
@@ -277,7 +291,7 @@ public class FlooringView {
         String newAreaStr;
         BigDecimal newArea;
         while (true){
-            newAreaStr = io.readString("Current area(sq. ft.): " + orderToEdit.getArea()).strip();
+            newAreaStr = io.readString("Current area(sq. ft.): " + orderToEdit.getArea());
             // if user hits 'return', assign old area value to the new area field
             if (newAreaStr.isBlank()){
                 newArea = orderToEdit.getArea();
@@ -315,8 +329,16 @@ public class FlooringView {
         // allow user to keep previous material selection
         int sameMaterialOption = productList.size() + 1;
         io.print(sameMaterialOption + ". Keep previous material");
-        int materialSelection = io.readInt("Select a choice:", 1, sameMaterialOption);
-        
+        int materialSelection;
+        while(true){
+            try{
+                materialSelection = io.readInt("Select a choice:", 1, sameMaterialOption);
+                break;
+            }
+            catch(InputMismatchException e){
+                io.print("Area must be a number.");
+            }
+        }
         // create new 'edited' order, assign values
         Order editedOrder = new Order();
         // keep the edited order's order number the same
@@ -363,7 +385,7 @@ public class FlooringView {
         io.print("Order for deletion: ");
         displayOrder(order);
         while(true){
-            char choice = io.readString("Delete order? (y/n)").toLowerCase().strip().charAt(0);
+            char choice = io.readString("Delete order? (y/n)").toLowerCase().charAt(0);
             if (choice == 'y'){
                 io.print("Order confirmed.");
                 return true;

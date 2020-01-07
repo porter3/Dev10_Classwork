@@ -64,9 +64,6 @@ public class FlooringController {
                     case 5:
                         saveCurrentWork();
                         break;
-                    // STRETCH GOALS:
-                            // use regex for date submission flexibility, reading config file
-                            // add leading zeroes to order numbers
                     case 6:
                         displayExitMessage();
                         return;
