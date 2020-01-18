@@ -28,6 +28,7 @@ public class GuessGameDaoDBImpl implements GuessGameDao{
         Game newGame = createGame(answer);
         final String INSERT_GAME = "INSERT INTO game(answer, finishedGame, gameStartTime) VALUES (?,?,?)";
         jdbcTemplate.update(INSERT_GAME, newGame.getAnswer(), newGame.isFinishedGame(), newGame.getGameStartTime()); // getGameStartTime returns a Timestamp
+        System.out.println("GAME ID = " + jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class));
         newGame.setGameId(jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class)); // get the last insert ID and assign to the Game object
         return newGame;
     }
@@ -52,7 +53,8 @@ public class GuessGameDaoDBImpl implements GuessGameDao{
 
     @Override
     public void markGameWon(int gameId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String UPDATE_GAME = "UPDATE game SET finishedGame = true WHERE gameID = ?";
+        jdbcTemplate.update(UPDATE_GAME, gameId);
     }
 
 }

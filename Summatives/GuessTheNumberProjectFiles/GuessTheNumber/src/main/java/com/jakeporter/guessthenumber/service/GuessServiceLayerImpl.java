@@ -70,17 +70,17 @@ public class GuessServiceLayerImpl implements GuessServiceLayer{
 
     @Override
     public boolean checkIfCorrect(String guessInfo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return guessInfo.equals("e:4:p:0");
     }
 
     @Override
     public void markGameWon(int gameId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        gameDao.markGameWon(gameId);
     }
 
     @Override
     public Round addNewRound(String guess, String guessInfo, int gameId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return roundDao.addRound(guess, guessInfo, gameId);
     }
 
     @Override

@@ -32,12 +32,15 @@ public class GuessTheNumberController {
     @PostMapping("/guess")
     public ResponseEntity<Round> guessNumber(@RequestBody GuessGameIDHolder holder){
         // calculate the correctness of the user's guess
+        System.out.println("HOLDER's GAME ID: " + holder.getGameId());
         String guessInfo = service.calculateGuess(holder.getGuess(), holder.getGameId());
-        System.out.println(guessInfo);
+        System.out.println("USER GUESS INFORMATION: " + guessInfo); // PT
         // create a new Round and populate it
         Round round = service.addNewRound(holder.getGuess(), guessInfo, holder.getGameId());
+        System.out.println("ROUND ADDED"); // PT
         // check if guessInfo is "e:4:p:0"
         boolean isCorrect = service.checkIfCorrect(guessInfo);
+        System.out.println("ANSWER IS CORRECT?: " + Boolean.valueOf(isCorrect).toString().toUpperCase()); // PT
         if (isCorrect){
             service.markGameWon(holder.getGameId());
         }

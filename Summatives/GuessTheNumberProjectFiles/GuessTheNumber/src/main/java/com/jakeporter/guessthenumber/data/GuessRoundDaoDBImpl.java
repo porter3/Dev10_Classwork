@@ -53,6 +53,7 @@ public class GuessRoundDaoDBImpl implements GuessRoundDao{
         // get ID from round created in DB
         int newId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         newRound.setRoundId(newId);
+        newRound.setGameId(gameId);
         newRound.setUserGuess(guess);
         newRound.setGuessInfo(guessInfo);
         newRound.setRoundTimestamp(timeRoundCreated);
