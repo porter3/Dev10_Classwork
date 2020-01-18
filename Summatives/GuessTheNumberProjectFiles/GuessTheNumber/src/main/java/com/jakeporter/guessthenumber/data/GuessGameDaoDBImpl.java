@@ -1,11 +1,15 @@
 package com.jakeporter.guessthenumber.data;
 
 import com.jakeporter.guessthenumber.entities.Game;
+import com.jakeporter.guessthenumber.entities.Round;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -21,6 +25,18 @@ public class GuessGameDaoDBImpl implements GuessGameDao{
     
     public GuessGameDaoDBImpl(JdbcTemplate jdbcTemplate){
         this.jdbcTemplate = jdbcTemplate;
+    }
+    
+    public static final class GameMapper implements RowMapper<Game>{
+        @Override
+        public Game mapRow(ResultSet rs, int index) throws SQLException {
+            Game game = new Game();
+            game.setGameId(rs.getInt("gameID"));
+            game.setAnswer(rs.getString("answer"));
+            game.setFinishedGame(rs.getBoolean("finishedGame"));
+            game.setGameStartTime(rs.getTimestamp("gameStartTime"));
+            return game;
+        }
     }
 
     @Override
@@ -43,7 +59,8 @@ public class GuessGameDaoDBImpl implements GuessGameDao{
 
     @Override
     public List<Game> getAllGames() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String SELECT_ALL_GAMES = "SELECT * FROM GAME";
+        return jdbcTemplate.query(SELECT_ALL_GAMES, new GameMapper());
     }
 
     @Override

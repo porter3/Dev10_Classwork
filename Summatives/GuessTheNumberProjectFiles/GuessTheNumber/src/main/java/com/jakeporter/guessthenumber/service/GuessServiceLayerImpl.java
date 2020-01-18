@@ -6,6 +6,7 @@ import com.jakeporter.guessthenumber.entities.Game;
 import com.jakeporter.guessthenumber.entities.Round;
 import java.util.List;
 import java.util.Random;
+import static java.util.stream.Collectors.toList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -85,12 +86,18 @@ public class GuessServiceLayerImpl implements GuessServiceLayer{
 
     @Override
     public List<Game> getAllGames() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Game> allGames = gameDao.getAllGames();
+        hideUnfinishedGameAnswers(allGames);
+        return allGames;
     }
 
     @Override
-    public List<Game> hideUnfinishedGameAnswers() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void hideUnfinishedGameAnswers(List<Game> gamesToFilter) {
+        for (int i =0; i < gamesToFilter.size(); i++){
+            if (!gamesToFilter.get(i).isFinishedGame()){
+                gamesToFilter.get(i).setAnswer("");
+            }
+        }  
     }
 
     @Override

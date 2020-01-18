@@ -61,7 +61,7 @@ public interface GuessServiceLayer {
      * 
      * @return 
      */
-    public List<Game> hideUnfinishedGameAnswers();
+    public void hideUnfinishedGameAnswers(List<Game> gamesToFilter);
     
     public Game getGameById(int gameId);
     
