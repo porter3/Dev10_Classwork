@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface GuessServiceLayer {
 
-    public Game startGame();
+    public int startGame();
     
     /**
      * Is a helper method for startGame()
@@ -26,7 +26,7 @@ public interface GuessServiceLayer {
      * @param guess
      * @param gameId
      * @return String in the format "e:0:p:0" where 0 is the number of exact
-     * matches respectively.
+     * and partial matches respectively.
      */
     public String calculateGuess(String guess, int gameId);
     
@@ -40,8 +40,9 @@ public interface GuessServiceLayer {
     
     /**
      * Updates the DB to mark a game as finished/won.
+     * @param gameId
      */
-    public void markGameWon();
+    public void markGameWon(int gameId);
     
     /**
      * Creates a round object, populates the userGuess, guessInfo, and gameId

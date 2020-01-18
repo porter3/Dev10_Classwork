@@ -1,6 +1,6 @@
 package com.jakeporter.guessthenumber.entities;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
@@ -12,7 +12,7 @@ public class Game {
     private int gameId;
     private String answer;
     private boolean finishedGame;
-    private LocalDateTime gameStartTime;    // maybe make these fields final later? Determine after DAO methods are written.
+    private Timestamp gameStartTime;    // maybe make these fields final later? Determine after DAO methods are written.
 
     public int getGameId() {
         return gameId;
@@ -38,11 +38,11 @@ public class Game {
         this.finishedGame = finishedGame;
     }
 
-    public LocalDateTime getGameStartTime() {
+    public Timestamp getGameStartTime() {
         return gameStartTime;
     }
 
-    public void setGameStartTime(LocalDateTime gameStartTime) {
+    public void setGameStartTime(Timestamp gameStartTime) {
         this.gameStartTime = gameStartTime;
     }
 

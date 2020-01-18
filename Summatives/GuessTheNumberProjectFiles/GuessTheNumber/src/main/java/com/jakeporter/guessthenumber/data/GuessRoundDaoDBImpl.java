@@ -1,7 +1,6 @@
 package com.jakeporter.guessthenumber.data;
 
 import com.jakeporter.guessthenumber.entities.Round;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,8 +46,10 @@ public class GuessRoundDaoDBImpl implements GuessRoundDao{
     public Round addRound(String guess, String guessInfo, int gameId) {
         Round newRound = new Round();
         Timestamp timeRoundCreated = Timestamp.valueOf(LocalDateTime.now().withNano(0));
-        final String INSERT_ROUND = "INSERT INTO round (userGuess, guessInfo, gameId, roundTimestamp) VALUES(?,?,?,?)";
+        
+        final String INSERT_ROUND = "INSERT INTO round (gameId, userGuess, guessInfo, roundTimestamp) VALUES(?,?,?,?)";
         jdbcTemplate.update(INSERT_ROUND, gameId, guess, guessInfo, timeRoundCreated);
+        
         // get ID from round created in DB
         int newId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         newRound.setRoundId(newId);
@@ -57,16 +57,12 @@ public class GuessRoundDaoDBImpl implements GuessRoundDao{
         newRound.setGuessInfo(guessInfo);
         newRound.setRoundTimestamp(timeRoundCreated);
         
-        
+        return newRound;
     }
 
     @Override
     public List<Round> getRoundsForGame(int gameId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    @Override
-    public void addGameInfoToRounds(List<Round> rounds) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String SELECT_ALL_ROUNDS = "SELECT * FROM round WHERE gameID = ?";
+        return jdbcTemplate.query(SELECT_ALL_ROUNDS, new RoundMapper(), gameId);
     }
 }

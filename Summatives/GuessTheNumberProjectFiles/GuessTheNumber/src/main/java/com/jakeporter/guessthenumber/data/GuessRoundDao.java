@@ -26,11 +26,4 @@ public interface GuessRoundDao {
      * @return List of Rounds for a Game
      */
     public List<Round> getRoundsForGame(int gameId);
-    
-    /**
-     * Helper method for getRoundsForGame().
-     * 
-     * @param rounds 
-     */
-    public void addGameInfoToRounds(List<Round> rounds);
 }

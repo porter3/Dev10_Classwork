@@ -18,4 +18,19 @@ CREATE TABLE round(
     roundTimestamp DATETIME NOT NULL,
     FOREIGN KEY fk_round_game(gameID)
 		REFERENCES game(gameID)
-    );
+);
+    
+INSERT INTO game(answer, finishedGame, gameStartTime) VALUES
+('9999', false, '2020-01-17 15:36:30.000'),
+('5000', false, '2021-01-17 15:36:30.000'),
+('0001', false, '2020-02-17 15:36:30.000');
+
+INSERT INTO round(gameID, userGuess, guessInfo, roundTimestamp) VALUES
+(1, '5968', 'e:0:p:0', '2020-01-17 15:36:31.000'),
+(1, '6000', 'e:0:p:0', '2020-01-17 15:36:31.000');
+
+-- test queries
+SELECT *
+FROM round WHERE gameID = 1;
+
+SELECT answer FROM game WHERE gameID = ?;
