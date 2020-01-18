@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -55,11 +56,13 @@ public class GuessTheNumberController {
         return new ResponseEntity(service.getAllGames(), HttpStatus.OK);
     }
     
-//    public ResponseEntity<Game> getGameById(int gameId){
-//        
-//    }
-//    
-//    public ResponseEntity<List<Round>> getRoundsForGame(int gameId){
-//        
-//    }
+    @GetMapping("/game/{gameId}")
+    public ResponseEntity<Game> getGameById(@PathVariable int gameId){
+        return new ResponseEntity(service.getGameById(gameId), HttpStatus.OK);
+    }
+    
+    @GetMapping("/rounds/{gameId}")
+    public ResponseEntity<List<Round>> getRoundsForGame(@PathVariable int gameId){
+        return new ResponseEntity(service.getRoundsForGame(gameId), HttpStatus.OK);
+    }
 }

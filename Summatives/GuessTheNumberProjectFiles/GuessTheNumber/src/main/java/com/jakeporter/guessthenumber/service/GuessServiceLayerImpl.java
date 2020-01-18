@@ -102,12 +102,17 @@ public class GuessServiceLayerImpl implements GuessServiceLayer{
 
     @Override
     public Game getGameById(int gameId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Game game = gameDao.getGameById(gameId);
+        // Hide answer for game if it's still in progress
+        if (!game.isFinishedGame()){
+            game.setAnswer("");
+        }
+        return game;
     }
 
     @Override
     public List<Round> getRoundsForGame(int gameId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return roundDao.getRoundsForGame(gameId);
     }
     
     

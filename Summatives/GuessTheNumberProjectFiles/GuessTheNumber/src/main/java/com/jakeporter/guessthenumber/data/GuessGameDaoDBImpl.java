@@ -65,7 +65,8 @@ public class GuessGameDaoDBImpl implements GuessGameDao{
 
     @Override
     public Game getGameById(int gameId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final String SELECT_GAME = "SELECT * FROM game WHERE gameID = ?";
+        return jdbcTemplate.queryForObject(SELECT_GAME, new GameMapper(), gameId);
     }
 
     @Override
