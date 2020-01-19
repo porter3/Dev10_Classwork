@@ -34,6 +34,7 @@ public class GuessRoundDaoDBImpl implements GuessRoundDao{
         public Round mapRow(ResultSet rs, int index) throws SQLException {
             Round round = new Round();
             round.setRoundId(rs.getInt("roundID"));
+            round.setGameId(rs.getInt("gameID"));
             round.setUserGuess(rs.getString("userGuess"));
             round.setGuessInfo(rs.getString("guessInfo"));
             round.setRoundTimestamp(rs.getTimestamp("roundTimestamp"));

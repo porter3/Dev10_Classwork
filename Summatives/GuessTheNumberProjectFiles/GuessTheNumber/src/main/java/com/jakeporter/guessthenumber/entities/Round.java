@@ -96,6 +96,9 @@ public class Round {
         return true;
     }
 
-
+    @Override
+    public String toString() {
+        return "Round{" + "roundId=" + roundId + ", gameId=" + gameId + ", userGuess=" + userGuess + ", guessInfo=" + guessInfo + ", roundTimestamp=" + roundTimestamp + '}';
+    }
     
 }

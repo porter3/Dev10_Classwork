@@ -61,7 +61,7 @@ public class GuessServiceLayerImpl implements GuessServiceLayer{
                 // if partial match, increment partialMatch counter
                 else if(answer.contains(String.valueOf(guess.charAt(i)))){
                     partialMatch++;
-                } 
+                }
             }
         return String.format("e:%d:p:%d", exactMatch, partialMatch);
     }
