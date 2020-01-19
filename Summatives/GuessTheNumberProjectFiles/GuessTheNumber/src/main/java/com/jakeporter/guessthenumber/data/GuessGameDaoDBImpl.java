@@ -1,7 +1,6 @@
 package com.jakeporter.guessthenumber.data;
 
 import com.jakeporter.guessthenumber.entities.Game;
-import com.jakeporter.guessthenumber.entities.Round;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -44,7 +43,7 @@ public class GuessGameDaoDBImpl implements GuessGameDao{
         Game newGame = createGame(answer);
         final String INSERT_GAME = "INSERT INTO game(answer, finishedGame, gameStartTime) VALUES (?,?,?)";
         jdbcTemplate.update(INSERT_GAME, newGame.getAnswer(), newGame.isFinishedGame(), newGame.getGameStartTime()); // getGameStartTime returns a Timestamp
-        System.out.println("GAME ID = " + jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class));
+        System.out.println("GAME ID = " + jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class)); // PF
         newGame.setGameId(jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class)); // get the last insert ID and assign to the Game object
         return newGame;
     }
@@ -74,5 +73,10 @@ public class GuessGameDaoDBImpl implements GuessGameDao{
         final String UPDATE_GAME = "UPDATE game SET finishedGame = true WHERE gameID = ?";
         jdbcTemplate.update(UPDATE_GAME, gameId);
     }
-
+    
+    @Override
+    public String getGameAnswer(int gameId){
+        final String SELECT_ANSWER = "SELECT answer FROM game WHERE gameID = ?";
+        return jdbcTemplate.queryForObject(SELECT_ANSWER, String.class, gameId);
+    }
 }

@@ -6,7 +6,6 @@ import com.jakeporter.guessthenumber.entities.Game;
 import com.jakeporter.guessthenumber.entities.Round;
 import java.util.List;
 import java.util.Random;
-import static java.util.stream.Collectors.toList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -39,8 +38,7 @@ public class GuessServiceLayerImpl implements GuessServiceLayer{
         return createdGame.getGameId();
     }
 
-    @Override
-    public String generateAnswer() {
+    private String generateAnswer() {
         Random random = new Random();
         int randomInt = random.nextInt(10000);
         return String.format("%04d", randomInt);
@@ -49,8 +47,7 @@ public class GuessServiceLayerImpl implements GuessServiceLayer{
     @Override
     public String calculateGuess(String guess, int gameId) {
         // get game's answer
-        final String SELECT_ANSWER = "SELECT answer FROM game WHERE gameID = ?";
-        String answer = jdbcTemplate.queryForObject(SELECT_ANSWER, String.class, gameId);
+        String answer = gameDao.getGameAnswer(gameId);
         
         // check guess against answer
         int partialMatch = 0;
@@ -91,8 +88,7 @@ public class GuessServiceLayerImpl implements GuessServiceLayer{
         return allGames;
     }
 
-    @Override
-    public void hideUnfinishedGameAnswers(List<Game> gamesToFilter) {
+    private void hideUnfinishedGameAnswers(List<Game> gamesToFilter) {
         for (int i =0; i < gamesToFilter.size(); i++){
             if (!gamesToFilter.get(i).isFinishedGame()){
                 gamesToFilter.get(i).setAnswer("");
@@ -114,6 +110,4 @@ public class GuessServiceLayerImpl implements GuessServiceLayer{
     public List<Round> getRoundsForGame(int gameId) {
         return roundDao.getRoundsForGame(gameId);
     }
-    
-    
 }

@@ -22,4 +22,6 @@ public interface GuessGameDao {
     public Game getGameById(int gameId);
     
     public void markGameWon(int gameId);
+    
+    public String getGameAnswer(int gameId);
 }

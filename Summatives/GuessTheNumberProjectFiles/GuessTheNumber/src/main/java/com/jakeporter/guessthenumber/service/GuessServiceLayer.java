@@ -13,15 +13,6 @@ public interface GuessServiceLayer {
     public int startGame();
     
     /**
-     * Is a helper method for startGame()
-     * 
-     * Generates a random number between 0 and 9999, converts it to a String with
-     * four digits and leading zeroes if need be.
-     * @return Answer to populate the Game object
-     */
-    public String generateAnswer();
-    
-    /**
      *
      * @param guess
      * @param gameId
@@ -55,13 +46,6 @@ public interface GuessServiceLayer {
     public Round addNewRound(String guess, String guessInfo, int gameId);
     
     public List<Game> getAllGames();
-    
-    /**
-     * Helper method for getAllGames();
-     * 
-     * @return 
-     */
-    public void hideUnfinishedGameAnswers(List<Game> gamesToFilter);
     
     public Game getGameById(int gameId);
     

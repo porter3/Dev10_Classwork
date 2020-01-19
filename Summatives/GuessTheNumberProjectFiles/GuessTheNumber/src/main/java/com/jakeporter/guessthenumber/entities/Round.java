@@ -57,12 +57,12 @@ public class Round {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + this.roundId;
-        hash = 29 * hash + this.gameId;
-        hash = 29 * hash + Objects.hashCode(this.userGuess);
-        hash = 29 * hash + Objects.hashCode(this.guessInfo);
-        hash = 29 * hash + Objects.hashCode(this.roundTimestamp);
+        int hash = 3;
+        hash = 71 * hash + this.roundId;
+        hash = 71 * hash + this.gameId;
+        hash = 71 * hash + Objects.hashCode(this.userGuess);
+        hash = 71 * hash + Objects.hashCode(this.guessInfo);
+        hash = 71 * hash + Objects.hashCode(this.roundTimestamp);
         return hash;
     }
 
@@ -95,5 +95,7 @@ public class Round {
         }
         return true;
     }
+
+
     
 }
