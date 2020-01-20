@@ -202,4 +202,28 @@ public class GuessServiceLayerTest {
         assertTrue(roundsForGameTwo.contains(roundC)); // gameTwo has roundC
     }
     
+    // wants to see validateGameInProgress() throw an exception
+    @Test
+    public void testValidateGameInProgressA() throws Exception{
+        Game game = new Game();
+        gameDao.addGame("1234");
+        game = gameDao.getGameById(1);
+        assertEquals(1, game.getGameId()); // ensure game's newly-populated ID is 1 and it isn't null
+                
+        service.markGameWon(game.getGameId());
+        
+        assertThrows(GameInProgressException.class, () -> {service.validateGameInProgress(1);});
+    }
+    
+    // wants to make sure validateGameInProgress() doesn't throw an exception when it shouldn't
+    @Test
+    public void testValidateGameInProgressB() throws Exception{
+        Game game = new Game();
+        gameDao.addGame("1234");
+        game = gameDao.getGameById(1);
+        assertEquals(1, game.getGameId()); // ensure game's newly-populated ID is 1 and it isn't null
+        
+        service.validateGameInProgress(1); // test will pass if no exception is thrown
+    }
+    
 }

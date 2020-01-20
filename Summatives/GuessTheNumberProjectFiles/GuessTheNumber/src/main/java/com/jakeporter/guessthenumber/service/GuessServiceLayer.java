@@ -50,4 +50,6 @@ public interface GuessServiceLayer {
     public Game getGameById(int gameId);
     
     public List<Round> getRoundsForGame(int gameId);
+    
+    public void validateGameInProgress(int gameId) throws GameInProgressException;
 }

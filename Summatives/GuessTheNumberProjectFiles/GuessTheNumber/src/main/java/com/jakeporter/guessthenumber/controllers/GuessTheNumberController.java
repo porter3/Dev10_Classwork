@@ -3,6 +3,7 @@ package com.jakeporter.guessthenumber.controllers;
 import com.jakeporter.guessthenumber.entities.Game;
 import com.jakeporter.guessthenumber.entities.GuessGameIDHolder;
 import com.jakeporter.guessthenumber.entities.Round;
+import com.jakeporter.guessthenumber.service.GameInProgressException;
 import com.jakeporter.guessthenumber.service.GuessServiceLayer;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,10 @@ public class GuessTheNumberController {
     }
     
     @PostMapping("/guess")
-    public ResponseEntity<Round> guessNumber(@RequestBody GuessGameIDHolder holder){
+    public ResponseEntity<Round> guessNumber(@RequestBody GuessGameIDHolder holder) throws GameInProgressException{
+        // ensure game is not finished
+        service.validateGameInProgress(holder.getGameId());
+        
         // calculate the correctness of the user's guess
         System.out.println("HOLDER's GAME ID: " + holder.getGameId());
         String guessInfo = service.calculateGuess(holder.getGuess(), holder.getGameId());

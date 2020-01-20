@@ -110,4 +110,11 @@ public class GuessServiceLayerImpl implements GuessServiceLayer{
     public List<Round> getRoundsForGame(int gameId) {
         return roundDao.getRoundsForGame(gameId);
     }
+
+    @Override
+    public void validateGameInProgress(int gameId) throws GameInProgressException {
+        if (gameDao.getGameById(gameId).isFinishedGame()){
+            throw new GameInProgressException("Cannot submit a guess for a finished game.");
+        }
+    }
 }
