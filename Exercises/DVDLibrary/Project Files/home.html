@@ -1,0 +1,175 @@
+!<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>DVD Library</title>
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/home.css" rel="stylesheet">
+    </head>
+    <body>
+        <!-- full page container for listView -->
+        <div class="container" id="buttonHeader">
+            <!-- first row with the buttons/drop-down-->
+            <div class="row>" style="border: 2px solid red;">
+                <!-- what does the role tag do? -->
+                <form class="form-inline" role="form" id="dvdForm">
+                    <!-- right margin set to 5 -->
+                    <div class="col-md-2 mr-5">
+                        <button class="btn btn-outline-dark" type="button" id="createDVD">Create DVD</button>
+                    </div>
+                    <div class="form-group">
+                        <!-- left and right margins set to 5 -->
+                        <div class='col-md-2 mx-5'>
+                            <button class="btn btn-outline-dark" type="button" id="search">Search</button>
+                        </div>
+                        <!-- SEARCH CATEGORY -->
+                        <div class="col-md-3 mx-3">
+                            <select class="form-control border-dark" name="searchCategory" id="category">
+                                <!-- append options here in JS -->
+                                <option value="default" selected disabled>-- Select A Category --</option>
+                            </select>
+                        </div>
+                        <!-- SEARCH TERM -->
+                        <div class="col-md-4">
+                            <input class="form-control border-dark" type="text" placeholder="Search Term" id="searchBox">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="container" id="editHeader">
+            <!-- holds editing header that has title changed dynamically -->
+        </div>
+
+        <hr/>
+        <!-- ERROR DIV -->
+        <div class="container">
+            <div class="row" id="errorDiv">
+
+            </div>
+        </div>
+
+        <!-- DVD COLLECTION VIEWING TABLE -->
+        <div class="container" id="viewingTable">
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Release Date</th>
+                        <th scope="col">Director</th>
+                        <th scope="col">Rating</th>
+                        <th scope="col">Notes</th>
+                    </tr>
+                </thead>
+                <tbody id="dvdCollectionBody">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CREATE/EDIT TEMPLATE-->
+        <div class="container" id="createEditTemplate" style="display: none;">
+            <form class="form" id="createEditForm">
+                <input type="hidden" id="dvdId">
+                <div class="row">
+                    <div class="col-md-3">
+                        <h3>DVD Title:</h3>
+                    </div>
+                    <div class="col-md-5">
+                        <input class="form-control border border-dark" type="text" id="dvdTitle">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <h3>Release Year:</h3>
+                    </div>
+                    <div class="col-md-5">
+                        <input class="form-control border border-dark" type="number" id="releaseYear">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <h3>Director:</h3>
+                    </div>
+                    <div class="col-md-5">
+                        <input class="form-control border border-dark" type="text" id="director">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <h3>Rating:</h3>
+                    </div>
+                    <div class="col-md-5">
+                        <select class="form-control border border-dark" name="ratingSelector" id="ratingSelector">
+                            <option id="default" value="defaut" selected disabled>-- Select a Rating --</option>
+                            <option id="g" value="G">G</option>
+                            <option id="pg" value="PG">PG</option>
+                            <option id="pg-13" value="PG-13">PG-13</option>
+                            <option id="r" value="R">R</option>
+                            <option id="nr" value="NR">NR</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <h3>Notes:</h3>
+                    </div>
+                    <div class="col-md-5">
+                        <textarea class="form-control border border-dark" name="notes" id="notes" form="createEditForm"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1">
+                        <button class="btn btn-outline-dark" id="cancelButton" type="button">Cancel</button>
+                    </div>
+                    <div class="col-md-1">
+                        <button class="btn btn-outline-dark" id="saveChangesButton" type="button">Save Changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- DVD DETAILS DISPLAY -->
+        <div class="container" id="dvdDetailsDisplay" style="display: none;">
+            <div class="row">
+                <div class="col-md-3">
+                    <h3>Release Year:</h3>
+                </div>
+                <div class="col-md-5" id="releaseYearDisplay">
+                    <h3>Year Placeholder</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <h3>Director:</h3>
+                </div>
+                <div class="col-md-5" id="directorDisplay">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <h3>Rating:</h3>
+                </div>
+                <div class="col-md-5" id="ratingDisplay">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <h3>Notes:</h3>
+                </div>
+                <div class="col-md-5" id="notesDisplay">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1">
+                    <button class="btn btn-outline-dark" id="cancelButton" type="button">Cancel</button>
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-outline-dark" id="saveChangesButton" type="button">Save Changes</button>
+                </div>
+            </div>
+        </div>
+
+        <script src='js/jquery-3.4.1.min.js'></script>
+        <script src='js/bootstrap.js'></script>
+        <script src='js/home.js'></script>
+    </body>
+</html>
