@@ -106,26 +106,52 @@ function displayTotalMoney(change){
 
 function displayChange(quarters, dimes, nickels, pennies){
     var changeDisplay = $('#changeDisplay');
+    var coinVarietyCounter = 0;
+    if(quarters > 0){
+        coinVarietyCounter++;
+    }
+    if(dimes > 0){
+        coinVarietyCounter++;
+    }
+    if(nickels > 0){
+        coinVarietyCounter++;
+    }
+    if(pennies > 0){
+        coinVarietyCounter++;
+    }
+
     if (quarters !== 0){
         var quarterWord = 'quarter';
         if (quarters !== 1){
             quarterWord += 's';
         }
-        changeDisplay.val(quarters + ' ' + quarterWord + ' ');
+        changeDisplay.val(quarters + ' ' + quarterWord);
+        if (coinVarietyCounter > 1){
+            changeDisplay.val(changeDisplay.val() + ', ');
+            coinVarietyCounter--;
+        }
     }
     if (dimes !== 0){
         var dimeWord = 'dime';
         if (dimes !== 1){
             dimeWord += 's';
         }
-        changeDisplay.val(changeDisplay.val() + dimes + ' ' + dimeWord + ' ');
+        changeDisplay.val(changeDisplay.val() + dimes + ' ' + dimeWord);
+        if (coinVarietyCounter > 1){
+            changeDisplay.val(changeDisplay.val() + ', ');
+            coinVarietyCounter--;
+        }
     }
     if (nickels !== 0){
         var nickelWord = 'nickel';
         if (nickels !== 0){
             nickelWord += 's';
         }
-        changeDisplay.val(changeDisplay.val() + nickels + ' ' + nickelWord + ' ');
+        changeDisplay.val(changeDisplay.val() + nickels + ' ' + nickelWord);
+        if (coinVarietyCounter > 1){
+            changeDisplay.val(changeDisplay.val() + ', ');
+            coinVarietyCounter--;
+        }
     }
     if (pennies !== 0){
         var pennyWord = 'penny';
@@ -227,9 +253,10 @@ function purchaseItem(){
             // clear out previous view and load items
             clearAndLoadItems();
         },
-        error: function(){
-            alert('purchasing error, URL ACCESSED: ' + 'http://tsg-vending.herokuapp.com/money/' + money + '/item/' + itemID);
-            return 0;
+        error: function(xhr){
+            var err = xhr.status + ': ' + xhr.responseJSON.message;
+            $('#messageDisplay').val(err);
+            clearAndLoadItems();
         }
     });
 }
