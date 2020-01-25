@@ -1,43 +1,53 @@
 $(document).ready(function () {
 
-    var itemID;
-    var totalMoney = 0;
+    // set money to 0.00
+    $('#moneyDisplay').val(accounting.formatMoney(0, ["$"], [2]));
     
     // load items, display money
     loadItemsView();
-    displayTotalMoney(totalMoney);
+
     //add dollar
     $('#addDollar').click(function(){
-        totalMoney += 1;
-        displayTotalMoney(totalMoney);
+        // get how much money there is currently
+        currentMoney = accounting.unformat($('#moneyDisplay').val());
+        // set the display to hold how much there is currently plus 1
+        $('#moneyDisplay').val(accounting.formatMoney(currentMoney + 1, ["$"], [2]));
     });
     //add quarter
     $('#addQuarter').click(function(){
-        totalMoney += .25;
-        displayTotalMoney(totalMoney);
+        currentMoney = accounting.unformat($('#moneyDisplay').val());
+        $('#moneyDisplay').val(accounting.formatMoney(currentMoney + .25, ["$"], [2]));
     });
     //add dime
     $('#addDime').click(function(){
-        totalMoney += .1;
-        displayTotalMoney(totalMoney);
+        currentMoney = accounting.unformat($('#moneyDisplay').val());
+        $('#moneyDisplay').val(accounting.formatMoney(currentMoney + .1, ["$"], [2]));
     });
     //add nickel
     $('#addNickel').click(function(){
-        totalMoney += .05;
-        displayTotalMoney(totalMoney);
+        currentMoney = accounting.unformat($('#moneyDisplay').val());
+        $('#moneyDisplay').val(accounting.formatMoney(currentMoney + .05, ["$"], [2]));
     });
 
+    // item selection display method
     selectItem();
+    // when 'make purchase' is clicked
     $('#makePurchaseButton').click(function(){
+        if ($('#itemNumberDisplay').val() == ''){
+            $('#messageDisplay').val('Please make a selection');
+            return;
+        }
         purchaseItem();
     });
+
+    // when 'Change Return' is clicked
+    changeReturnOnClick();
 });
 
 function loadItemsView(){
     console.log('loading items');
     // clear errors
-
-    // clear previous data
+    
 
     $.ajax({
         type: "GET",
@@ -69,7 +79,7 @@ function loadItemsView(){
             // add item cost to all boxes
             var costArray = $('.cost');
             for (i = 0; i < costArray.length; i++){
-                costArray[i].append(items[i].price);
+                costArray[i].append(accounting.formatMoney(items[i].price, ["$"], [2]));
             }
 
             // add item name to all boxes
@@ -86,11 +96,44 @@ function loadItemsView(){
     });
 }
 
-function displayTotalMoney(totalMoney){
-    totalMoney = accounting.formatMoney(totalMoney, ["$"], [2]);
+// displays the change from purchasing an item
+function displayTotalMoney(change){
+    change = accounting.formatMoney(change, ["$"], [2]);
 
-    // append totalMoney to moneyDisplay
-    $('#moneyDisplay').val(totalMoney);
+    // display the leftover change
+    $('#moneyDisplay').val(change);
+}
+
+function displayChange(quarters, dimes, nickels, pennies){
+    var changeDisplay = $('#changeDisplay');
+    if (quarters !== 0){
+        var quarterWord = 'quarter';
+        if (quarters !== 1){
+            quarterWord += 's';
+        }
+        changeDisplay.val(quarters + ' ' + quarterWord + ' ');
+    }
+    if (dimes !== 0){
+        var dimeWord = 'dime';
+        if (dimes !== 1){
+            dimeWord += 's';
+        }
+        changeDisplay.val(changeDisplay.val() + dimes + ' ' + dimeWord + ' ');
+    }
+    if (nickels !== 0){
+        var nickelWord = 'nickel';
+        if (nickels !== 0){
+            nickelWord += 's';
+        }
+        changeDisplay.val(changeDisplay.val() + nickels + ' ' + nickelWord + ' ');
+    }
+    if (pennies !== 0){
+        var pennyWord = 'penny';
+        if (pennies !== 1){
+            pennyWord = 'pennies';
+        }
+        changeDisplay.val(changeDisplay.val() + pennies + ' ' + pennyWord);
+    }
 }
 
 function selectItem(){
@@ -117,18 +160,54 @@ function selectItem(){
     });
 }
 
+function clearAndLoadItems(){
+    // clear previous data
+    // no idea why jQuery wouldn't work. Plain old JS works fine here.
+    var idNodeList = document.querySelectorAll('.id');
+    var idArray = Array.from(idNodeList);
+    for (i = 0; i < idArray.length; i++){
+        idArray[i].innerText = '';
+    }
+
+    var numberNodeList = document.querySelectorAll('.number');
+    var numberArray = Array.from(numberNodeList);
+    for (i = 0; i < numberArray.length; i++){
+        numberArray[i].innerText = '';
+    }
+
+    var nameNodeList = document.querySelectorAll('.name');
+    var nameArray = Array.from(nameNodeList);
+    for (i = 0; i < nameArray.length; i++){
+        nameArray[i].innerText = '';
+    }
+
+    var costNodeList = document.querySelectorAll('.cost');
+    var costArray = Array.from(costNodeList);
+    for (i = 0; i < costArray.length; i++){
+        costArray[i].innerText = '';
+    }
+
+    var quantityNodeList = document.querySelectorAll('.quantity');
+    var quantityArray = Array.from(quantityNodeList);
+    for (i = 0; i < quantityArray.length; i++){
+        quantityArray[i].innerText = '';
+    }
+
+    loadItemsView();
+}
+
 function purchaseItem(){
 
     // get item number from itemNumberDisplay
     var itemNumber = $('#itemNumberDisplay').val();
+    console.log('ITEM NUMBER SELECTED: ', itemNumber);
 
     // get item ID from item number
     var itemID = $('#box'+itemNumber).find('input').text();
 
     // get the money
     var money = accounting.unformat($('#moneyDisplay').val());
-
-    var change;
+    console.log('MONEY VALUE: ', money);
 
     $.ajax({
         type: "POST",
@@ -139,16 +218,49 @@ function purchaseItem(){
         },
         dataType: "json",
         success: function (data) {
-            alert('success');
             // calculate change
-            change = (data.quarters*.25) + (data.dimes*.1) + (data.nickels*.05) + (data.pennies*.01);
-            change = accounting.formatMoney(change, ["$"], [2]);
+            var change = (data.quarters*.25) + (data.dimes*.1) + (data.nickels*.05) + (data.pennies*.01);
             displayTotalMoney(change);
+            displayChange(data.quarters, data.dimes, data.nickels, data.pennies);
+            // display message
+            $('#messageDisplay').val('Thank you!');
+            // clear out previous view and load items
+            clearAndLoadItems();
         },
         error: function(){
             alert('purchasing error, URL ACCESSED: ' + 'http://tsg-vending.herokuapp.com/money/' + money + '/item/' + itemID);
             return 0;
         }
     });
-    return change;
+}
+
+function changeReturnOnClick(){
+    $('#changeReturnButton').click(function(){
+        // get the current money in the machine
+        var totalMoney = accounting.unformat($('#moneyDisplay').val());
+        console.log('total money: ', totalMoney);
+
+        // set MoneyDisplay to zero
+        $('#moneyDisplay').val(accounting.formatMoney(0, ["$"], [2]));
+
+        var remainder = totalMoney % .25;
+        var quarters = (totalMoney - remainder) / .25;
+        console.log('QuARTERS: ', quarters);
+
+        var newRemainder = remainder % .1;
+        var dimes =  (remainder - newRemainder) / .1;
+        console.log('DIMES: ', dimes);
+        remainder = newRemainder;
+
+        newRemainder = remainder % .05;
+        var nickels = (remainder - newRemainder) / .05;
+        console.log('nickels: ', nickels);
+        remainder = newRemainder;
+
+        newRemainder = remainder % .01;
+        var pennies = (remainder - newRemainder) / .01;
+        console.log('pennies: ', pennies);
+
+        displayChange(quarters, dimes, nickels, pennies);
+    });
 }
