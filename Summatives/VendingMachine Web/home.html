@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Vending Machine</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/home.css">
+    </head>
+    <body>
+        <div class="container">
+            <!-- TITLE -->
+            <div id="headerDiv" class="row">
+                <h2>Vending Machine</h2>
+            </div>
+        </div>
+        <div class="container">
+            <hr/>
+            <!-- FIRST ROW -->
+            <div id="row1" class="row" style="margin-bottom: 50px;">
+                <div id="box1" class="col-md-2 box border border-dark">
+                    <input type="hidden" class="id">
+                    <div class="row number"></div>
+                    <div class="row name"></div>
+                    <div class="row cost"></div>
+                    <div class="row quantity"><span>Quantity Left:&nbsp</span></div>
+                </div>
+                <div id="box2" class="col-md-2 box offset-md-1 border border-dark">
+                    <input type="hidden" class="id">
+                    <div class="row number"></div>
+                    <div class="row name"></div>
+                    <div class="row cost"></div>
+                    <div class="row quantity"><span>Quantity Left:&nbsp</span></div>
+                </div>
+                <div id="box3" class="col-md-2 box offset-md-1 border border-dark">
+                    <input type="hidden" class="id">
+                    <div class="row number"></div>
+                    <div class="row name"></div>
+                    <div class="row cost"></div>
+                    <div class="row quantity"><span>Quantity Left:&nbsp</span></div>
+                </div>
+                <!-- MONEY INSERTION BOX -->
+                <div class="col-md-3 offset-md-1 border border-primary functionBox" id="moneyInsertion">
+                    <div class="row">
+                        <h3 style="margin: 0px auto;">Total $ In</h3>
+                    </div>
+                    <div class="row">
+                        <input id="moneyDisplay" type="text" readonly>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 btn border-dark" id="addDollar">Add Dollar</div>
+                        <div class="col-md-4 btn border-dark" id="addQuarter">Add Quarter</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 btn border-dark" id="addDime">Add Dime</div>
+                        <div class="col-md-4 btn border-dark" id="addNickel">Add Nickel</div>
+                    </div>
+                </div>
+            </div>
+            <!-- SECOND ROW -->
+            <div class="row" style="margin-bottom: 50px;">
+                <div id="box4" class="col-md-2 box border border-dark">
+                    <input type="hidden" class="id">
+                    <div class="row number"></div>
+                    <div class="row name"></div>
+                    <div class="row cost"></div>
+                    <div class="row quantity"><span>Quantity Left:&nbsp</span></div>
+                </div>
+                <div id="box5" class="col-md-2 box offset-md-1 border border-dark">
+                    <input type="hidden" class="id">
+                    <div class="row number"></div>
+                    <div class="row name"></div>
+                    <div class="row cost"></div>
+                    <div class="row quantity"><span>Quantity Left:&nbsp</span></div>
+                </div>
+                <div id="box6" class="col-md-2 box offset-md-1 border border-dark">
+                    <input type="hidden" class="id">
+                    <div class="row number"></div>
+                    <div class="row name"></div>
+                    <div class="row cost"></div>
+                    <div class="row quantity"><span>Quantity Left:&nbsp</span></div>
+                </div>
+                <!-- MESSAGES BOX -->
+                <div class="col-md-2 functionBox offset-md-1 border border-primary">
+                    <div class="row">
+                        <h3 style="margin: 0px auto;">Messages</h3>
+                    </div>
+                    <div class="row">
+                        <input id="messageDisplay" type="text" readonly>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h4>Item:</h4>
+                        </div>
+                        <div class="col-md-8">
+                            <input id="itemNumberDisplay" type="text" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <button id="makePurchaseButton" type="button" class="btn btn-primary">Make Purchase</button>
+                    </div>
+                </div>
+            </div>
+            <!-- THIRD ROW -->
+            <div class="row">
+                <div id="box7" class="col-md-2 box border border-dark">
+                    <input type="hidden" class="id">
+                    <div class="row number"></div>
+                    <div class="row name"></div>
+                    <div class="row cost"></div>
+                    <div class="row quantity"><span>Quantity Left:&nbsp</span></div>
+                </div>
+                <div id="box8" class="col-md-2 box offset-md-1 border border-dark">
+                    <input type="hidden" class="id">
+                    <div class="row number"></div>
+                    <div class="row name"></div>
+                    <div class="row cost"></div>
+                    <div class="row quantity"><span>Quantity Left:&nbsp</span></div>
+                </div>
+                <div id="box9" class="col-md-2 box offset-md-1 border border-dark">
+                    <input type="hidden" class="id">
+                    <div class="row number"></div>
+                    <div class="row name"></div>
+                    <div class="row cost"></div>
+                    <div class="row quantity"><span>Quantity Left:&nbsp</span></div>
+                </div>
+                <!-- CHANGE BOX -->
+                <div class="col-md-2 offset-md-1 border border-primary functionBox">
+                    <div class="row">
+                        <h3 style="margin: 0px auto;">Change</h3>
+                    </div>
+                    <div class="row">
+                        <input id="changeDisplay" type="text" readonly>
+                    </div>
+                    <div class="row">
+                        <button type="button" id="changeReturnButton" class="btn btn-primary">Change Return</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    <!-- jquery, popper, bootstrap -->
+    <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="js/accounting.min.js"></script>
+    <script src="js/home.js"></script>
+    </body>
+</html>
