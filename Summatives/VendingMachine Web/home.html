@@ -41,7 +41,7 @@
                     <div class="row boxRow"><span class="quantity"></span></div>
                 </div>
                 <!-- MONEY INSERTION BOX -->
-                <div class="col-md-3 border border-primary functionBox" id="moneyInsertion">
+                <div class="col-md-3 functionBox" id="moneyInsertion">
                     <div class="row fBoxRow">
                         <h3 style="margin: 0px auto;">Total $ In</h3>
                     </div>
@@ -49,12 +49,12 @@
                         <input id="moneyDisplay" type="text" readonly>
                     </div>
                     <div class="row fBoxRow">
-                        <div class="col-md-4 btn border-dark" id="addDollar">Add Dollar</div>
-                        <div class="col-md-4 btn border-dark" id="addQuarter">Add Quarter</div>
+                        <button class="btn border-dark" id="addDollar">Add Dollar</button>
+                        <button class="btn border-dark" id="addQuarter">Add Quarter</button>
                     </div>
                     <div class="row fBoxRow">
-                        <div class="col-md-4 btn border-dark" id="addDime">Add Dime</div>
-                        <div class="col-md-4 btn border-dark" id="addNickel">Add Nickel</div>
+                        <button class="btn border-dark" id="addDime">Add Dime</button>
+                        <button class="btn border-dark" id="addNickel">Add Nickel</button>
                     </div>
                 </div>
             </div>
@@ -82,15 +82,15 @@
                     <div class="row boxRow"><span class="quantity"></span></div>
                 </div>
                 <!-- MESSAGES BOX -->
-                <div class="col-md-3 functionBox border border-primary">
+                <div class="col-md-3 functionBox border-top border-dark">
                     <div class="row fBoxRow">
                         <h3 style="margin: 0px auto;">Messages</h3>
                     </div>
                     <div class="row fBoxRow">
                         <input id="messageDisplay" type="text" readonly>
                     </div>
-                    <div class="row fBoxRow">
-                        <div class="col-md-4">
+                    <div id="itemRow" class="row fBoxRow">
+                        <div class="col-md-2">
                             <label for="itemNumberDisplay">Item:</label>
                         </div>
                         <div class="col-md-8">
@@ -126,12 +126,13 @@
                     <div class="row boxRow"><span class="quantity"></span></div>
                 </div>
                 <!-- CHANGE BOX -->
-                <div class="col-md-3 border border-primary functionBox" style="margin: 30px 0px;">
+                <div class="col-md-3 functionBox border-top border-dark" style="margin: 30px 0px;">
                     <div class="row fBoxRow">
                         <h3 style="margin: 0px auto;">Change</h3>
                     </div>
                     <div class="row fBoxRow">
-                        <input id="changeDisplay" type="text                </div>
+                        <input id="changeDisplay" type="text" readonly>
+                    </div>
                     <div class="row fBoxRow">
                         <button type="button" id="changeReturnButton" class="btn btn-primary">Change Return</button>
                     </div>
