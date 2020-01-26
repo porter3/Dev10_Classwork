@@ -1,6 +1,6 @@
 .box{
     margin: 0px 30px;
-    padding: 0px 30px 30px;
+    padding: 0px 4px 30px;
     height: 180px;
 }
 
@@ -9,26 +9,32 @@
 }
 
 .boxRow{
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .fBoxRow{
     margin: 20px 0px;
 }
 
-.cost{
-    margin-top: 10px;
-}
-
-.quantity{
-    margin-top: 30px;
-}
-
 .name{
+    margin: 0px auto;
     text-align: center;
 }
 
+.number{
+}
+
+.cost{
+    margin: 20px auto 0px;
+}
+
+.quantity{
+    margin: 30px auto 0px;
+}
+
 #headerDiv {
-    margin-top: 20px
+    margin-top: 20px;
 }
 
 #headerDiv h2 {
