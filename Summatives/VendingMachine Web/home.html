@@ -10,132 +10,135 @@
         <div class="container">
             <!-- TITLE -->
             <div id="headerDiv" class="row">
-                <h2>Vending Machine</h2>
+                <div class="col text-center">
+                    <h2>Vending Machine</h2>
+                </div>
             </div>
         </div>
         <div class="container">
             <hr/>
             <!-- FIRST ROW -->
-            <div id="row1" class="row" style="margin-bottom: 50px;">
+            <div class="row align-items-center" style="margin-bottom: 50px;">
                 <div id="box1" class="col-md-2 box border border-dark">
-                    <input type="hidden" class="id">
-                    <div class="row number"></div>
-                    <div class="row name"></div>
-                    <div class="row cost"></div>
-                    <div class="row quantity"><span>Quantity Left:&nbsp</span></div>
+                    <input type="hidden" class="id boxRow">
+                    <div class="row number boxRow"></div>
+                    <div class="row name boxRow"></div>
+                    <div class="row cost boxRow"></div>
+                    <div class="row quantity boxRow"><span></span></div>
                 </div>
-                <div id="box2" class="col-md-2 box offset-md-1 border border-dark">
-                    <input type="hidden" class="id">
-                    <div class="row number"></div>
-                    <div class="row name"></div>
-                    <div class="row cost"></div>
-                    <div class="row quantity"><span>Quantity Left:&nbsp</span></div>
+                <div id="box2" class="col-md-2 box border border-dark">
+                    <input type="hidden" class="id boxRow">
+                    <div class="row number boxRow"></div>
+                    <div class="row name boxRow"></div>
+                    <div class="row cost boxRow"></div>
+                    <div class="row quantity boxRow"><span></span></div>
                 </div>
-                <div id="box3" class="col-md-2 box offset-md-1 border border-dark">
-                    <input type="hidden" class="id">
-                    <div class="row number"></div>
-                    <div class="row name"></div>
-                    <div class="row cost"></div>
-                    <div class="row quantity"><span>Quantity Left:&nbsp</span></div>
+                <div id="box3" class="col-md-2 box border border-dark">
+                    <input type="hidden" class="id boxRow">
+                    <div class="row number boxRow"></div>
+                    <div class="row name boxRow"></div>
+                    <div class="row cost boxRow"></div>
+                    <div class="row quantity boxRow"><span></span></div>
                 </div>
                 <!-- MONEY INSERTION BOX -->
-                <div class="col-md-3 offset-md-1 border border-primary functionBox" id="moneyInsertion">
-                    <div class="row">
+                <div class="col-md-3 border border-primary functionBox" id="moneyInsertion">
+                    <div class="row fBoxRow">
                         <h3 style="margin: 0px auto;">Total $ In</h3>
                     </div>
-                    <div class="row">
+                    <div class="row fBoxRow">
                         <input id="moneyDisplay" type="text" readonly>
                     </div>
-                    <div class="row">
+                    <div class="row fBoxRow">
                         <div class="col-md-4 btn border-dark" id="addDollar">Add Dollar</div>
                         <div class="col-md-4 btn border-dark" id="addQuarter">Add Quarter</div>
                     </div>
-                    <div class="row">
+                    <div class="row fBoxRow">
                         <div class="col-md-4 btn border-dark" id="addDime">Add Dime</div>
                         <div class="col-md-4 btn border-dark" id="addNickel">Add Nickel</div>
                     </div>
                 </div>
             </div>
             <!-- SECOND ROW -->
-            <div class="row" style="margin-bottom: 50px;">
+            <div class="row align-items-center" style="margin-bottom: 50px;">
                 <div id="box4" class="col-md-2 box border border-dark">
-                    <input type="hidden" class="id">
-                    <div class="row number"></div>
-                    <div class="row name"></div>
-                    <div class="row cost"></div>
-                    <div class="row quantity"><span>Quantity Left:&nbsp</span></div>
+                    <input type="hidden" class="id boxRow">
+                    <div class="row number boxRow"></div>
+                    <div class="row name boxRow"></div>
+                    <div class="row cost boxRow"></div>
+                    <div class="row quantity boxRow"><span></span></div>
                 </div>
-                <div id="box5" class="col-md-2 box offset-md-1 border border-dark">
-                    <input type="hidden" class="id">
-                    <div class="row number"></div>
-                    <div class="row name"></div>
-                    <div class="row cost"></div>
-                    <div class="row quantity"><span>Quantity Left:&nbsp</span></div>
+                <div id="box5" class="col-md-2 box border border-dark">
+                    <input type="hidden" class="id boxRow">
+                    <div class="row number boxRow"></div>
+                    <div class="row name boxRow"></div>
+                    <div class="row cost boxRow"></div>
+                    <div class="row quantity boxRow"><span></span></div>
                 </div>
-                <div id="box6" class="col-md-2 box offset-md-1 border border-dark">
-                    <input type="hidden" class="id">
-                    <div class="row number"></div>
-                    <div class="row name"></div>
-                    <div class="row cost"></div>
-                    <div class="row quantity"><span>Quantity Left:&nbsp</span></div>
+                <div id="box6" class="col-md-2 box border border-dark">
+                    <input type="hidden" class="id boxRow">
+                    <div class="row number boxRow"></div>
+                    <div class="row name boxRow"></div>
+                    <div class="row cost boxRow"></div>
+                    <div class="row quantity boxRow"><span></span></div>
                 </div>
                 <!-- MESSAGES BOX -->
-                <div class="col-md-2 functionBox offset-md-1 border border-primary">
-                    <div class="row">
+                <div class="col-md-3 functionBox border border-primary">
+                    <div class="row fBoxRow">
                         <h3 style="margin: 0px auto;">Messages</h3>
                     </div>
-                    <div class="row">
-                        <input id="messageDisplay" type="text" readonly>
+                    <div class="row fBoxRow">
+                        <input id="messageDisplay" type="text" style="width: 100%;"readonly>
                     </div>
-                    <div class="row">
+                    <div class="row fBoxRow">
                         <div class="col-md-4">
-                            <h4>Item:</h4>
+                            <label for="itemNumberDisplay">Item:</label>
                         </div>
                         <div class="col-md-8">
                             <input id="itemNumberDisplay" type="text" readonly>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row fBoxRow">
                         <button id="makePurchaseButton" type="button" class="btn btn-primary">Make Purchase</button>
                     </div>
                 </div>
             </div>
             <!-- THIRD ROW -->
-            <div class="row">
+            <div class="row align-items-center">
                 <div id="box7" class="col-md-2 box border border-dark">
-                    <input type="hidden" class="id">
-                    <div class="row number"></div>
-                    <div class="row name"></div>
-                    <div class="row cost"></div>
-                    <div class="row quantity"><span>Quantity Left:&nbsp</span></div>
+                    <input type="hidden" class="id boxRow">
+                    <div class="row number boxRow"></div>
+                    <div class="row name boxRow"></div>
+                    <div class="row cost boxRow"></div>
+                    <div class="row quantity boxRow"><span></span></div>
                 </div>
-                <div id="box8" class="col-md-2 box offset-md-1 border border-dark">
-                    <input type="hidden" class="id">
-                    <div class="row number"></div>
-                    <div class="row name"></div>
-                    <div class="row cost"></div>
-                    <div class="row quantity"><span>Quantity Left:&nbsp</span></div>
+                <div id="box8" class="col-md-2 box border border-dark">
+                    <input type="hidden" class="id boxRow">
+                    <div class="row number boxRow"></div>
+                    <div class="row name boxRow"></div>
+                    <div class="row cost boxRow"></div>
+                    <div class="row quantity boxRow"><span></span></div>
                 </div>
-                <div id="box9" class="col-md-2 box offset-md-1 border border-dark">
-                    <input type="hidden" class="id">
-                    <div class="row number"></div>
-                    <div class="row name"></div>
-                    <div class="row cost"></div>
-                    <div class="row quantity"><span>Quantity Left:&nbsp</span></div>
+                <div id="box9" class="col-md-2 box border border-dark">
+                    <input type="hidden" class="id boxRow">
+                    <div class="row number boxRow"></div>
+                    <div class="row name boxRow"></div>
+                    <div class="row cost boxRow"></div>
+                    <div class="row quantity boxRow"><span></span></div>
                 </div>
                 <!-- CHANGE BOX -->
-                <div class="col-md-2 offset-md-1 border border-primary functionBox">
-                    <div class="row">
+                <div class="col-md-3 border border-primary functionBox" style="margin: 30px 0px;">
+                    <div class="row fBoxRow">
                         <h3 style="margin: 0px auto;">Change</h3>
                     </div>
-                    <div class="row">
+                    <div class="row fBoxRow">
                         <input id="changeDisplay" type="text" readonly>
                     </div>
-                    <div class="row">
+                    <div class="row fBoxRow">
                         <button type="button" id="changeReturnButton" class="btn btn-primary">Change Return</button>
                     </div>
                 </div>
             </div>
+            <br/>
         </div>
 
 

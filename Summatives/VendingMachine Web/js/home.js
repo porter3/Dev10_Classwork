@@ -56,36 +56,36 @@ function loadItemsView(){
             console.log('ITEMS: ', items);
             // add hidden IDs to all boxes
             var idArray = $('.id');
-            for (i = 0; i < idArray.length; i++){
+            console.log('ID ARRAY: ', idArray);
+            for (i = 0; i < items.length; i++){
                 // get a JSON object from an array
                 var item = items[i];
-                console.log('ITEM: ', item);
-                console.log('ID: ' + item.id);
+                console.log('ID: ' + item["id"]);
                 idArray[i].append(item.id);
             }
 
             // add indices to all boxes
             var numberArray = $('.number');
-            for (i = 0; i < numberArray.length; i++){
+            for (i = 0; i < items.length; i++){
                 numberArray[i].append(i+1);
             }
 
             // add item name to all boxes
             var nameArray = $('.name');
-            for (i = 0; i < nameArray.length; i++){
+            for (i = 0; i < items.length; i++){
                 nameArray[i].append(items[i].name);
             }
 
             // add item cost to all boxes
             var costArray = $('.cost');
-            for (i = 0; i < costArray.length; i++){
+            for (i = 0; i < items.length; i++){
                 costArray[i].append(accounting.formatMoney(items[i].price, ["$"], [2]));
             }
 
             // add item name to all boxes
             var quantityArray = $('.quantity');
-            for (i = 0; i < quantityArray.length; i++){
-                quantityArray[i].append(items[i].quantity);
+            for (i = 0; i < items.length; i++){
+                quantityArray[i].append('Quantity Left: ' + items[i].quantity);
             }
 
             
@@ -119,6 +119,9 @@ function displayChange(quarters, dimes, nickels, pennies){
     if(pennies > 0){
         coinVarietyCounter++;
     }
+
+    // empty the display
+    changeDisplay.empty();
 
     if (quarters !== 0){
         var quarterWord = 'quarter';
