@@ -121,7 +121,7 @@ function displayChange(quarters, dimes, nickels, pennies){
     }
 
     // empty the display
-    changeDisplay.empty();
+    changeDisplay.val('');
 
     if (quarters !== 0){
         var quarterWord = 'quarter';
@@ -268,10 +268,6 @@ function changeReturnOnClick(){
     $('#changeReturnButton').click(function(){
         // get the current money in the machine
         var totalMoney = new Decimal(accounting.unformat($('#moneyDisplay').val()));
-        console.log('type of money: ', typeof totalMoney);
-
-        var a = new Decimal(1.000056);
-        console.log('Should see number if decimal.js is working: ', a.toNumber());
 
         // set MoneyDisplay to zero
         $('#moneyDisplay').val(accounting.formatMoney(0, ["$"], [2]));
