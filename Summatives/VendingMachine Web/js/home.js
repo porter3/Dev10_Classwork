@@ -147,7 +147,7 @@ function displayChange(quarters, dimes, nickels, pennies){
     }
     if (nickels !== 0){
         var nickelWord = 'nickel';
-        if (nickels !== 0){
+        if (nickels !== 1){
             nickelWord += 's';
         }
         changeDisplay.val(changeDisplay.val() + nickels + ' ' + nickelWord);
@@ -267,29 +267,38 @@ function purchaseItem(){
 function changeReturnOnClick(){
     $('#changeReturnButton').click(function(){
         // get the current money in the machine
-        var totalMoney = accounting.unformat($('#moneyDisplay').val());
-        console.log('total money: ', totalMoney);
+        var totalMoney = new Decimal(accounting.unformat($('#moneyDisplay').val()));
+        console.log('type of money: ', typeof totalMoney);
+
+        var a = new Decimal(1.000056);
+        console.log('Should see number if decimal.js is working: ', a.toNumber());
 
         // set MoneyDisplay to zero
         $('#moneyDisplay').val(accounting.formatMoney(0, ["$"], [2]));
 
-        var remainder = totalMoney % .25;
-        var quarters = (totalMoney - remainder) / .25;
-        console.log('QuARTERS: ', quarters);
+        var remainder = totalMoney.modulo(.25);
+        var quartersDec = totalMoney.minus(remainder).dividedBy(.25);
+        console.log('QUARTERS: ', quartersDec.toNumber());
 
-        var newRemainder = remainder % .1;
-        var dimes =  (remainder - newRemainder) / .1;
-        console.log('DIMES: ', dimes);
+        var newRemainder = remainder.modulo(.1);
+        var dimesDec =  remainder.minus(newRemainder).dividedBy(.1);
+        console.log('DIMES: ', dimesDec.toNumber());
         remainder = newRemainder;
 
-        newRemainder = remainder % .05;
-        var nickels = (remainder - newRemainder) / .05;
-        console.log('nickels: ', nickels);
+        newRemainder = remainder.modulo(.05);
+        var nickelsDec = remainder.minus(newRemainder).dividedBy(.05);
+        console.log('nickels: ', nickelsDec.toNumber());
         remainder = newRemainder;
 
-        newRemainder = remainder % .01;
-        var pennies = (remainder - newRemainder) / .01;
-        console.log('pennies: ', pennies);
+        newRemainder = remainder.modulo(.01);
+        var penniesDec = remainder.minus(newRemainder).dividedBy(.01);
+        console.log('pennies: ', penniesDec.toNumber());
+
+        // convert from Decimal types to Number types
+        var quarters = quartersDec.toNumber();
+        var dimes = dimesDec.toNumber();
+        var nickels = nickelsDec.toNumber();
+        var pennies = penniesDec.toNumber();
 
         displayChange(quarters, dimes, nickels, pennies);
     });
