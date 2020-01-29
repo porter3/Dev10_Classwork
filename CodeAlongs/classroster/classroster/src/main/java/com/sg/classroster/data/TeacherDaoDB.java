@@ -8,12 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author jake
  */
+@Repository
 public class TeacherDaoDB implements TeacherDao{
     
     @Autowired
@@ -47,7 +49,7 @@ public class TeacherDaoDB implements TeacherDao{
                 teacher.getLastName(),
                 teacher.getSpecialty());
         
-        int newId = jdbc.queryForObject("SELECT_LAST_INSERT_ID()", Integer.class);
+        int newId = jdbc.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
         teacher.setId(newId);
         return teacher;
     }

@@ -10,12 +10,15 @@ import com.sg.classroster.entities.Student;
 import com.sg.classroster.entities.Teacher;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,15 +46,15 @@ public class StudentDaoTest {
     public StudentDaoTest() {
     }
     
-    @BeforeAll
+    @BeforeClass
     public static void setUpClass() {
     }
     
-    @AfterAll
+    @AfterClass
     public static void tearDownClass() {
     }
     
-    @BeforeEach
+    @Before
     public void setUp() {
         List<Teacher> teachers = teacherDao.getAllTeachers();
         for(Teacher teacher : teachers) {
@@ -69,7 +72,7 @@ public class StudentDaoTest {
         }
     }
     
-    @AfterEach
+    @After
     public void tearDown() {
     }
 
@@ -163,11 +166,12 @@ public class StudentDaoTest {
         course.setStudents(students);
         course = courseDao.addCourse(course);
         
-        
         Student fromDao = studentDao.getStudentById(student.getId());
         assertEquals(student, fromDao);
         
         studentDao.deleteStudentById(student.getId());
+        fromDao = studentDao.getStudentById(student.getId());
+
         assertNull(fromDao);
     }
     

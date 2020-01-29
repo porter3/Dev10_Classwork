@@ -1,13 +1,13 @@
-DROP DATABASE IF EXISTS classRoster;
-CREATE DATABASE classRoster;
+DROP DATABASE IF EXISTS classRostertest;
+CREATE DATABASE classRostertest;
 
-USE classRoster;
+USE classRosterTest;
 
 CREATE TABLE teacher(
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	firstName VARCHAR(30) NOT NULL,
     lastName VARCHAR(50) NOT NULL,
-    speciality VARCHAR(50)
+    specialty VARCHAR(50)
 );
 
 CREATE TABLE student(
