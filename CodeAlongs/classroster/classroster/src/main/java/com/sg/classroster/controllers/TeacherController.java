@@ -4,12 +4,17 @@ import com.sg.classroster.data.CourseDao;
 import com.sg.classroster.data.StudentDao;
 import com.sg.classroster.data.TeacherDao;
 import com.sg.classroster.entities.Teacher;
+import java.util.HashSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
@@ -29,11 +34,17 @@ public class TeacherController {
     @Autowired
     CourseDao courseDao;
     
+    // Holds the set of ConstraintViolations from a Validator
+    Set<ConstraintViolation<Teacher>> violations = new HashSet();
+    
     @GetMapping("teachers") // goes to /teachers URL, will display teachers.html
     public String displayTeachers(Model model){ // Model is an object for sending data to the view engine
         List<Teacher> teachers = teacherDao.getAllTeachers();
-        model.addAttribute("teachers", teachers); // adds the list 'teachers' to the ...
-        return "teachers"; // returning the teachers.html file???
+        model.addAttribute("teacherList", teachers); // adds the list 'teachers' to the key 'teacherList'
+        
+        model.addAttribute("errors", violations); // <- 'violations' is a class variable, so it can be accessed here
+        
+        return "teachers";
     }
     
     @PostMapping("addTeacher") // HTML form will send data to here in the form of an HttpServletRequest
@@ -49,10 +60,16 @@ public class TeacherController {
         teacher.setFirstName(firstName);
         teacher.setLastName(lastname);
         teacher.setSpecialty(specialty);
-        // add new Teacher to the DB
-        teacherDao.addTeacher(teacher);
         
-        return "redirect:/teachers"; // will refresh'redirect to /teachers page
+        // Validate the Teacher and add it to the DB if it passes validation
+        Validator validatorObj = Validation.buildDefaultValidatorFactory().getValidator(); // Instantiate a Validator object with static factory methods
+        violations = validatorObj.validate(teacher); // <- Any violations the Teacher contains are assigned to the Set of ConstraintViolations
+        
+        if(violations.isEmpty()){
+            teacherDao.addTeacher(teacher);
+        }
+        
+        return "redirect:/teachers"; // will refresh/redirect to /teachers page
     }
     
     @GetMapping("deleteTeacher") /* although this is a 'delete' method, it's mapped as GET

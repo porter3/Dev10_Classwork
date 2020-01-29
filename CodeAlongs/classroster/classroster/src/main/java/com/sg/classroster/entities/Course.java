@@ -2,6 +2,8 @@ package com.sg.classroster.entities;
 
 import java.util.List;
 import java.util.Objects;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -13,8 +15,14 @@ import java.util.Objects;
 public class Course {
 
     private int id;
+    
+    @NotBlank(message = "Name can't be blank")
+    @Size(max = 50, message = "Course name must be under 50 characters")
     private String name;
+    
+    @Size(max = 255, message = "Description must be under 255 characters")
     private String description;
+    
     private Teacher teacher;
     private List<Student> students;
 
