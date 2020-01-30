@@ -1,0 +1,9 @@
+Tags:
+
+jpa
+java persistence api
+spring boot
+entity
+generatedvalue
+column
+annotation
