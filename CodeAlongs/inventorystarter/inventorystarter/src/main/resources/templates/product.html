@@ -61,7 +61,7 @@
                             <label class="col-4" for="supplierName">Supplier</label>
                             <select class="col-8" name="supplierId">
                                 <option th:each="supplier : ${suppliers}"
-                                        th:unless="${#lists.contains(product.suppliers, supplier)}"
+                                        th:unless="${#lists.contains(product.suppliers, supplier)}" 
                                         th:value="${supplier.id}"
                                         th:text="${supplier.name}">supplier</option>
                             </select>
