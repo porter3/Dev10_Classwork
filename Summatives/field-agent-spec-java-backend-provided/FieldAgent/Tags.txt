@@ -1,0 +1,9 @@
+Tags:
+
+jpa
+thymeleaf
+spring
+boot
+java
+persistence
+api
