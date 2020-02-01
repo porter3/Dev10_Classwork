@@ -36,6 +36,10 @@ public class LookupService {
     public List<Agent> findAllAgents(){
         return agentRepo.findAll();
     }
+    
+    public Agent findAgentByIdentifier(String identifier){
+        return agentRepo.findById(identifier).orElse(null);
+    }
 
     public List<Agency> findAllAgencies() {
         return agencyRepo.findAll();

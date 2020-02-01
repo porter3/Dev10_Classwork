@@ -1,4 +1,4 @@
-Tags:
+Tags
 
 jpa
 thymeleaf
@@ -7,3 +7,5 @@ boot
 java
 persistence
 api
+th:value
+select

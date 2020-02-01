@@ -10,32 +10,35 @@
     <div class="container">
         <div id="header" class="row">
             <div class="col-md">
-                <h3 class="text-left">Agent <span th:text="${agent.firstName + ' ' + agent.middleName + ' ' + agent.lastName}"></span></h3>
+                <h3 class="text-left">Add a Field Agent (ERROR)</h3>
             </div>
         </div>
     <form method="POST" action="addAgent">
             <div class="form-row">
                 <div class="form-group col">
                     <label for="firstName">First Name</label>
-                    <input type="text" class="form-control" id="firstName" name="firstName" th:value="${agent.firstName}">
+                    <input type="text" class="form-control" id="firstName" name="firstName">
+                    <!-- <div th:if="${!errors.isEmpty()}">
+                        <small th:each="error : ${errors}" hidden id="firstNameError" name="firstNameError">First name is required.</small>
+                    </div> -->
                 </div>
                 <div class="form-group col">
                     <label for="middleName">Middle Name</label>
-                    <input type="text" class="form-control" id="middleName" name="middleName" th:value="${agent.middleName}">
+                    <input type="text" class="form-control" id="middleName" name="middleName">
                 </div>
                 <div class="form-group col">
                     <label for="lastName">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" th:value="${agent.lastName}">
+                    <input type="text" class="form-control" id="lastName" name="lastName">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col">
                     <label for="birthDate">Birth Date</label>
-                    <input type="date" class="form-control" id="birthDate" name="birthDate" min="1900-01-01" th:value=${agent.birthDate}>
+                    <input type="date" class="form-control" id="birthDate" name="birthDate">
                 </div>
                 <div class="form-group col">
                     <label for="height">Height (inches)</label>
-                    <input type="number" class="form-control" id="height" name="height" th:value="${agent.height}">
+                    <input type="number" class="form-control" id="height" name="height">
                 </div>
             </div>
             <fieldset>
@@ -43,37 +46,36 @@
                 <div class="form-row">
                     <div class="form-group col">
                         <label for="identifier">Identifier</label>
-                        <input type="text" class="form-control" id="identifier" name="identifier" th:value="${agent.identifier}">
+                        <input type="text" class="form-control" id="identifier" name="identifier">
                     </div>
                     <div class="form-group col">
                         <label for="agency">Agency</label>
-                        <select class="form-control" name="agencyId">
+                        <select class="form-control">
                             <option selected disabled>- Select -</option>
                             <option th:each="agency : ${agencyList}"
                             th:value="${agency.agencyId}"
-                            th:text="${agency.agencyId}"
-                            th:selected="${agency.agencyId == agent.agency.agencyId}"></option>
+                            th:text="${agency.name}"></option>
                         </select>
                     </div>
                     <div class="form-group col">
                         <label for="clearance">Security Clearance</label>
-                        <select class="form-control" name="securityClearanceId">
+                        <select class="form-control" name="securityClearance">
                             <option selected disabled>- Select -</option>
                             <option th:each="clearance : ${clearanceList}" 
                             th:value="${clearance.securityClearanceId}"
-                            th:text="${clearance.securityClearanceId}"></option>
+                            th:text="${clearance.name}"></option>
                         </select>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col">
                         <label for="activationDate">Activation Date</label>
-                        <input type="date" class="form-control" id="activationDate" name="activationDate" min="1900-01-01" th:value="${agent.activationDate}">
+                        <input type="date" class="form-control" id="activationDate" name="activationDate">
                     </div>
                     <div class="form-group col align-self-end">
                         <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="isActive" name="isActive" th:checked="${agent.active}">
-                                <label class="form-check-label" for="isActive">Is Active</label>
+                            <input type="checkbox" class="form-check-input" id="isActive" name="isActive">
+                            <label class="form-check-label" for="isActive">Is Active</label>
                         </div>
                     </div>
                 </div>
