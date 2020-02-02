@@ -13,7 +13,7 @@
                 <h3 class="text-left">Agent <span th:text="${agent.firstName + ' ' + agent.middleName + ' ' + agent.lastName}"></span></h3>
             </div>
         </div>
-    <form method="POST" action="addAgent">
+    <form method="POST" action="editAgent">
             <div class="form-row">
                 <div class="form-group col">
                     <label for="firstName">First Name</label>
@@ -39,11 +39,12 @@
                 </div>
             </div>
             <fieldset>
+
                 <legend>Agency</legend>
                 <div class="form-row">
                     <div class="form-group col">
                         <label for="identifier">Identifier</label>
-                        <input type="text" class="form-control" id="identifier" name="identifier" th:value="${agent.identifier}">
+                        <input type="text" class="form-control" id="identifier" name="identifier" th:value="${agent.identifier}" readonly>
                     </div>
                     <div class="form-group col">
                         <label for="agency">Agency</label>
@@ -51,7 +52,7 @@
                             <option selected disabled>- Select -</option>
                             <option th:each="agency : ${agencyList}"
                             th:value="${agency.agencyId}"
-                            th:text="${agency.agencyId}"
+                            th:text="${agency.name}"
                             th:selected="${agency.agencyId == agent.agency.agencyId}"></option>
                         </select>
                     </div>
@@ -61,7 +62,8 @@
                             <option selected disabled>- Select -</option>
                             <option th:each="clearance : ${clearanceList}" 
                             th:value="${clearance.securityClearanceId}"
-                            th:text="${clearance.securityClearanceId}"></option>
+                            th:text="${clearance.name}"
+                            th:selected="${clearance.securityClearanceId == agent.securityClearance.securityClearanceId}"></option>
                         </select>
                     </div>
                 </div>
@@ -79,11 +81,14 @@
                 </div>
             </fieldset>
             <div class="form-group">
-                <label for="pictureUrl">Picture URL</label>
-                <input type="url" class="form-control" id="pictureUrl" name="pictureUrl">
+                <img th:src="${agent.pictureUrl}">
             </div>
-            <button class="btn btn-primary">Save</button>
-            <button class="btn btn-secondary">Cancel</button>
+            <div class="form-group">
+                <label for="pictureUrl">Picture URL</label>
+                <input type="url" class="form-control" id="pictureUrl" name="pictureUrl" th:value="${agent.pictureUrl}">
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="#" th:href="@{/}"><button type="button" class="btn btn-secondary">Cancel</button></a>
         </form>
 
     </div>

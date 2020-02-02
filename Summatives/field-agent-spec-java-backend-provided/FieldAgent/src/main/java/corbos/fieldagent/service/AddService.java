@@ -34,7 +34,7 @@ public class AddService {
         this.securityRepo = securityRepo;
     }
     
-    public Agent addAgent(Agent agent){
+    public Agent addUpdateAgent(Agent agent){
         return agentRepo.save(agent);
     }
 }

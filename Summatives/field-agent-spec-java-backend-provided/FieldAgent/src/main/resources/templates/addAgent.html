@@ -51,7 +51,7 @@
                             <option selected disabled>- Select -</option>
                             <option th:each="agency : ${agencyList}"
                             th:value="${agency.agencyId}"
-                            th:text="${agency.agencyId}"></option>
+                            th:text="${agency.name}"></option>
                         </select>
                     </div>
                     <div class="form-group col">
@@ -60,7 +60,7 @@
                             <option selected disabled>- Select -</option>
                             <option th:each="clearance : ${clearanceList}" 
                             th:value="${clearance.securityClearanceId}"
-                            th:text="${clearance.securityClearanceId}"></option>
+                            th:text="${clearance.name}"></option>
                         </select>
                     </div>
                 </div>
@@ -81,8 +81,8 @@
                 <label for="pictureUrl">Picture URL</label>
                 <input type="url" class="form-control" id="pictureUrl" name="pictureUrl">
             </div>
-            <button class="btn btn-primary">Save</button>
-            <button class="btn btn-secondary">Cancel</button>
+            <button class="btn btn-primary" type="submit">Save</button>
+            <a href="#" th:href="@{/}"><button class="btn btn-secondary" type="button">Cancel</button></a>
         </form>
 
     </div>

@@ -76,7 +76,7 @@ public class AgentController {
         if(result.hasErrors()){
             return "redirect:/addAgentErrors";
         }
-        addService.addAgent(agent);
+        addService.addUpdateAgent(agent);
         return "redirect:/";
     }
     
@@ -96,5 +96,21 @@ public class AgentController {
         Agent agent = lookupService.findAgentByIdentifier(id);
         model.addAttribute("agent", agent);
         return "editAgent";
+    }
+    
+    @PostMapping("/editAgent")
+    public String performEditAgent(@Valid Agent agent, BindingResult result, HttpServletRequest request){
+        
+        agent.setAgency(lookupService.findAgencyById(Integer.parseInt(request.getParameter("agencyId"))));
+        agent.setSecurityClearance(lookupService.findSecurityClearanceById(Integer.parseInt(request.getParameter("securityClearanceId"))));
+        
+        // ADD IN VALIDATION
+        
+        if (result.hasErrors()){
+            return "editAgent";
+        }
+        
+        addService.addUpdateAgent(agent);
+        return "redirect:/";
     }
 }
