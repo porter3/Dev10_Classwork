@@ -56,8 +56,6 @@ public class AgentController {
         // set agent's agency and clearance properties by looking up their IDs
         agent.setAgency(lookupService.findAgencyById(Integer.parseInt(request.getParameter("agencyId"))));
         agent.setSecurityClearance(lookupService.findSecurityClearanceById(Integer.parseInt(request.getParameter("securityClearanceId"))));
-        // if agent didn't pass validation:
-        model.addAttribute("errors", violations);
 
         System.out.println("AGENT INFO: " + agent.toString());
         
