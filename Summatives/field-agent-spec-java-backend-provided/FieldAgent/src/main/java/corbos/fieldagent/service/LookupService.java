@@ -72,4 +72,8 @@ public class LookupService {
     public List<Assignment> findAssignmentsByAgent(String identifier){
         return assignmentRepo.findByAgentIdentifier(identifier);
     }
+    
+    public Assignment findAssignmentById(Integer assignmentId){
+        return assignmentRepo.findById(assignmentId).orElse(null);
+    }
 }

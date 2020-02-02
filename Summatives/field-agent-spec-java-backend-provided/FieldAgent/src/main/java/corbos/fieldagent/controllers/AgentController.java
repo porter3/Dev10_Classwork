@@ -88,8 +88,10 @@ public class AgentController {
     public String editAgent(String id, Model model){
         List<Agency> agencyList = lookupService.findAllAgencies();
         List<SecurityClearance> clearanceList = lookupService.findAllSecurityClearances();
+        List<Assignment> assignmentList = lookupService.findAssignmentsByAgent(id);
         model.addAttribute("agencyList", agencyList);
         model.addAttribute("clearanceList", clearanceList);
+        model.addAttribute("assignmentList", assignmentList);
         
         // add Agent to model for editing
         Agent agent = lookupService.findAgentByIdentifier(id);

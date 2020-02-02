@@ -45,4 +45,8 @@ public class DeleteService {
         // delete agent
         agentRepo.delete(agentRepo.findById(agentIdentifier).orElse(null));
     }
+    
+    public void deleteAssignment(Integer assignmentId){
+        assignmentRepo.delete(assignmentRepo.findById(assignmentId).orElse(null));
+    }
 }

@@ -94,8 +94,58 @@ public class AssignmentController {
         return "redirect:/";
     }
     
-    @GetMapping("addAssignmentErrors")
+    @GetMapping("/addAssignmentErrors")
     public String addAssignmentErrors(Model model){
         return "addAssignmentErrors";
     }
+    
+    @GetMapping("/editAssignment")
+    public String editAssignment(String id, Model model){
+        // add lists to the model
+        List<Agent> agentList = lookupService.findAllAgents();
+        List<Country> countryList = lookupService.findAllCountries();
+        Assignment assignment = lookupService.findAssignmentById(Integer.parseInt(id));
+        model.addAttribute("agentList", agentList);
+        model.addAttribute("countryList", countryList);
+        model.addAttribute("assignment", assignment);
+        return "editAssignment";
+    }
+    
+    @PostMapping("/editAssignment")
+    public String performEditAssignment(@Valid Assignment assignment, BindingResult result, HttpServletRequest request){
+        // set properties that are objects (don't need any if->null validation)
+        assignment.setCountry(lookupService.findCountryByCode(request.getParameter("countryCode")));
+        assignment.setAgent(lookupService.findAgentByIdentifier(request.getParameter("agentIdentifier")));
+        
+        if(assignment.getStartDate() == null){
+            result.addError(new FieldError("assignment", "startDate", "Must enter a start date."));
+        }
+        if(assignment.getProjectedEndDate() == null){
+            result.addError(new FieldError("assignment", "projectedEndDate", "Must enter a projected end date."));
+        }
+        if(assignment.getActualEndDate() == null){
+            result.addError(new FieldError("assignment", "actualEndDate", "Must enter an actual end date."));
+        }
+        
+        // ADD IN DATE-SPECIFICS VALIDATION
+        
+        if (result.hasErrors()){
+            return "editAssignment";
+        }
+        
+        addService.addUpdateAssignment(assignment);
+        return "redirect:/";
+    }
+    
+    @GetMapping("/deleteAssignment")
+    public String deleteAssignment(String id){
+        // get Agent's indentifier that assignment was assigned to
+        Assignment assignment = lookupService.findAssignmentById(Integer.parseInt(id));
+        String agentIdentifier = assignment.getAgent().getIdentifier();
+        
+        // delete assignment
+        deleteService.deleteAssignment(Integer.parseInt(id));
+        return "redirect:/editAgent?id=" + agentIdentifier;
+    }
+    
 }
