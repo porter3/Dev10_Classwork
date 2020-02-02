@@ -2,8 +2,10 @@ package corbos.fieldagent.controllers;
 
 import corbos.fieldagent.entities.Agency;
 import corbos.fieldagent.entities.Agent;
+import corbos.fieldagent.entities.Assignment;
 import corbos.fieldagent.entities.SecurityClearance;
 import corbos.fieldagent.service.AddService;
+import corbos.fieldagent.service.DeleteService;
 import corbos.fieldagent.service.LookupService;
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -39,6 +41,9 @@ public class AgentController {
     
     @Autowired
     AddService addService;
+    
+    @Autowired
+    DeleteService deleteService;
     
     // create a set of violations to add to in methods
     Set<ConstraintViolation<Agent>> violations = new HashSet();
@@ -111,6 +116,26 @@ public class AgentController {
         }
         
         addService.addUpdateAgent(agent);
+        return "redirect:/";
+    }
+    
+    // render delete confirmation page
+    @GetMapping("/deleteConfirmation")
+    public String deleteAgent(String id, Model model){
+        // get Agent object
+        Agent agent = lookupService.findAgentByIdentifier(id);
+        
+        // get Assignments associated with Agent
+        List<Assignment> assignmentList = lookupService.findAssignmentsByAgent(id);
+        
+        model.addAttribute("agent", agent);
+        model.addAttribute("assignmentNumber", assignmentList.size());
+        return "deleteConfirmation";
+    }
+    
+    @GetMapping("/deleteAgent")
+    public String performDeleteAgent(String id){
+        deleteService.deleteAgent(id);
         return "redirect:/";
     }
 }

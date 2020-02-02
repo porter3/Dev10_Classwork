@@ -10,34 +10,22 @@
     <div class="container">
         <div id="header" class="row">
             <div class="col-md">
-                <h3 class="text-left">Home</h3>
-            </div>
-            <div class="justify-content-end">
-                <a href="#" th:href="@{/addAgent}"><button class="btn btn-primary" type="submit">Add An Agent</button></a>
+                <h3 class="text-left margin-bottom">Delete <span th:text="${agent.firstName + ' ' + agent.middleName + ' ' + agent.lastName + '?'}"></span></h3>
             </div>
         </div>
-        <hr/>
-        <table class="table table-striped">
-          <thead>
-            <th scope="col">Field Agent</th>
-            <th scope="col">Agency</th>
-          </thead>
-          <tbody>
-            <tr th:each="agent : ${agentList}"> <!-- create one of these rows for each agent -->
-              <td><a href="#" th:href="@{/editAgent(id=${agent.identifier})}" th:text="${agent.firstName + ' ' + agent.lastName}"></a></td> <!-- TODO: CHANGE TO FULL NAME -->
-              <td><span th:text="${agent.agency.name}"></span></td>
-              <td>
-                <a href="#" th:href="@{/deleteConfirmation(id=${agent.identifier})}"><button class="btn btn-danger">Delete</button></a>
-                <a href="#" th:href="@{/addAssignment(id=${agent.identifier})}"><button class="btn btn-secondary">Add an Assignment</button></a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div>
+            <div>Assignments: <span th:text="${assignmentNumber}"></span></div>
+            <div>Deletions are permanent.</div>
+            <div>Both <span th:text="${agent.firstName} + ' and his/her ' + ${assignmentNumber}"></span> assignments will be deleted forever.</div>
+            <br/>
+            <div>Continue?</div>
+            <a href="#" th:href="@{/deleteAgent(id=${agent.identifier})}"><button type="button" class="btn btn-danger">Delete</button></a>
+            <a href="#" th:href="@{/}"><button type="button" class="btn btn-secondary">Cancel</button></a>
+        </div>
     </div>
 
-
+            
     <!-- End main body -->
-    <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

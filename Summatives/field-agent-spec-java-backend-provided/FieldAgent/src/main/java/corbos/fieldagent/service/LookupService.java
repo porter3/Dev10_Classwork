@@ -7,6 +7,7 @@ import corbos.fieldagent.data.CountryRepository;
 import corbos.fieldagent.data.SecurityClearanceRepository;
 import corbos.fieldagent.entities.Agency;
 import corbos.fieldagent.entities.Agent;
+import corbos.fieldagent.entities.Assignment;
 import corbos.fieldagent.entities.Country;
 import corbos.fieldagent.entities.SecurityClearance;
 import java.util.List;
@@ -66,5 +67,9 @@ public class LookupService {
     public SecurityClearance findSecurityClearanceById(int securityClearanceId) {
         return securityRepo.findById(securityClearanceId)
                 .orElse(null);
+    }
+    
+    public List<Assignment> findAssignmentsByAgent(String identifier){
+        return assignmentRepo.findByAgentIdentifier(identifier);
     }
 }
