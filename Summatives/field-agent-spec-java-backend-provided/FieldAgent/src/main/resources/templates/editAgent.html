@@ -49,17 +49,15 @@
                     <div class="form-group col">
                         <label for="agency">Agency</label>
                         <select class="form-control" name="agencyId">
-                            <option selected disabled>- Select -</option>
                             <option th:each="agency : ${agencyList}"
                             th:value="${agency.agencyId}"
-                            th:text="${agency.name}"
+                            th:text="${agency.agencyId}"
                             th:selected="${agency.agencyId == agent.agency.agencyId}"></option>
                         </select>
                     </div>
                     <div class="form-group col">
                         <label for="clearance">Security Clearance</label>
                         <select class="form-control" name="securityClearanceId">
-                            <option selected disabled>- Select -</option>
                             <option th:each="clearance : ${clearanceList}" 
                             th:value="${clearance.securityClearanceId}"
                             th:text="${clearance.name}"

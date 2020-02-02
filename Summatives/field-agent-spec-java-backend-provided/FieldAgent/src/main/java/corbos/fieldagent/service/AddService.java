@@ -6,6 +6,7 @@ import corbos.fieldagent.data.AssignmentRepository;
 import corbos.fieldagent.data.CountryRepository;
 import corbos.fieldagent.data.SecurityClearanceRepository;
 import corbos.fieldagent.entities.Agent;
+import corbos.fieldagent.entities.Assignment;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,5 +37,9 @@ public class AddService {
     
     public Agent addUpdateAgent(Agent agent){
         return agentRepo.save(agent);
+    }
+    
+    public Assignment addUpdateAssignment(Assignment assignment){
+        return assignmentRepo.save(assignment);
     }
 }
