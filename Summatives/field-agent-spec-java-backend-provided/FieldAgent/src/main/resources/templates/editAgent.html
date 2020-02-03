@@ -59,7 +59,7 @@
                         <select class="form-control" name="agencyId">
                             <option th:each="agency : ${agencyList}"
                             th:value="${agency.agencyId}"
-                            th:text="${agency.agencyId}"
+                            th:text="${agency.name}"
                             th:selected="${agency.agencyId == agent.agency.agencyId}"></option>
                         </select>
                     </div>

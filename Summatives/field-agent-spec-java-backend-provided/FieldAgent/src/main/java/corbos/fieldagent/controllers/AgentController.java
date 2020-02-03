@@ -72,6 +72,10 @@ public class AgentController {
         Validator validatorObj = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validatorObj.validate(agent);
         otherViolations = addService.validateAgent(agent);
+        // validate Agent doesn't already exist
+        if (!addService.validateAgentDoesNotExist(agent)){
+            otherViolations.add("Agent identifier already exists");
+        }
         
         if(!violations.isEmpty() || !otherViolations.isEmpty()){
             return "redirect:/addAgent";

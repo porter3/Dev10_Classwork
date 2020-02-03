@@ -8,9 +8,17 @@
   </head>
   <body>
     <div class="container">
-        <div id="header" class="row">
-            <div class="col-md">
-                <h3 class="text-left margin-bottom">Add Assignment</h3>
+        <div id="header">
+            <h3 class="text-left margin-bottom">Add Assignment</h3>
+            <div th:if="${!errors.isEmpty() or !customErrors.isEmpty()}">
+                <ul>
+                    <li class="alert alert-danger"
+                    th:each="error : ${errors}"
+                    th:text="${error.message}"></li>
+                    <li class="alert alert-danger"
+                    th:each="customError : ${customErrors}"
+                    th:text="${customError}"></li>
+                </ul>
             </div>
         </div>
         <div>

@@ -53,6 +53,7 @@
                     <label for="notes">Notes</label>
                     <textarea class="form-control" id="notes" name="notes"></textarea>
                 </div>
+                <input type="hidden" id="assignmentId" name="assignmentId" th:value="${assignment.assignmentId}">
                 <button class="btn btn-primary" type="submit">Save</button>
                 <a href="/"><button class="btn btn-secondary" type="button">Cancel</button></a>
             </form>
