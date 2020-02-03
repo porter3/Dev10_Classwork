@@ -41,6 +41,15 @@ public class AgentController {
     Set<ConstraintViolation<Agent>> violations = new HashSet();
     Set<String> otherViolations = new HashSet();
         
+    @GetMapping({"/", "/home"})
+    public String displayHomepage(Model model){
+        violations.clear();
+        otherViolations.clear();
+        List<Agent> agentList = lookupService.findAllAgents();
+        model.addAttribute("agentList", agentList);
+        return "home";
+    }
+    
     @GetMapping("/addAgent")
     public String addAgent(Model model){
         List<Agency> agencyList = lookupService.findAllAgencies();
