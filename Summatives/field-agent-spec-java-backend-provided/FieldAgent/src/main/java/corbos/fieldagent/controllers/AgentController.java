@@ -58,7 +58,7 @@ public class AgentController {
         if (request.getParameter("agencyId") != null){
             agent.setAgency(lookupService.findAgencyById(Integer.parseInt(request.getParameter("agencyId"))));
         }
-        if (request.getParameter("securityClearance") != null){
+        if (request.getParameter("securityClearanceId") != null){
             agent.setSecurityClearance(lookupService.findSecurityClearanceById(Integer.parseInt(request.getParameter("securityClearanceId"))));
         }
         
@@ -91,6 +91,7 @@ public class AgentController {
         // add Agent to model for editing
         Agent agent = lookupService.findAgentByIdentifier(id);
         model.addAttribute("agent", agent);
+        model.addAttribute("isActive", agent.isActive());
         return "editAgent";
     }
     
@@ -99,6 +100,8 @@ public class AgentController {
         // Don't need to be validated as being not null when editing
         agent.setAgency(lookupService.findAgencyById(Integer.parseInt(request.getParameter("agencyId"))));
         agent.setSecurityClearance(lookupService.findSecurityClearanceById(Integer.parseInt(request.getParameter("securityClearanceId"))));
+        // didn't think I would have to write this but it makes it work
+        agent.setActive(Boolean.parseBoolean(request.getParameter("isActive")));
         
         Validator validatorObj = Validation.buildDefaultValidatorFactory().getValidator();
         violations = validatorObj.validate(agent);
