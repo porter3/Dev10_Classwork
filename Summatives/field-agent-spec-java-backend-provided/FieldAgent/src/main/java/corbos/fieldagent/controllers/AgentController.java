@@ -60,8 +60,12 @@ public class AgentController {
     @PostMapping("/addAgent")
     public String performAddAgent(Agent agent, HttpServletRequest request){
         // set agent's agency and clearance properties by looking up their IDs
-        agent.setAgency(lookupService.findAgencyById(Integer.parseInt(request.getParameter("agencyId"))));
-        agent.setSecurityClearance(lookupService.findSecurityClearanceById(Integer.parseInt(request.getParameter("securityClearanceId"))));
+        if (request.getParameter("agencyId") != null){
+            agent.setAgency(lookupService.findAgencyById(Integer.parseInt(request.getParameter("agencyId"))));
+        }
+        if (request.getParameter("securityClearance") != null){
+            agent.setSecurityClearance(lookupService.findSecurityClearanceById(Integer.parseInt(request.getParameter("securityClearanceId"))));
+        }
 
         System.out.println("AGENT INFO: " + agent.toString());
         
@@ -69,17 +73,11 @@ public class AgentController {
         violations = validatorObj.validate(agent);
         otherViolations = addService.validateAgent(agent);
         
-        
         if(!violations.isEmpty() || !otherViolations.isEmpty()){
             return "redirect:/addAgent";
         }
         addService.addUpdateAgent(agent);
         return "redirect:/";
-    }
-    
-    @GetMapping("/addAgentErrors")
-    public String addAgentErrors(Model model){
-        return "addAgentErrors";
     }
     
     @GetMapping("/editAgent")
@@ -90,6 +88,8 @@ public class AgentController {
         model.addAttribute("agencyList", agencyList);
         model.addAttribute("clearanceList", clearanceList);
         model.addAttribute("assignmentList", assignmentList);
+        model.addAttribute("errors", violations);
+        model.addAttribute("customErrors", otherViolations);
         
         // add Agent to model for editing
         Agent agent = lookupService.findAgentByIdentifier(id);
@@ -98,15 +98,17 @@ public class AgentController {
     }
     
     @PostMapping("/editAgent")
-    public String performEditAgent(@Valid Agent agent, BindingResult result, HttpServletRequest request){
-        
+    public String performEditAgent(Agent agent, HttpServletRequest request){
+        // Don't need to be validated as being not null when editing
         agent.setAgency(lookupService.findAgencyById(Integer.parseInt(request.getParameter("agencyId"))));
         agent.setSecurityClearance(lookupService.findSecurityClearanceById(Integer.parseInt(request.getParameter("securityClearanceId"))));
         
-        // ADD IN VALIDATION
+        Validator validatorObj = Validation.buildDefaultValidatorFactory().getValidator();
+        violations = validatorObj.validate(agent);
+        otherViolations = addService.validateAgent(agent);
         
-        if (result.hasErrors()){
-            return "editAgent";
+        if (!violations.isEmpty() || !otherViolations.isEmpty()){
+            return "redirect:/editAgent?id=" + agent.getIdentifier();
         }
         
         addService.addUpdateAgent(agent);

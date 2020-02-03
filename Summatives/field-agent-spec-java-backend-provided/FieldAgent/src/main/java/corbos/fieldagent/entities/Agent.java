@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -21,20 +23,20 @@ public class Agent implements Serializable {
     @Size(max = 25)
     private String identifier;
     @NotBlank(message = "First name cannot be blank.")
-    @Size(max = 25)
+    @Size(max = 25, message="First name must be under 25 characters.")
     private String firstName;
-    @Size(max = 25)
+    @Size(max = 25, message="Middle name must be under 25 characters.")
     private String middleName;
     @NotBlank(message = "Last name cannot be blank")
-    @Size(max = 25)
+    @Size(max = 25, message="Last name must be under 25 characters.")
     private String lastName;
-    @Size(max = 255)
+    @Size(max = 255, message="Picture URL must be under 255 characters.")
     private String pictureUrl;
     // Add between 1/1/1900 and ten years from the current day requirement
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
-    // Add 36-96 requirement
-    
+    @Min(36)
+    @Max(96)
     private int height;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate activationDate;

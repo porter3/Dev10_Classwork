@@ -10,12 +10,12 @@
     <div class="container">
         <div id="header">
             <h3 class="margin-bottom">Add a Field Agent</h3>
-            <div class="validation-summary" th:if="${!errors.isEmpty() or !customErrors.isEmpty()}">
+            <div th:if="${!errors.isEmpty() or !customErrors.isEmpty()}">
                 <ul>
                     <li class="alert alert-danger"
                     th:each="error : ${errors}"
                     th:text="${error.message}"></li>
-                    <li class="alert alert-primary"
+                    <li class="alert alert-danger"
                     th:each="customError : ${customErrors}"
                     th:text="${customError}"></li>
                 </ul>
@@ -43,7 +43,7 @@
                 </div>
                 <div class="form-group col">
                     <label for="height">Height (inches)</label>
-                    <input type="number" class="form-control" id="height" name="height">
+                    <input type="number" class="form-control" id="height" name="height" required>
                 </div>
             </div>
             <fieldset>

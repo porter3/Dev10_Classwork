@@ -9,6 +9,7 @@ import corbos.fieldagent.entities.Agent;
 import corbos.fieldagent.entities.Assignment;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.HashSet;
 import java.util.Set;
 import org.springframework.stereotype.Service;
@@ -59,8 +60,34 @@ public class AddService {
         }
         // date must be ten years ago from today
         else if (birthDate.isAfter(tenYearsFromCurrentDay)){
-            violations.add("Birth Date cannot be within the last 10 years.");
+            violations.add("Birth Date cannot be within the last 10 years");
         }
+        // HTML 'min' attribute currently prevents this from being necessary
+        else if (birthDate.isBefore(LocalDate.of(1900, Month.JANUARY, 1))){
+            violations.add("Birth Date must be after 01/01/1900");
+        }
+        if (agent.getActivationDate() == null){
+            violations.add("Must enter an activation date");
+        }
+        // activationDate validation - not formally required but seems like common sense to have
+        else if (agent.getActivationDate().isBefore(birthDate)){
+            violations.add("An agent cannot be activated before they're born, unless you have a time machine");
+        }
+        // agency validation
+        if (agent.getAgency() == null){
+            violations.add("An agency must be selected");
+        }
+        // security clearance validation
+        if (agent.getSecurityClearance() == null){
+            violations.add("A security clearance type must be selected");
+        }
+        return violations;
+    }
+    
+    public Set<String> validateAssignment(Assignment assignment){
+        Set<String> violations = new HashSet();
+        
+        // do something
         
         return violations;
     }
