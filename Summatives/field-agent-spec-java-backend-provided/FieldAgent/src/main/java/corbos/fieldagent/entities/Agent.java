@@ -17,14 +17,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Agent implements Serializable {
 
     @Id // maybe forces it to be globally unique? test this
+    @NotBlank(message="Identifier cannot be blank")
     @Size(max = 25)
     private String identifier;
-    @NotBlank
+    @NotBlank(message = "First name cannot be blank.")
     @Size(max = 25)
     private String firstName;
     @Size(max = 25)
     private String middleName;
-    @NotBlank
+    @NotBlank(message = "Last name cannot be blank")
     @Size(max = 25)
     private String lastName;
     @Size(max = 255)
@@ -33,6 +34,7 @@ public class Agent implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
     // Add 36-96 requirement
+    
     private int height;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate activationDate;

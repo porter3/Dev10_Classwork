@@ -7,6 +7,10 @@ import corbos.fieldagent.data.CountryRepository;
 import corbos.fieldagent.data.SecurityClearanceRepository;
 import corbos.fieldagent.entities.Agent;
 import corbos.fieldagent.entities.Assignment;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import org.springframework.stereotype.Service;
 
 /**
@@ -41,5 +45,23 @@ public class AddService {
     
     public Assignment addUpdateAssignment(Assignment assignment){
         return assignmentRepo.save(assignment);
+    }
+    
+    public Set<String> validateAgent(Agent agent){
+        Set<String> violations = new HashSet();
+        LocalDate birthDate = agent.getBirthDate();
+
+        // birthDate validation
+        LocalDate tenYearsFromCurrentDay = LocalDate.now().minusYears(10);
+        // date must be entered
+        if (birthDate == null){
+            violations.add("Birth Date must be entered");
+        }
+        // date must be ten years ago from today
+        else if (birthDate.isAfter(tenYearsFromCurrentDay)){
+            violations.add("Birth Date cannot be within the last 10 years.");
+        }
+        
+        return violations;
     }
 }

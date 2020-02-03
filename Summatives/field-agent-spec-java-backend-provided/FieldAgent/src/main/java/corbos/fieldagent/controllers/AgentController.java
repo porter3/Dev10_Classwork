@@ -8,12 +8,15 @@ import corbos.fieldagent.service.AddService;
 import corbos.fieldagent.service.DeleteService;
 import corbos.fieldagent.service.LookupService;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +44,7 @@ public class AgentController {
     
     // create a set of violations to add to in methods
     Set<ConstraintViolation<Agent>> violations = new HashSet();
+    Set<String> otherViolations = new HashSet();
         
     @GetMapping("/addAgent")
     public String addAgent(Model model){
@@ -48,30 +52,26 @@ public class AgentController {
         List<SecurityClearance> clearanceList = lookupService.findAllSecurityClearances();
         model.addAttribute("agencyList", agencyList);
         model.addAttribute("clearanceList", clearanceList);
+        model.addAttribute("errors", violations);
+        model.addAttribute("customErrors", otherViolations);
         return "addAgent";
     }
     
     @PostMapping("/addAgent")
-    public String performAddAgent(@Valid Agent agent, BindingResult result, HttpServletRequest request, Model model){
+    public String performAddAgent(Agent agent, HttpServletRequest request){
         // set agent's agency and clearance properties by looking up their IDs
         agent.setAgency(lookupService.findAgencyById(Integer.parseInt(request.getParameter("agencyId"))));
         agent.setSecurityClearance(lookupService.findSecurityClearanceById(Integer.parseInt(request.getParameter("securityClearanceId"))));
 
         System.out.println("AGENT INFO: " + agent.toString());
         
-        // add validation for birthDate existence
-        LocalDate tenYearsFromCurrentDay = LocalDate.now().minusYears(10);
-        // date must be entered
-        if (agent.getBirthDate() == null){
-            result.addError(new FieldError("agent", "birthDate", "Birth Date must be entered."));
-        }
-        // date must be ten years ago from today
-        else if (agent.getBirthDate().isAfter(tenYearsFromCurrentDay)){
-            result.addError(new FieldError("agent", "birthDate", "Birth Date must be earlier than 10 years ago from current date."));
-        }
-                
-        if(result.hasErrors()){
-            return "redirect:/addAgentErrors";
+        Validator validatorObj = Validation.buildDefaultValidatorFactory().getValidator();
+        violations = validatorObj.validate(agent);
+        otherViolations = addService.validateAgent(agent);
+        
+        
+        if(!violations.isEmpty() || !otherViolations.isEmpty()){
+            return "redirect:/addAgent";
         }
         addService.addUpdateAgent(agent);
         return "redirect:/";
