@@ -7,7 +7,6 @@ import corbos.fieldagent.data.CountryRepository;
 import corbos.fieldagent.data.SecurityClearanceRepository;
 import corbos.fieldagent.entities.Agent;
 import corbos.fieldagent.entities.Assignment;
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
