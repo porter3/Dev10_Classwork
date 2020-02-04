@@ -125,7 +125,42 @@ public class AddService {
         else if (actualEndDate.isBefore(startDate)){
             violations.add("Actual end date must be after start date");
         }
-
+        
+        // validate assignment doesn't overlap with other assignments
+        List<Assignment> assignmentsForAgent = assignmentRepo.findByAgentIdentifier(assignment.getAgent().getIdentifier());
+        for (Assignment assignmentToCheck : assignmentsForAgent){
+            LocalDate existingStartDate = assignmentToCheck.getStartDate();
+            LocalDate existingProjectedEndDate = assignmentToCheck.getProjectedEndDate();
+            LocalDate existingActualEndDate = assignmentToCheck.getActualEndDate();
+            
+            // There's a lot of repeated code here, but refactoring this project isn't super important
+            
+            // if start date is between existingStart and existingProjectedEnd/existingActualEnd (inclusive)
+            if ((startDate.isAfter(existingStartDate) && startDate.isBefore(existingProjectedEndDate))
+                    || (startDate.isAfter(existingStartDate) && startDate.isBefore(existingActualEndDate))
+                    || (startDate.compareTo(existingStartDate) == 0) || (startDate.compareTo(existingProjectedEndDate) == 0)
+                    || (startDate.compareTo(existingActualEndDate) == 0)){
+                violations.add("Start date conflicts with dates of other assignments");
+            }
+            
+            // projectedEndDate validation (similar to startDate)
+            if ((projectedEndDate.isAfter(existingStartDate) && projectedEndDate.isBefore(existingProjectedEndDate))
+                    || (projectedEndDate.isAfter(existingStartDate) && projectedEndDate.isBefore(existingActualEndDate))
+                    || (projectedEndDate.compareTo(existingStartDate) == 0) || (projectedEndDate.compareTo(existingProjectedEndDate) == 0)
+                    || (projectedEndDate.compareTo(existingActualEndDate) == 0)){
+                violations.add("Projected end date conflicts with dates of other assignments");
+            }
+            
+            // actualEndDate validation (similar to the two previous)
+            if ((actualEndDate.isAfter(existingStartDate) && actualEndDate.isBefore(existingProjectedEndDate))
+                    || (actualEndDate.isAfter(existingStartDate) && actualEndDate.isBefore(existingActualEndDate))
+                    || (actualEndDate.compareTo(existingStartDate) == 0) || (actualEndDate.compareTo(existingProjectedEndDate) == 0)
+                    || (actualEndDate.compareTo(existingActualEndDate) == 0)){
+                violations.add("Actual end date conflicts with dates of other assignments");
+            }
+        }
+            
         return violations;
     }
+    
 }
