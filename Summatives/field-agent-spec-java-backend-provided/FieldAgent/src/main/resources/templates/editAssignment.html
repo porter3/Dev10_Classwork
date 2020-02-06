@@ -4,13 +4,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <title>Field Agent Project Home</title>
+    <title>Field Agent</title>
   </head>
   <body>
     <div class="container">
         <div id="header" class="row">
             <div class="col-md">
                 <h3 class="text-left margin-bottom">Edit Assignment</h3>
+                <div th:if="${!errors.isEmpty() or !customErrors.isEmpty()}">
+                    <ul>
+                        <li class="alert alert-danger"
+                        th:each="error : ${errors}"
+                        th:text="${error.message}"></li>
+                        <li class="alert alert-danger"
+                        th:each="customError : ${customErrors}"
+                        th:text="${customError}"></li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div>
@@ -55,7 +65,7 @@
                 </div>
                 <input type="hidden" id="assignmentId" name="assignmentId" th:value="${assignment.assignmentId}">
                 <button class="btn btn-primary" type="submit">Save</button>
-                <a href="/"><button class="btn btn-secondary" type="button">Cancel</button></a>
+                <a href="/assignment/home"><button class="btn btn-secondary" type="button">Cancel</button></a>
             </form>
         </div>
     </div>

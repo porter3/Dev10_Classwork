@@ -42,7 +42,16 @@ public class AssignmentController {
     Set<ConstraintViolation<Assignment>> violations = new HashSet();
     Set<String> otherViolations = new HashSet();
     
-    @GetMapping("/addAssignment")
+    @GetMapping("/assignment/home")
+    public String displayHomepage(Model model){
+        violations.clear();
+        otherViolations.clear();
+        List<Agent> agentList = lookupService.findAllAgents();
+        model.addAttribute("agentList", agentList);
+        return "home";
+    }
+    
+    @GetMapping("/addAssignment") // look here for fixing
     public String addAssignment(String id, Model model){
         // get model attributes
         model.addAttribute("agentForAssignment", lookupService.findAgentByIdentifier(id));
@@ -51,7 +60,6 @@ public class AssignmentController {
         
         model.addAttribute("errors", violations);
         model.addAttribute("customErrors", otherViolations);
-        
         return "addAssignment";
     }
     

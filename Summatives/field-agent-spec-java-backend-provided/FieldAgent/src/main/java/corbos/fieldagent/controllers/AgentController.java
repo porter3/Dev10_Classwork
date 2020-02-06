@@ -40,8 +40,8 @@ public class AgentController {
     // create a set of violations to add to in methods
     Set<ConstraintViolation<Agent>> violations = new HashSet();
     Set<String> otherViolations = new HashSet();
-        
-    @GetMapping({"/", "/home"})
+    
+    @GetMapping({"/", "/home", "/agent/home"})
     public String displayHomepage(Model model){
         violations.clear();
         otherViolations.clear();
