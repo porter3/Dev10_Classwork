@@ -64,7 +64,7 @@ public class TeacherController {
         // Validate the Teacher and add it to the DB if it passes validation
         Validator validatorObj = Validation.buildDefaultValidatorFactory().getValidator(); // Instantiate a Validator object with static factory methods
         violations = validatorObj.validate(teacher); // <- Any violations the Teacher contains are assigned to the Set of ConstraintViolations
-        
+
         if(violations.isEmpty()){
             teacherDao.addTeacher(teacher);
         }

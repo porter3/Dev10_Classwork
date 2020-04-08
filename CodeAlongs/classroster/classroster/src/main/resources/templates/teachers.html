@@ -26,11 +26,12 @@
         </div>
         <!-- ADD TEACHER FORM -->
         <div class="row m-4 border border-dark">
+            <!-- ERROR DIV -->
             <div class="col-12 m-1 text-center"
-                th:if="${!errors.isEmpty()}"> <!-- div only displays if there are errors --> <!-- can any Java methods be used inside Thymeleaf? -->
+                th:if="${!errors.isEmpty()}"> <!-- div only displays if there are errors -->
                 <p class="alert alert-danger"
                 th:each="error : ${errors}"
-                    th:text="${error.message}">Error message</p>
+                    th:text="${error.message}">Error message</p> <!-- this method cannot preserve the data the user enters -->
             </div>
             <div class="col-3 text-center m-3">
                 <span class="h3">Add Teacher</span>

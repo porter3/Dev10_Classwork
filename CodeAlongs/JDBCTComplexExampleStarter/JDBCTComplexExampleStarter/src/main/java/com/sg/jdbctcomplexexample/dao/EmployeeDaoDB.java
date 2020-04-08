@@ -52,7 +52,8 @@ public class EmployeeDaoDB implements EmployeeDao{
     public Employee getEmployeeById(int id) {
         try{
             final String SELECT_EMPLOYEE_BY_ID = "SELECT * FROM employee WHERE ID = ?";
-            return jdbc.queryForObject(SELECT_EMPLOYEE_BY_ID, new EmployeeMapper());
+            Employee employee = jdbc.queryForObject(SELECT_EMPLOYEE_BY_ID, new EmployeeMapper(), id);
+            return employee;
         }
         catch(DataAccessException e){
             return null;

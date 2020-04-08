@@ -6,9 +6,11 @@ import com.sg.classroster.data.TeacherDao;
 import com.sg.classroster.entities.Student;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -72,7 +74,16 @@ public class StudentController {
     match up exactly with the field names in the Student object
     */
     @PostMapping("editStudent")
-    public String performEditStudent(Student student){
+    // @Valid indicates Student should be validated. BindingResult holds the results of the validation.
+    public String performEditStudent(@Valid Student student, BindingResult result){  /* since the PostMapping takes the full Student DTO,
+                                                                                        I don't need to create a Validator to validate the data*/
+        
+        /* if the BindingResult picks up on Student validation errors,
+            redirect the page to its original state */
+        if(result.hasErrors()){     
+            return "editStudent";
+        }
+        // otherwise, update the student and go back to the main page
         studentDao.updateStudent(student);
         return "redirect:/students";
     }

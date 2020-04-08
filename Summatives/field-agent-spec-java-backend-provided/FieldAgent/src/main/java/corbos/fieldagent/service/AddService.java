@@ -122,7 +122,7 @@ public class AddService {
         if (actualEndDate == null){
             violations.add("Must enter an actual end date");
         }
-        else if (actualEndDate.isBefore(startDate)){
+        if (actualEndDate.isBefore(startDate)){
             violations.add("Actual end date must be after start date");
         }
         

@@ -16,7 +16,7 @@ public class Student {
     @Size(max = 30, message = "First name must be under 30 characters")
     private String firstName;
     
-    @NotBlank
+    @NotBlank(message = "Last name can't be empty, booooo")
     @Size(max = 50, message = "Last name must be under 50 characters")
     private String lastName;
 

@@ -9,7 +9,7 @@
         <!-- full page container for listView -->
         <div class="container" id="buttonHeader">
             <!-- first row with the buttons/drop-down-->
-            <div class="row>" style="border: 2px solid red;">
+            <div class="row">
                 <!-- what does the role tag do? -->
                 <form class="form-inline" role="form" id="dvdForm">
                     <!-- right margin set to 5 -->
@@ -24,8 +24,11 @@
                         <!-- SEARCH CATEGORY -->
                         <div class="col-md-3 mx-3">
                             <select class="form-control border-dark" name="searchCategory" id="category">
-                                <!-- append options here in JS -->
                                 <option value="default" selected disabled>-- Select A Category --</option>
+                                <option value="title">Title</option>
+                                <option value="releaseYear">Release Year</option>
+                                <option value="director">Director</option>
+                                <option value="rating">Rating</option>
                             </select>
                         </div>
                         <!-- SEARCH TERM -->
@@ -36,15 +39,17 @@
                 </form>
             </div>
         </div>
-        <div class="container" id="editHeader">
-            <!-- holds editing header that has title changed dynamically -->
+
+        <!-- DVD TITLE HEADER-->
+        <div class="container">
+            <div class="row"  id="dvdTitleHeader">
+            </div>
         </div>
 
         <hr/>
         <!-- ERROR DIV -->
         <div class="container">
             <div class="row" id="errorDiv">
-
             </div>
         </div>
 
@@ -134,7 +139,6 @@
                     <h3>Release Year:</h3>
                 </div>
                 <div class="col-md-5" id="releaseYearDisplay">
-                    <h3>Year Placeholder</h3>
                 </div>
             </div>
             <div class="row">
@@ -160,10 +164,7 @@
             </div>
             <div class="row">
                 <div class="col-md-1">
-                    <button class="btn btn-outline-dark" id="cancelButton" type="button">Cancel</button>
-                </div>
-                <div class="col-md-1">
-                    <button class="btn btn-outline-dark" id="saveChangesButton" type="button">Save Changes</button>
+                    <button class="btn btn-outline-dark" id="backButton" type="button">Back</button>
                 </div>
             </div>
         </div>

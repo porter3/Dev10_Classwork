@@ -95,3 +95,21 @@ INSERT INTO CastMembers(ActorID, MovieID, ActorRole) VALUES
     (2, 3, 'Dr. Raymond Stanz'),
     (2, 4, 'Roman Craig'),
     (3, 4, 'Chet Ripley');
+    
+UPDATE Movie SET
+	Title = 'Ghostbusters (1984)',
+    ReleaseDate = '1984-06-08'
+WHERE MovieID = 3;
+
+DELETE FROM CastMembers
+WHERE MovieID = 1;
+
+DELETE FROM Movie
+WHERE MovieID = 1;
+
+ALTER TABLE Actor
+	ADD COLUMN (DateOfDeath DATE NULL);
+
+UPDATE Actor SET
+	DateOfDeath = '1994-03-04'
+WHERE ActorId = 3;

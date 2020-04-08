@@ -9,9 +9,12 @@ import com.sg.classroster.entities.Teacher;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -92,22 +95,39 @@ public class CourseController {
         return "editCourse";
     }
     
+    // Going to validate that at least one Student exists in the Course's list of Students
     @PostMapping("editCourse")
-    public String performEditCourse(Course course, HttpServletRequest request){
+    public String performEditCourse(@Valid Course course, BindingResult result, HttpServletRequest request, Model model){
         String teacherId = request.getParameter("teacherId");
-        // multiple students can be selected in the input, but the name of that input is "studentId"
+        // multiple students can be selected in the input, but the 'name' attribute of that input is "studentId"
         String[] studentIds = request.getParameterValues("studentId");
         
         // take the Course being passed in and set its Teacher
         course.setTeacher(teacherDao.getTeacherById(Integer.parseInt(teacherId)));
         
         List<Student> studentList = new ArrayList();
-        // look up each Student by their ID in the DB and add them to the list of Students
-        for(String studentId : studentIds){
-            studentList.add(studentDao.getStudentById(Integer.parseInt(studentId)));
+        if(studentIds != null){
+            // look up each Student by their ID in the DB and add them to the list of Students
+            for(String studentId : studentIds){
+                studentList.add(studentDao.getStudentById(Integer.parseInt(studentId)));
+            }
+        }
+        else{ // BindingResult uses FieldError to keep track of which field has errors in the project
+            FieldError error = new FieldError("course", "students", "Must include one student"); // <- what exactly is the first argument here?
+            result.addError(error); // add the FieldError to the BindingResult
         }
         
         course.setStudents(studentList);
+        
+        // if the Course object had some validation errors, redirect to /editCourse with all its current fields populated
+        if(result.hasErrors()){
+            model.addAttribute("teachers", teacherDao.getAllTeachers());
+            model.addAttribute("students", studentDao.getAllStudents());
+            model.addAttribute("course", course);
+            return "editCourse";
+        }
+        
+        // otherwise, update the course
         courseDao.updateCourse(course);
         
         return "redirect:/courses";

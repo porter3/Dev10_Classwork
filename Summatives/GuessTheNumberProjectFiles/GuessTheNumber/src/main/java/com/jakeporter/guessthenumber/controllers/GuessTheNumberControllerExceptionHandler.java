@@ -19,14 +19,14 @@ import org.springframework.web.context.request.WebRequest;
 @ControllerAdvice
 @RestController
 public class GuessTheNumberControllerExceptionHandler {
-    private static final String ERROR_MESSAGE = "Could not process your submission. "
+    private static final String SQL_ERROR = "Could not process your submission. "
             + "Please ensure that it's valid and try again.";
         
     @ExceptionHandler(SQLException.class)
     // final keyword means the method can't be overridden by subclasses
     public final ResponseEntity<Error> handleSqlException(SQLException e, WebRequest request){
         Error error = new Error();
-        error.setMessage(ERROR_MESSAGE);
+        error.setMessage(SQL_ERROR);
         
         // return a response that contains an error w/ a message and status code
         return new ResponseEntity(error, HttpStatus.UNPROCESSABLE_ENTITY);
